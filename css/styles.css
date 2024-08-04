@@ -1,72 +1,95 @@
 /* ======== Header ======== */
-
 header {
-    background-color: #ffffff;
-    color: #000000;
-    padding: 20px 10px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.253);
+  background-color: #ffffff;
+  color: #000000;
+  padding: 20px 10px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.253);
 }
 
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Header Logo */
 .logo a {
-    font-size: 24px;
-    font-weight: bold;
-    color: #000000;
-    text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
 }
 
 /* Header Navigation Links */
 .nav-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links li {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .nav-links a {
-    color: #000000;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 12px;
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
 }
 
 /* .nav-links a:hover {
 
 } */
-
 /* ======== Body ======== */
+a,
+button,
+body {
+  margin: 0;
+  height: 100vh;
+  /*cursor: url('../assets/images/circle.svg') 25 15, auto;*/
+  cursor: none;
+}
+
+.cursor {
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgb(0, 0, 0);
+  background-color: #ffffff;
+  mix-blend-mode: difference;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 1000000;
+  pointer-events: none; /* without couldnt interact with links etc. */
+  transition: transform 0.1s ease-out; /* Add a smooth transition effect */
+}
+
+.cursor.hovered {
+  transform: scale(3); /* Increase size by scaling */
+  /* background-color: #f00; /* Optional: Change border color */
+}
 
 #about {
-    text-align: left;
-    padding: 180px 100px 100px; /* Adjust top padding to account for fixed header */
-    background-color: #ffffff;
-    color: #000000;
-    min-height: 60vh;
-    display: flex;
-    justify-content: left;
+  text-align: left;
+  padding: 180px 100px 100px; /* Adjust top padding to account for fixed header */
+  background-color: #ffffff;
+  color: #000000;
+  min-height: 60vh;
+  display: flex;
+  justify-content: left;
 }
 
 /* ======== Footer ======== */
-
 footer {
-    background-color: #ffffff;
-    color: #000000;
-    padding: 20px;
-    text-align: center;
-}
+  background-color: #ffffff;
+  color: #000000;
+  padding: 20px;
+  text-align: center;
+}/*# sourceMappingURL=styles.css.map */
