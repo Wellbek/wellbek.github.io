@@ -1,3 +1,17 @@
+@font-face {
+  font-family: CommitMono;
+  src: url("/assets/fonts/CommitMono-400-Regular.otf");
+}
+@font-face {
+  font-family: CommitMono;
+  font-weight: bold;
+  src: url("/assets/fonts/CommitMono-700-Regular.otf");
+}
+html * {
+  color: #5e5e5e;
+  font-family: CommitMono;
+}
+
 /* ======== Header ======== */
 header {
   background-color: #ffffff;
@@ -42,12 +56,29 @@ header {
   color: #000000;
   text-decoration: none;
   font-weight: bold;
-  padding: 8px 12px;
+  padding: 0 10px;
+  position: relative;
 }
 
-/* .nav-links a:hover {
+.nav-links li a:hover {
+  color: rgb(90, 177, 69);
+}
 
-} */
+.nav-links li a:after {
+  content: "";
+  position: absolute;
+  background: rgb(90, 177, 69);
+  height: 3px;
+  width: 0;
+  left: 0;
+  bottom: -10px;
+  transition: 0.5s;
+}
+
+.nav-links li a:hover:after {
+  width: 100%;
+}
+
 /* ======== Body ======== */
 a,
 button,
@@ -76,14 +107,49 @@ body {
   /* background-color: #f00; /* Optional: Change border color */
 }
 
+section {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
 #about {
   text-align: left;
   padding: 180px 100px 100px; /* Adjust top padding to account for fixed header */
-  background-color: #ffffff;
-  color: #000000;
-  min-height: 60vh;
-  display: flex;
+  min-height: 25vh;
+  max-height: 30vh;
   justify-content: left;
+}
+
+#about div {
+  width: 50%;
+  min-height: 25vh;
+  max-height: 30vh;
+}
+
+.about-content {
+  padding: 20px 50px 0px;
+}
+
+.about-content h1 {
+  color: #000000;
+  font-weight: 1000;
+  font-size: 50px;
+}
+
+.about-content p {
+  font-size: 25px;
+}
+
+.about-image img {
+  height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.253);
+  transition: transform 0.5s ease-out; /* Add a smooth transition effect */
 }
 
 /* ======== Footer ======== */

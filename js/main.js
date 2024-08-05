@@ -1,5 +1,6 @@
 const cursor = document.querySelector(".cursor");
 const links = document.querySelectorAll("a");
+const images = document.querySelectorAll("img");
 
 // Update cursor position based on mouse movement
 document.addEventListener("mousemove", (e) => {
@@ -19,3 +20,15 @@ links.forEach((link) => {
         cursor.classList.remove("hovered"); // Remove hovered class to shrink cursor
     });
 });
+
+images.forEach((img) => {
+    img.addEventListener("mouseenter", () => {
+        // cursor.classList.add("hovered"); // Add hovered class to enlarge cursor
+        img.style.transform = "scale(1.1)"
+    });
+
+    img.addEventListener("mouseleave", () => {
+        // cursor.classList.remove("hovered"); // Remove hovered class to shrink cursor
+        img.style.transform = "scale(1)"
+    });
+})
