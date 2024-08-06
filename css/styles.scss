@@ -93,14 +93,14 @@ body {
     background-color: #ffffff;
     mix-blend-mode: difference;
     border-radius: 50%;
-    position: absolute;
+    position: fixed;
     z-index: 1000000;
     pointer-events: none; /* without couldnt interact with links etc. */
     transition: transform 0.1s ease-out; /* Add a smooth transition effect */
 }
 
 .cursor.hovered {
-    transform: scale(3); /* Increase size by scaling */
+    transform: scale(2.5); /* Increase size by scaling */
     /* background-color: #f00; /* Optional: Change border color */
 }
 
@@ -147,6 +147,73 @@ section {
     margin-right: auto;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.253);
     transition: transform 0.5s ease-out; /* Add a smooth transition effect */
+}
+
+// ------
+
+.banner {
+    background-color: rgb(90, 177, 69);
+    height: 20vh;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.banner div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner h1{
+    color: white;
+    font-size: 40px;
+}
+
+.banner p{
+    color:white;
+    font-size: 20px;
+    margin-top: -20px;
+    padding-bottom: 20px;
+}
+
+.pulse {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(39, 126, 43, 0.801);
+    border: 3px solid white;
+    border-radius: 50%;
+    transition: transform 0.1s ease-out; /* Add a smooth transition effect */
+}
+
+.pulse img {
+    width: 105%;
+    z-index: 100;
+}
+
+.pulse span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: inherit;
+    opacity: .8;
+}
+
+.pulse:hover span {
+    opacity: .8;
+    animation: pulseAnimate 3s ease-out infinite; /* Enable animation on hover */
+    animation-delay: calc(1s * var(--i));
+}
+
+@keyframes pulseAnimate {
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
 }
 
 // div, section {
