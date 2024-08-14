@@ -43,3 +43,17 @@ pulse_buttons.forEach((button) => {
         button.classList.remove("active");
     });
 })
+
+document.addEventListener('DOMContentLoaded', function() {
+    const projectImage = document.querySelector('.project-image');
+    const videoLoop = document.querySelector('.video-loop');
+
+    projectImage.addEventListener('mouseenter', function() {
+        videoLoop.currentTime = 0; // Restart the video
+        videoLoop.play(); // Ensure the video plays on hover
+    });
+
+    projectImage.addEventListener('mouseleave', function() {
+        videoLoop.pause(); // Pause the video when not hovering
+    });
+});
