@@ -60,8 +60,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.getElementById('moreProjectsBtn').addEventListener('click', function() {
     const projectsDiv = document.getElementById('projects');
+
+    if (!isOverflown(projectsDiv)) return
     
     const currentHeight = projectsDiv.offsetHeight;
     
     projectsDiv.style.height = currentHeight + 600 + 'px';
 });
+
+function filterDivs(tag) {
+    // Get all the divs with class 'item'
+    var entries = document.querySelectorAll('.project-entry');
+
+    const projectsDiv = document.getElementById('projects');
+    projectsDiv.style.height = 600 + 'px'; // reset project div size
+
+    let visibleCount = 0; // Counter for visible projects
+
+    // Loop through all items and show/hide based on the filter
+    entries.forEach(function(entry) {
+        // Determine if the item should be visible
+        if (tag === 'all' || entry.getAttribute('data-tags').includes(tag)) {
+            entry.style.display = 'flex'; // Show the item
+            // Add/remove 'reverse' class to alternate items
+            if (visibleCount % 2 === 1) {
+                entry.classList.add('reverse');
+            } else {
+                entry.classList.remove('reverse');
+            }
+            visibleCount++; // Increment visible count
+        } else {
+            entry.style.display = 'none'; // Hide the item
+        }
+    });
+}
+
+function isOverflown(element) {
+    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+}
+
+window.onload = function() {
+    filterDivs('all');
+};

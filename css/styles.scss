@@ -225,7 +225,22 @@ section {
     padding: 50px;
     height: 600px;
     overflow: hidden;
-    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+#projects-filter {
+    margin-top: 30px;
+    margin-right: 20px; /* Add some space between the buttons and the project container */
+    display: flex;
+    flex-direction: column; /* Arrange buttons vertically */
+}
+
+#projects-filter button {
+    margin-bottom: 10px; 
+    height: auto;
+    width: 120px;
 }
 
 #projects-container {

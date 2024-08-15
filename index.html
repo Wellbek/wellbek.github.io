@@ -50,8 +50,18 @@
                 </div>
             </section>
             <section id="projects">
+                <div id="projects-filter">
+                    <!-- Filter buttons -->
+                    <button onclick="filterDivs('all')">Show All</button>
+                    <button onclick="filterDivs('frontend')">Frontend</button>
+                    <button onclick="filterDivs('backend')">Backend</button>
+                    <button onclick="filterDivs('emsys')">Embedded Systems</button>
+                    <button onclick="filterDivs('hacking')">Security & Hacking</button>
+                    <button onclick="filterDivs('gamedev')">Game Development</button>
+                    <button onclick="filterDivs('api')">APIs</button>
+                </div>
                 <div id="projects-container">
-                    <div class="project-entry">
+                    <div class="project-entry" data-tags="frontend api">
                         <div class="project-image">
                             <video class="video-loop" autoplay muted loop>
                                 <source src="assets/videos/weather-app-showcase.mp4" type="video/mp4">
@@ -67,7 +77,7 @@
                         </div>
                     </div>
 
-                    <div class="project-entry reverse">
+                    <div class="project-entry" data-tags="hacking">
                         <div class="project-image">
                             <img src="assets/images/knifechanger-thumbnail.png" alt="CSGO Skinchanger" class="zoomable">
                         </div>
@@ -78,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="project-entry">
+                    <div class="project-entry"  data-tags="emsys backend">
                         <div class="project-image">
                             <video class="video-loop" autoplay muted loop>
                                 <source src="assets/videos/psp-showcase.mp4" type="video/mp4">
