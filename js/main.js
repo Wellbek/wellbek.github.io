@@ -57,3 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
         videoLoop.pause(); // Pause the video when not hovering
     });
 });
+
+document.getElementById('moreProjectsBtn').addEventListener('click', function() {
+    const projectsDiv = document.getElementById('projects');
+    
+    const currentHeight = projectsDiv.offsetHeight;
+    
+    projectsDiv.style.height = currentHeight + 600 + 'px';
+});

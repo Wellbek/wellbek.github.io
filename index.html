@@ -17,7 +17,7 @@
                     </div>
                     <ul class="nav-links">
                         <li><a href="#about">about</a></li>
-                        <li><a href="#projects">projects</a></li>
+                        <li><a href="#projects-section">projects</a></li>
                         <li><a href="#contact">contact</a></li>
                     </ul>
                 </nav>
@@ -35,7 +35,7 @@
             </section>
 
             <!-- Projects -->
-            <section class="banner">
+            <section class="banner" id="projects-section">
                 <div style="width: 100%;">
                     <h1> Projects </h1>
                     <p> Explore most of these and more projects on my GitHub page! </p>
@@ -50,34 +50,74 @@
                 </div>
             </section>
             <section id="projects">
-                <div class="project-entry">
-                    <div class="project-image">
-                        <video class="video-loop" autoplay muted loop>
-                            <source src="assets/videos/weather-app-showcase.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <img src="assets/images/weather-app-thumbnail.png" alt="Project 1" class="video_on_hover">
+                <div id="projects-container">
+                    <div class="project-entry">
+                        <div class="project-image">
+                            <video class="video-loop" autoplay muted loop>
+                                <source src="assets/videos/weather-app-showcase.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <img src="assets/images/weather-app-thumbnail.png" alt="Weather App" class="video_on_hover">
+                        </div>
+                        <div class="project-text">
+                            <h2>Weather App</h2>
+                            <p>A simple multiplatfrom weather application created using Flutter and Dart and using API from OpenWeatherMap.</p>
+                            <p>The app offers real-time weather updates, a 24-hour weather graph, and a 3-day forecast, along with light/dark mode, location search, saved locations, and live tracking.</p>
+                            <a href="https://github.com/Wellbek/WeatherApp" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
+                        </div>
                     </div>
-                    <div class="project-text">
-                        <h2>Weather App</h2>
-                        <p>A simple multiplatfrom weather application created using Flutter and Dart and using API from OpenWeatherMap.</p>
-                        <p>The app offers real-time weather updates, a 24-hour weather graph, and a 3-day forecast, along with light/dark mode, location search, saved locations, and live tracking.</p>
-                        <a href="https://github.com/Wellbek/WeatherApp">Visit GitHub</a>
+
+                    <div class="project-entry reverse">
+                        <div class="project-image">
+                            <img src="assets/images/knifechanger-thumbnail.png" alt="CSGO Skinchanger" class="zoomable">
+                        </div>
+                        <div class="project-text">
+                            <h2>Counter Strike Skinchanger</h2>
+                            <p>Console based external CSGO Skin- and Knifechanger made in C++.</p>
+                            <a href="https://github.com/Wellbek/WellSkinz" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
+                        </div>
+                    </div>
+
+                    <div class="project-entry">
+                        <div class="project-image">
+                            <video class="video-loop" autoplay muted loop>
+                                <source src="assets/videos/psp-showcase.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <img src="assets/images/psp-thumbnail.PNG" alt="ATmega644 datasheet" class="video_on_hover">
+                        </div>
+                        <div class="project-text">
+                            <h2>System Programming Lab</h2>
+                            <p>Compulsory university lab course</p>
+                            <p>Created a basic operating system in C for a simple microcontroller, including signal processing, interrupt handling, resource and memory management, process scheduling, and interfacing with external devices.</p>
+                            <p>To conclude the course, snake was implemented on our own operating system.</p>
+                            <a href="https://github.com/Wellbek/PSP" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
+                        </div>
                     </div>
                 </div>
+                <div id="overlay"></div>
+            </section>
+            <div class="pulse" id="moreProjectsBtn">
+                <span style=" --i:0;"></span>
+                <span style=" --i:1;"></span>
+                <span style=" --i:2;"></span>
+                <img src = "" alt=""/>
+            </div>
 
-                <div class="project-entry reverse">
-                    <div class="project-image">
-                        <img src="assets/images/knifechanger-thumbnail.png" alt="Project 1" class="zoomable">
-                    </div>
-                    <div class="project-text">
-                        <h2>Counter Strike Skinchanger</h2>
-                        <p>Console based external CSGO Skin- and Knifechanger made in C++.</p>
-                        <a href="https://github.com/Wellbek/WellSkinz">Visit GitHub</a>
-                    </div>
+            <!-- Some other section-->
+            <section class="banner">
+                <div style="width: 100%;">
+                    <h1> Section 2 </h1>
+                    <p> Section 2 description </p>
+                    <a href="#" target="_blank" rel="noopener noreferrer">
+                        <div class="pulse">
+                            <span style=" --i:0;"></span>
+                            <span style=" --i:1;"></span>
+                            <span style=" --i:2;"></span>
+                            <img src = "" alt=""/>
+                        </div>
+                    </a>
                 </div>
-                
-
             </section>
 
             <!-- Footer -->
