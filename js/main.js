@@ -3,6 +3,9 @@ const links = document.querySelectorAll("a");
 const zoomables = document.querySelectorAll(".zoomable");
 const pulse_buttons = document.querySelectorAll(".pulse")
 
+// Currently applied project filters
+const currFilters = { "c": null, "l": null, "f": null}
+
 // Update cursor position based on mouse movement
 document.addEventListener("mousemove", (e) => {
     cursor.setAttribute(
@@ -70,17 +73,43 @@ document.getElementById('moreProjectsBtn').addEventListener('click', function() 
 
 function filterDivs(tag) {
     // Get all the divs with class 'item'
-    var entries = document.querySelectorAll('.project-entry');
+    const entries = document.querySelectorAll('.project-entry');
 
     const projectsDiv = document.getElementById('projects');
-    projectsDiv.style.height = 600 + 'px'; // reset project div size
+    projectsDiv.style.height = '600px'; // Reset project div size
 
     let visibleCount = 0; // Counter for visible projects
 
+    if (tag === 'all') {
+        // Reset all filters to null
+        currFilters["c"] = null;
+        currFilters["l"] = null;
+        currFilters["f"] = null;
+    } else {
+        const prefix = tag.charAt(0);
+        const filterValue = tag.substring(2) === 'all' ? null : tag;
+        switch (prefix) {
+            case 'c':
+                currFilters["c"] = filterValue;
+                break;
+            case 'l':
+                currFilters["l"] = filterValue;
+                break;
+            case 'f':
+                currFilters["f"] = filterValue;
+                break;
+        }
+    }
+
     // Loop through all items and show/hide based on the filter
     entries.forEach(function(entry) {
-        // Determine if the item should be visible
-        if (tag === 'all' || entry.getAttribute('data-tags').includes(tag)) {
+        const tags = entry.getAttribute('data-tags').split(' ');
+
+        const isCategoryMatch = currFilters["c"] === null || tags.includes(currFilters["c"]);
+        const isLanguageMatch = currFilters["l"] === null || tags.includes(currFilters["l"]);
+        const isFrameworkMatch = currFilters["f"] === null || tags.includes(currFilters["f"]);
+
+        if (isCategoryMatch && isLanguageMatch && isFrameworkMatch) {
             entry.style.display = 'flex'; // Show the item
             // Add/remove 'reverse' class to alternate items
             if (visibleCount % 2 === 1) {
@@ -93,6 +122,71 @@ function filterDivs(tag) {
             entry.style.display = 'none'; // Hide the item
         }
     });
+
+    updateDropdowns();
+}
+
+function updateDropdowns() {
+    const counts = {
+        categories: {},
+        languages: {},
+        frameworks: {}
+    };
+
+    // Get all projects that are currently visible
+    const visibleProjects = document.querySelectorAll('.project-entry[style*="display: flex"]');
+
+    visibleProjects.forEach(project => {
+        const tags = project.getAttribute('data-tags').split(' ');
+        tags.forEach(tag => {
+            const prefix = tag.charAt(0);
+            switch (prefix) {
+                case 'c':
+                    counts.categories[tag] = (counts.categories[tag] || 0) + 1;
+                    break;
+                case 'l':
+                    counts.languages[tag] = (counts.languages[tag] || 0) + 1;
+                    break;
+                case 'f':
+                    counts.frameworks[tag] = (counts.frameworks[tag] || 0) + 1;
+                    break;
+            }
+        });
+    });
+
+    // Update dropdowns
+    updateDropdown('category-filter', counts.categories, 'Categories');
+    updateDropdown('language-filter', counts.languages, 'Languages');
+    updateDropdown('framework-filter', counts.frameworks, 'Frameworks');
+}
+
+function updateDropdown(selectId, counts, filterName) {
+    const select = document.getElementById(selectId);
+
+    // Clear existing options
+    select.innerHTML = '';
+
+    // Create and append default "All" option
+    const allOption = document.createElement('option');
+    allOption.value = filterName.toLowerCase().charAt(0) + ":all";
+    allOption.text = `All ${filterName}`;
+    select.appendChild(allOption);
+
+    // Create and append options with counts
+    for (const [key, count] of Object.entries(counts)) {
+        const option = document.createElement('option');
+        option.value = key;
+        option.text = `${key.substring(2).charAt(0).toUpperCase() + key.substring(2).slice(1)} (${count})`; // Capitalize first letter and add count
+        select.appendChild(option);
+    }
+
+    // Set the currently selected option
+    const selectedValue = currFilters[selectId.split('-')[0][0]];
+    if (selectedValue) {
+        select.value = selectedValue;
+    } else {
+        select.value = `${selectId.split('-')[0][0]}:all`; // Reset to "All" if no specific filter is applied
+    }
 }
 
 function isOverflown(element) {
