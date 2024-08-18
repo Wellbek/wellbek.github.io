@@ -18,6 +18,8 @@
                     <ul class="nav-links">
                         <li><a href="#about">about</a></li>
                         <li><a href="#projects-section">projects</a></li>
+                        <li><a href="#cv">cv</a></li>
+                        <li><a href="#publications">publications</a></li>
                         <li><a href="#contact">contact</a></li>
                     </ul>
                 </nav>
@@ -31,6 +33,44 @@
                 </div>
                 <div class="about-image">
                     <img src="assets/images/Me.PNG" alt="😎" class="zoomable">
+                </div>
+            </section>
+
+            <!-- CV Section -->
+            <section class="banner" id="cv">
+                <div style="width: 100%;">
+                    <h1> Curriculum Vitae </h1>
+                </div>
+            </section>
+            <section class="cv">
+                <h2>Education</h2>
+                <div class="cv-entry">
+                    <span class="cv-date">10/2021 - today</span>
+                    <span class="cv-description">Computer Science B. Sc., RWTH Aachen</span>
+                </div>
+                <div class="cv-entry">
+                    <span class="cv-date">10/2019 - 03/2020</span>
+                    <span class="cv-description">"Introduction to Programming" course completed, FH Münster</span>
+                </div>
+                <div class="cv-entry">
+                    <span class="cv-date">07/2013 - 07/2021</span>
+                    <span class="cv-description">Abitur, Goethe-Gymnasium Ibbenbüren</span>
+                </div>
+
+                <h2>Extracurricular Activities</h2>
+                <div class="cv-entry">
+                    <span class="cv-date">10/2024 - today</span>
+                    <span class="cv-description">Python tutor for "Introduction into Programming for data-driven Sciences" course at RWTH Aachen </span>
+                </div>
+                <div class="cv-entry">
+                    <span class="cv-date">07/2019 - 07/2021</span>
+                    <span class="cv-description">Teacher in the Roboting Club Goethe-Gymnasium Ibbenbüren </span>
+                </div>
+
+                <h2>Honors and Awards</h2>
+                <div class="cv-entry">
+                    <span class="cv-date">07/2024</span>
+                    <span class="cv-description"> 2# place at RWTH Game Jam 2024</span>
                 </div>
             </section>
 
@@ -67,7 +107,7 @@
                     </select>
                 </div>
                 <div id="projects-container">
-                    <div class="project-entry" data-tags="c:frontend c:api l:flutter">
+                    <div class="project-entry" data-tags="c:frontend c:api l:dart f:flutter">
                         <div class="project-image">
                             <video class="video-loop" autoplay muted loop>
                                 <source src="assets/videos/weather-app-showcase.mp4" type="video/mp4">
@@ -163,19 +203,23 @@
                 <img src = "" alt=""/>
             </div>
 
-            <!-- Some other section-->
-            <section class="banner">
+            <!-- Publications Section -->
+            <section class="banner" id="publications">
                 <div style="width: 100%;">
-                    <h1> Section 2 </h1>
-                    <p> Section 2 description </p>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                        <div class="pulse">
-                            <span style=" --i:0;"></span>
-                            <span style=" --i:1;"></span>
-                            <span style=" --i:2;"></span>
-                            <img src = "" alt=""/>
-                        </div>
-                    </a>
+                    <h1> Publications </h1>
+                    <p> My publications (descendent by time) </p>
+                </div>
+            </section>
+            <section class="publications">
+                <div class="publication-entry">
+                    <div class="publication-authors">Louis Wellmeyer</div>
+                    <a href="assets/publications/Pursuing_Ideal_Regression_Testing_for_HPC_A_Comparative_Framework_Analysis.pdf" class="publication-link" target="_blank">Pursuing Ideal Regression Testing for HPC: A Comparative Framework Analysis</a>
+                    <div class="publication-context">Seminar Course, Chair for High Performance Computing at RWTH Aachen, Wintersemester 2023/24</div>
+                </div>
+                <div class="publication-entry">
+                    <div class="publication-authors">Louis Wellmeyer</div>
+                    <a href="assets/publications/Simulating_Stiffness_of_Virtual_Objects_with_Haptic_Jamming_Devices_An_Overview.pdf" class="publication-link" target="_blank">Simulating Stiffness of Virtual Objects with Haptic Jamming Devices: An Overview</a>
+                    <div class="publication-context">Seminar Course, Virtual Reality & Immersive Visualization Group at RWTH Aachen, 2022</div>
                 </div>
             </section>
 
