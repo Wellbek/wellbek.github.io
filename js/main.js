@@ -193,6 +193,24 @@ function isOverflown(element) {
     return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }
 
+document.getElementById('email-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var email = document.getElementById('email').value;
+    var message = document.getElementById('message').value;
+    
+    // Here you would typically send the email using a backend service
+    // For this example, we'll just log to the console
+    console.log('Sending email to:', email);
+    console.log('Message:', message);
+    
+    // Clear the form
+    document.getElementById('email').value = '';
+    document.getElementById('message').value = '';
+    
+    alert('Thank you for your message. I\'ll get back to you soon!');
+});
+
 window.onload = function() {
     filterDivs('all');
 };
