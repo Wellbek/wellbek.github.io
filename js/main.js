@@ -211,6 +211,23 @@ document.getElementById('email-form').addEventListener('submit', function(e) {
     alert('Thank you for your message. I\'ll get back to you soon!');
 });
 
+let lastScrollTop = 0;
+const header = document.getElementById("header");
+
+window.addEventListener("scroll", function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+        // Scroll down
+        header.style.top = "-80px"; // Adjust based on your header height
+    } else {
+        // Scroll up
+        header.style.top = "0";
+    }
+    lastScrollTop = scrollTop;
+});
+
+
 window.onload = function() {
     filterDivs('all');
 };

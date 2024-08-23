@@ -7,21 +7,33 @@
   font-weight: bold;
   src: url("/assets/fonts/CommitMono-700-Regular.otf");
 }
+/*
+Palette
+(19, 64, 116)
+(19, 49, 92)
+(11, 37, 69)
+(141, 169, 196)
+(238, 244, 237)
+*/
 html * {
-  color: #5e5e5e;
+  color: rgb(19, 49, 92);
   font-family: CommitMono;
+  z-index: 10;
 }
 
 /* ======== Header ======== */
 header {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: hsla(0, 0%, 100%, 0.533);
+  color: rgb(11, 37, 69);
   padding: 20px 10px;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.253);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: top 0.4s;
 }
 
 .navbar {
@@ -36,7 +48,7 @@ header {
 .logo a {
   font-size: 24px;
   font-weight: bold;
-  color: #000000;
+  color: rgb(11, 37, 69);
   text-decoration: none;
 }
 
@@ -54,7 +66,7 @@ header {
 
 .social-links a,
 .nav-links a {
-  color: #000000;
+  color: rgb(11, 37, 69);
   text-decoration: none;
   font-weight: bold;
   padding: 0 10px;
@@ -62,14 +74,14 @@ header {
 }
 
 .nav-links li a:hover {
-  color: rgb(90, 177, 69);
+  color: rgb(11, 37, 69);
 }
 
 .social-links li a:after,
 .nav-links li a:after {
   content: "";
   position: absolute;
-  background: rgb(90, 177, 69);
+  background: rgb(11, 37, 69);
   height: 3px;
   width: 0;
   left: 0;
@@ -78,7 +90,7 @@ header {
 }
 
 .social-links li a:after {
-  background: white;
+  background: rgb(238, 244, 237);
   bottom: -7px;
   height: 1.5px;
 }
@@ -98,11 +110,16 @@ body {
   cursor: none;
 }
 
+body {
+  background-color: rgb(238, 244, 237);
+  cursor: none;
+}
+
 .cursor {
   width: 20px;
   height: 20px;
-  border: 1px solid rgb(0, 0, 0);
-  background-color: #ffffff;
+  border: 1px solid rgb(11, 37, 69);
+  background-color: rgb(238, 244, 237);
   mix-blend-mode: difference;
   border-radius: 50%;
   position: fixed;
@@ -122,52 +139,63 @@ section {
   max-width: 1200px;
   margin: 0 auto;
   background-color: #ffffff;
+  position: relative;
 }
 
 #about {
   text-align: left;
-  padding: 180px 100px 100px; /* Adjust top padding to account for fixed header */
-  min-height: 25vh;
-  max-height: 30vh;
+  padding: 180px 300px 200px;
+  max-width: 100%;
+  height: 35vh;
   justify-content: left;
+  overflow: hidden;
+  position: relative;
+  background-color: rgb(11, 37, 69);
 }
 
-#about div {
-  width: 50%;
-  min-height: 25vh;
-  max-height: 30vh;
-}
-
-.about-content {
-  padding: 20px 50px 0px;
+#about .about-content {
+  padding: 0px 50px 0px;
+  position: absolute;
+  width: 35%;
+  z-index: 2; /* Ensures text is above the image */
 }
 
 .about-content h1 {
-  color: #000000;
+  color: rgb(238, 244, 237);
   font-weight: 1000;
   font-size: 50px;
+  width: 100%;
 }
 
 .about-content p {
   font-size: 25px;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.651);
+}
+
+.about-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  scale: 3;
+  transform: translate(35%, 3%);
+  z-index: 1;
+  overflow: hidden;
 }
 
 .about-image img {
-  height: 100%;
+  height: 400px;
+  width: auto;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.253);
   transition: transform 0.5s ease-out; /* Add a smooth transition effect */
 }
 
 .banner {
-  background-color: rgb(90, 177, 69);
+  background-color: rgb(19, 64, 116);
   height: 27vh;
   max-width: 100%;
   display: flex;
   text-align: center;
-  margin-top: 40px;
 }
 
 .banner div {
@@ -178,12 +206,12 @@ section {
 }
 
 .banner h1 {
-  color: white;
+  color: rgb(238, 244, 237);
   font-size: 40px;
 }
 
 .banner p {
-  color: white;
+  color: rgb(238, 244, 237);
   font-size: 20px;
   margin-top: -20px;
   padding-bottom: 20px;
@@ -193,13 +221,14 @@ section {
   position: relative;
   width: 50px;
   height: 50px;
-  background-color: rgba(39, 126, 43, 0.801);
-  border: 3px solid white;
+  background-color: rgb(141, 169, 196);
+  border: 3px solid rgb(238, 244, 237);
   border-radius: 50%;
   transition: transform 0.1s ease-out; /* Add a smooth transition effect */
 }
 
 .pulse img {
+  height: 105%;
   width: 105%;
   z-index: 100;
 }
@@ -235,6 +264,7 @@ section {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  background-color: rgb(238, 244, 237);
 }
 
 #projects-filter {
@@ -250,13 +280,14 @@ section {
   width: 200px;
   padding: 5px;
   font-size: 16px;
-  color: black;
+  color: rgb(11, 37, 69);
+  background-color: rgb(238, 244, 237);
   cursor: none;
 }
 
 option {
   cursor: none;
-  color: black;
+  color: rgb(11, 37, 69);
 }
 
 #projects-container {
@@ -323,7 +354,7 @@ option {
 .project-text h2 {
   margin-top: 0;
   font-size: 30px;
-  color: black;
+  color: rgb(11, 37, 69);
 }
 
 .project-text p {
@@ -334,7 +365,7 @@ option {
 
 .project-text a {
   font-size: 16px;
-  color: black;
+  color: rgb(11, 37, 69);
 }
 
 #overlay {
@@ -343,15 +374,20 @@ option {
   height: 200px;
   bottom: 0;
   left: 0;
-  background-image: linear-gradient(to top, white, rgba(0, 0, 0, 0));
-  z-index: 1;
+  background-image: linear-gradient(to top, rgb(238, 244, 237), rgba(255, 255, 255, 0));
+  z-index: 11;
 }
 
 #moreProjectsBtn {
-  background-color: rgba(37, 37, 37, 0);
+  background-color: rgb(93, 143, 201);
   margin: 80px auto;
-  border-color: rgb(70, 70, 70);
+  border-color: rgb(19, 64, 116);
   margin-bottom: 100px;
+}
+
+#moreProjectsBtn img {
+  width: auto;
+  height: auto;
 }
 
 .cv {
@@ -362,11 +398,12 @@ option {
   width: 100%;
   padding-top: 30px;
   padding-bottom: 100px;
+  background-color: rgb(238, 244, 237);
 }
 
 .cv h2 {
   margin-bottom: 15px;
-  color: #000000;
+  color: rgb(11, 37, 69);
   padding-bottom: 5px;
 }
 
@@ -394,6 +431,7 @@ option {
   padding-top: 30px;
   padding-bottom: 100px;
   width: 100%;
+  background-color: rgb(238, 244, 237);
 }
 
 .publication-entry {
@@ -401,7 +439,7 @@ option {
 }
 
 .publication-authors {
-  color: #000000;
+  color: rgb(11, 37, 69);
   margin-bottom: 5px;
 }
 
@@ -416,7 +454,7 @@ option {
 
 /* ======== Footer ======== */
 #contact {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
   padding: 70px;
   font-family: Arial, sans-serif;
 }
@@ -431,7 +469,7 @@ option {
 }
 
 #name {
-  color: white;
+  color: rgb(238, 244, 237);
   margin: 0;
   margin-right: 20px;
   font-size: 30px;
@@ -449,7 +487,7 @@ option {
 
 .social-links a {
   text-decoration: none;
-  color: white;
+  color: rgb(238, 244, 237);
 }
 
 .email-form {
@@ -466,7 +504,7 @@ option {
 }
 
 #email-form p {
-  color: white;
+  color: rgb(238, 244, 237);
   text-align: right;
 }
 
@@ -480,7 +518,7 @@ option {
 button {
   align-self: flex-end;
   padding: 5px 10px;
-  background-color: #ffffff;
+  background-color: rgb(238, 244, 237);
   color: rgb(0, 0, 0);
   border: none;
   height: 35px;
@@ -489,12 +527,12 @@ button {
 
 hr {
   border: none;
-  border-top: 1px solid white;
+  border-top: 1px solid rgb(238, 244, 237);
   margin: 60px 0;
 }
 
 .copyright p {
   text-align: center;
   font-size: 0.9em;
-  color: #ffffff;
+  color: rgb(238, 244, 237);
 }/*# sourceMappingURL=styles.css.map */
