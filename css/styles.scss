@@ -12,25 +12,41 @@ Palette
 
 html *
 {
-   color: rgb(19, 49, 92);
+    color: rgb(11, 37, 69);
    font-family: CommitMono;
    z-index: 10;
+}
+
+.move.appear {
+    transform: translateY(50px);
+    transition: transform .2s ease-out;
+}
+
+.appear {
+    opacity: 0;
+    transition: opacity .5s ease,
+}
+
+.appear.visible {
+    opacity: 1;
+}
+
+.move.appear.visible {
+    transform: translateY(0)
 }
 
 /* ======== Header ======== */
 
 header {
-    background-color: hsla(0, 0%, 100%, 0.533);
-    color: rgb(11, 37, 69);
     padding: 20px 10px;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.253);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     transition: top 0.4s;
+    mix-blend-mode: difference;
 }
 
 .navbar {
@@ -45,8 +61,8 @@ header {
 .logo a {
     font-size: 24px;
     font-weight: bold;
-    color: rgb(11, 37, 69);
     text-decoration: none;
+    color: rgb(238, 244, 237);
 }
 
 /* Header Navigation Links */
@@ -63,22 +79,22 @@ header {
 
 .social-links a,
 .nav-links a {
-    color: rgb(11, 37, 69);;
     text-decoration: none;
     font-weight: bold;
     padding: 0 10px;
     position: relative;
+    color: rgb(238, 244, 237);
 }
 
-.nav-links li a:hover{
+/*.nav-links li a:hover{
     color: rgb(11, 37, 69)
-}
+}*/
 
 .social-links li a:after,
 .nav-links li a:after{
     content: "";
     position: absolute;
-    background: rgb(11, 37, 69);
+    background: rgb(238, 244, 237);
     height: 3px;
     width: 0;
     left: 0;
@@ -87,7 +103,7 @@ header {
 }
 
 .social-links li a:after {
-    background: rgb(238, 244, 237);
+    //background: rgb(238, 244, 237);
     bottom: -7px;
     height: 1.5px;
 }

@@ -228,6 +228,23 @@ window.addEventListener("scroll", function() {
 });
 
 
+function appear() {
+    const reveals = document.querySelectorAll('.appear');
+
+    for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 150; // when appearing should begin
+
+        if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add('visible');
+        } 
+    }
+}
+
+window.addEventListener('scroll', appear);
+
 window.onload = function() {
     filterDivs('all');
+    appear()
 };

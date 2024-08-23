@@ -26,8 +26,8 @@
             </header>
 
             <!-- About me Section -->
-            <section id="about">
-                <div class="about-content">
+            <section id="about" class="appear">
+                <div class="about-content move appear">
                     <h1>Hi, I'm <br> <span style="color:rgb(141, 169, 196)">Louis Wellmeyer</span></h1>
                     <p> A computer science student from Germany. I'm particularly interested in Software Architectures and Embedded Systems.</p>
                 </div>
@@ -37,46 +37,46 @@
             </section>
 
             <!-- CV Section -->
-            <section class="banner" id="cv">
+            <section class="banner appear" id="cv">
                 <div style="width: 100%;">
                     <h1> Curriculum Vitae </h1>
                 </div>
             </section>
             <section class="cv">
-                <h2>Education</h2>
-                <div class="cv-entry">
+                <h2 class="move appear">Education</h2>
+                <div class="cv-entry move appear">
                     <span class="cv-date">10/2021 - today</span>
                     <span class="cv-description">Computer Science B. Sc., RWTH Aachen</span>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry move appear">
                     <span class="cv-date">10/2019 - 03/2020</span>
                     <span class="cv-description">"Introduction to Programming" course completed, FH Münster</span>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry move appear">
                     <span class="cv-date">07/2013 - 07/2021</span>
                     <span class="cv-description">Abitur, Goethe-Gymnasium Ibbenbüren</span>
                 </div>
 
-                <h2>Extracurricular Activities</h2>
-                <div class="cv-entry">
+                <h2 class="move appear">Extracurricular Activities</h2>
+                <div class="cv-entry move appear">
                     <span class="cv-date">10/2024 - today</span>
                     <span class="cv-description">Python tutor for "Introduction into Programming for data-driven Sciences" course at RWTH Aachen </span>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry move appear">
                     <span class="cv-date">07/2019 - 07/2021</span>
                     <span class="cv-description">Teacher in the Roboting Club Goethe-Gymnasium Ibbenbüren </span>
                 </div>
 
-                <h2>Honors and Awards</h2>
-                <div class="cv-entry">
+                <h2 class="move appear">Honors and Awards</h2>
+                <div class="cv-entry move appear">
                     <span class="cv-date">07/2024</span>
                     <span class="cv-description"> 2# place at RWTH Game Jam 2024</span>
                 </div>
             </section>
 
             <!-- Projects -->
-            <section class="banner" id="projects-section">
-                <div style="width: 100%;">
+            <section class="banner appear" id="projects-section">
+                <div class="appear" style="width: 100%;">
                     <h1> Projects </h1>
                     <p> Explore most of these and more projects on my GitHub page! </p>
                     <a href="https://github.com/Wellbek" target="_blank" rel="noopener noreferrer">
@@ -89,7 +89,7 @@
                     </a>
                 </div>
             </section>
-            <section id="projects">
+            <section class="appear" id="projects">
                 <div id="projects-filter">
                     <!-- Categories Dropdown -->
                     <select id="category-filter" onchange="filterDivs(this.value)">
@@ -151,7 +151,7 @@
                         </div>
                     </div>
 
-                    <div class="project-entry"  data-tags="c:gamedev c:api l:godot">
+                    <div class="project-entry"  data-tags="c:gamedev c:api l:gdscript">
                         <div class="project-image">
                             <img src="assets/images/tft-thumbnail.jpg" alt="Teamfight Tactics" class="zoomable">
                         </div>
@@ -163,7 +163,7 @@
                         </div>
                     </div>
 
-                    <div class="project-entry"  data-tags="c:gamedev l:godot">
+                    <div class="project-entry"  data-tags="c:gamedev l:gdscript">
                         <div class="project-image">
                             <img src="assets/images/watt-thumbnail.png" alt="Watt's The Matter!" class="zoomable">
                         </div>
@@ -176,7 +176,7 @@
                         </div>
                     </div>
 
-                    <div class="project-entry"  data-tags="c:backend c:gamedev l:godot l:c">
+                    <div class="project-entry"  data-tags="c:backend c:gamedev l:gdscript l:c">
                         <div class="project-image">
                             <video class="video-loop" autoplay muted loop>
                                 <source src="assets/videos/game-physics-showcase.mp4" type="video/mp4">
@@ -196,7 +196,7 @@
                 </div>
                 <div id="overlay"></div>
             </section>
-            <div class="pulse" id="moreProjectsBtn">
+            <div class="pulse move appear" id="moreProjectsBtn">
                 <span style=" --i:0;"></span>
                 <span style=" --i:1;"></span>
                 <span style=" --i:2;"></span>
@@ -204,19 +204,19 @@
             </div>
 
             <!-- Publications Section -->
-            <section class="banner" id="publications">
+            <section class="banner appear" id="publications">
                 <div style="width: 100%;">
                     <h1> Publications </h1>
                     <p> My publications (descendent by time) </p>
                 </div>
             </section>
             <section class="publications">
-                <div class="publication-entry">
+                <div class="publication-entry move appear">
                     <div class="publication-authors">Louis Wellmeyer</div>
                     <a href="assets/publications/Pursuing_Ideal_Regression_Testing_for_HPC_A_Comparative_Framework_Analysis.pdf" class="publication-link" target="_blank">Pursuing Ideal Regression Testing for HPC: A Comparative Framework Analysis</a>
                     <div class="publication-context">Seminar Course, Chair for High Performance Computing at RWTH Aachen, Wintersemester 2023/24</div>
                 </div>
-                <div class="publication-entry">
+                <div class="publication-entry move appear">
                     <div class="publication-authors">Louis Wellmeyer</div>
                     <a href="assets/publications/Simulating_Stiffness_of_Virtual_Objects_with_Haptic_Jamming_Devices_An_Overview.pdf" class="publication-link" target="_blank">Simulating Stiffness of Virtual Objects with Haptic Jamming Devices: An Overview</a>
                     <div class="publication-context">Seminar Course, Virtual Reality & Immersive Visualization Group at RWTH Aachen, 2022</div>
@@ -226,7 +226,7 @@
             <!-- Footer -->
             <footer id="contact">
                 <div class="footer-top">
-                    <h3 id="name">Louis Wellmeyer.</h3>
+                    <h3 id="name">Contact me.</h3>
                     <ul class="social-links">
                         <li><a href="https://twitter.com/wyzLWell333" target="_blank">Twitter</a></li>
                         <li><a href="https://www.linkedin.com/in/louiswellmeyer" target="_blank">LinkedIn</a></li>
