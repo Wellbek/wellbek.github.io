@@ -59,6 +59,18 @@ document.addEventListener('DOMContentLoaded', function() {
     projectImage.addEventListener('mouseleave', function() {
         videoLoop.pause(); // Pause the video when not hovering
     });
+
+    // Ensure zoomables are re-selected after DOM content loads
+    const updatedZoomables = document.querySelectorAll(".zoomable");
+    updatedZoomables.forEach((zoom) => {
+        zoom.addEventListener("mouseenter", () => {
+            zoom.style.transform = "scale(1.1)";
+        });
+
+        zoom.addEventListener("mouseleave", () => {
+            zoom.style.transform = "scale(1)";
+        });
+    });
 });
 
 document.getElementById('moreProjectsBtn').addEventListener('click', function() {
@@ -242,9 +254,18 @@ function appear() {
     }
 }
 
+function sendMail() {
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    // Use the mailto protocol
+    window.location.href = `mailto:wellmeyer.louis@gmail.com?subject=Message from ${email}&body=${encodeURIComponent(message)}`;
+}
+
 window.addEventListener('scroll', appear);
 
 window.onload = function() {
     filterDivs('all');
     appear()
 };
+

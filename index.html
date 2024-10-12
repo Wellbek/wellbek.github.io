@@ -6,6 +6,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Louis' Portfolio</title>
             <link rel="stylesheet" href="css/styles.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         </head>
 
         <body>
@@ -13,14 +14,14 @@
             <header id="header">
                 <nav class="navbar">
                     <div class="logo">
-                        <a href="#">Louis.</a>
+                        <a href="#">Louis.</a> 
                     </div>
                     <ul class="nav-links">
                         <li><a href="#about">about</a></li>
-                        <li><a href="#cv">cv</a></li>
-                        <li><a href="#projects-section">projects</a></li>
-                        <li><a href="#publications">publications</a></li>
-                        <li><a href="#contact">contact</a></li>
+                        <li><a href="#cv">cv</a></li> 
+                        <li><a href="#projects-section">projects</a></li> 
+                        <li><a href="#publications">publications</a></li> 
+                        <li><a href="#contact">contact</a></li> 
                     </ul>
                 </nav>
             </header>
@@ -28,11 +29,11 @@
             <!-- About me Section -->
             <section id="about" class="appear">
                 <div class="about-content move appear">
-                    <h1>Hi, I'm <br> <span style="color:rgb(141, 169, 196)">Louis Wellmeyer</span></h1>
+                    <h1>Louis Wellmeyer</h1>
                     <p> A computer science student from Germany. I'm particularly interested in Software Architectures and Embedded Systems.</p>
-                </div>
-                <div class="about-image">
-                    <img src="assets/images/Me-nobg.png" alt="😎" class="zoomable">
+                    <a href="#contact" class="contact-btn zoomable">
+                        Contact Me <i class="fa-solid fa-arrow-right"></i></i>
+                    </a>
                 </div>
             </section>
 
@@ -80,11 +81,11 @@
                     <h1> Projects </h1>
                     <p> Explore most of these and more projects on my GitHub page! </p>
                     <a href="https://github.com/Wellbek" target="_blank" rel="noopener noreferrer">
-                        <div class="pulse">
+                        <div class="pulse" id ="githubBtn">
                             <span style=" --i:0;"></span>
                             <span style=" --i:1;"></span>
                             <span style=" --i:2;"></span>
-                            <img src = "assets/images/github-mark-white.svg" alt="GitHub"/>
+                            <i class="fa-brands fa-github"></i>
                         </div>
                     </a>
                 </div>
@@ -193,6 +194,17 @@
                             <a href="https://github.com/Wellbek/customphysics" target="_blank" rel="noopener noreferrer">Visit Game GitHub</a>
                         </div>
                     </div>
+
+                    <div class="project-entry" data-tags="c:backend c:frontend c:website l:html l:css l:javascript">
+                        <div class="project-image">
+                            <img src="assets/images/portfolio-website-thumbnail.PNG" alt="Portfolio Website" class="zoomable">
+                        </div>
+                        <div class="project-text">
+                            <h2>Portfolio Website (THIS)</h2>
+                            <p> My personal portfolio website</p>
+                            <a href="https://github.com/Wellbek/wellbek.github.io" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
+                        </div>
+                    </div>
                 </div>
                 <div id="overlay"></div>
             </section>
@@ -200,7 +212,7 @@
                 <span style=" --i:0;"></span>
                 <span style=" --i:1;"></span>
                 <span style=" --i:2;"></span>
-                <img src = "" alt=""/>
+                <i class="fa-solid fa-arrow-down"></i>
             </div>
 
             <!-- Publications Section -->
@@ -228,17 +240,19 @@
                 <div class="footer-top">
                     <h3 id="name">Contact me.</h3>
                     <ul class="social-links">
-                        <li><a href="https://twitter.com/wyzLWell333" target="_blank">Twitter</a></li>
-                        <li><a href="https://www.linkedin.com/in/louiswellmeyer" target="_blank">LinkedIn</a></li>
-                        <li><a href="https://github.com/wellbek" target="_blank">GitHub</a></li>
+                        <!-- <li><a href="https://twitter.com/hubertjhustle" target="_blank">Twitter</a></li> -->
+                        <li><i class="fas fa-phone"></i> +49 15730942746 </li>
+                        <li><a href="https://www.linkedin.com/in/louiswellmeyer" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="https://github.com/wellbek" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a></li>
                     </ul>
                 </div>
                 <div class="email-form">
                     <form id="email-form">
-                        <p> Or, preferably shoot me a mail!</p>
+                        <p> Or, preferably shoot me a mail! </p>
+                        <p> <i class="fa-solid fa-envelope"></i> wellmeyer.louis@gmail.com</p>
                         <input type="email" id="email" placeholder="Your email" required>
                         <textarea id="message" placeholder="Your message" required></textarea>
-                        <button type="submit">Send Email</button>
+                        <button type="submit" onclick="sendMail()">Send Email</button>
                     </form>
                 </div>
                 <hr>
@@ -248,10 +262,9 @@
             </footer>
 
             <!-- Custom Cursor -->
-            <div class="cursor"></div>
+            <!-- <div class="cursor contrast"></div> -->
             
             <!-- JavaScript -->
             <script src="js/main.js"></script>
         </body>
-
 </html>
