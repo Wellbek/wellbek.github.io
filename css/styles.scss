@@ -29,7 +29,6 @@ Palette
 (238, 244, 237) -> --background-color
 */
 
-
 html *
 {
    color: black;
@@ -37,8 +36,17 @@ html *
    z-index: 10;
 }
 
-html, body {
-    overflow-x: hidden; // prevent accidental sideways scrolling
+#projects, .cv, .publications {
+    max-width: 1200px;  
+    margin: 0 auto;     /* Center content */
+    padding: 0 20px;    /* Optional padding to add spacing on smaller screens */
+    text-align: left;   /* Ensures text aligns left within the centered container */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; // prevent accidental horizontal overflow (scrolling)
 }
 
 .move.appear {
