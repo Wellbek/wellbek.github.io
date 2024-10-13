@@ -169,7 +169,7 @@ function updateDropdowns() {
     // Update dropdowns
     updateDropdown('category-filter', counts.categories, 'Categories');
     updateDropdown('language-filter', counts.languages, 'Languages');
-    updateDropdown('framework-filter', counts.frameworks, 'Frameworks');
+    updateDropdown('framework-filter', counts.frameworks, 'Frameworks//Tools');
 }
 
 function updateDropdown(selectId, counts, filterName) {
