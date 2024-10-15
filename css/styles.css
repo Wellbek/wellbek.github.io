@@ -262,10 +262,9 @@ section {
 
 .banner {
   background-color: var(--primary-color);
-  height: 20vh;
   max-width: 100%;
-  display: flex;
   text-align: center;
+  height: 230px;
 }
 
 .banner div {
@@ -294,7 +293,7 @@ section {
   background-color: var(--primary-color);
   border: 3px solid var(--background-color);
   border-radius: 50%;
-  transition: transform 0.1s ease-out; /* Add a smooth transition effect */
+  transition: transform 0.1s ease-out;
 }
 
 .pulse img {
@@ -314,7 +313,7 @@ section {
 
 .pulse:hover span {
   opacity: 0.8;
-  animation: pulseAnimate 3s ease-out infinite; /* Enable animation on hover */
+  animation: pulseAnimate 3s ease-out infinite;
   animation-delay: calc(1s * var(--i));
 }
 
@@ -443,6 +442,7 @@ option {
   left: 0;
   background-image: linear-gradient(to top, var(--background-color), rgba(255, 255, 255, 0));
   z-index: 11;
+  pointer-events: none; /* Make click-through to prevent covering project links */
 }
 
 #githubBtn {
@@ -455,7 +455,7 @@ option {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 52px;
+  font-size: 45px;
   color: var(--primary-color);
 }
 
