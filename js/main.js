@@ -262,6 +262,20 @@ function sendMail() {
     window.location.href = `mailto:wellmeyer.louis@gmail.com?subject=Message from ${email}&body=${encodeURIComponent(message)}`;
 }
 
+document.querySelectorAll('.project-entry').forEach(entry => {
+    const tagsString = entry.getAttribute('data-tags');
+    const tagsContainer = entry.querySelector('.tech-tags');
+  
+    if (tagsString && tagsContainer) {
+      const tags = tagsString.split(' ');
+      tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.textContent = tag.substring(2).charAt(0).toUpperCase() + tag.substring(2).slice(1);
+        tagsContainer.appendChild(span);
+      });
+    }
+  });  
+
 window.addEventListener('scroll', appear);
 
 window.onload = function() {
