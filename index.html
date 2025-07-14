@@ -1,378 +1,460 @@
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
 
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Louis' Portfolio</title>
-            <link rel="stylesheet" href="css/styles.css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        </head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louis' Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
 
-        <body>
-            <!-- Header -->
-            <header id="header">
-                <nav class="navbar">
-                    <div class="logo">
-                        <a href="#">Louis.</a> 
-                    </div>
-                    <ul class="nav-links">
-                        <li><a href="#about">about</a></li>
-                        <li><a href="#cv">cv</a></li> 
-                        <li><a href="#projects-section">projects</a></li> 
-                        <li><a href="#publications">publications</a></li> 
-                        <li><a href="#contact">contact</a></li> 
-                    </ul>
-                </nav>
-            </header>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#">Louis.</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about">about</a></li>
+                <li><a href="#cv">cv</a></li>
+                <li><a href="#projects-section">projects</a></li>
+                <li><a href="#publications">publications</a></li>
+                <li><a href="#contact">contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-            <!-- About me Section -->
-            <section id="about">
-                <div class="about-content">
-                    <h1>Louis Wellmeyer</h1>
-                    <p> A computer science student from Germany. I'm particularly interested in Software Architectures and Data Science.</p>
-                    <a href="#contact" class="contact-btn zoomable">
-                        Contact Me <i class="fa-solid fa-arrow-right"></i></i>
-                    </a>
+    <!-- About me Section -->
+    <section id="about">
+        <div class="about-content">
+            <h1>Louis Wellmeyer</h1>
+            <p> A computer science student from Germany. I'm particularly interested in Software Architectures and Data
+                Science.</p>
+            <a href="#contact" class="contact-btn zoomable">
+                Contact Me <i class="fa-solid fa-arrow-right"></i></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- CV Section -->
+    <section class="banner appear" id="cv">
+        <div style="width: 100%;">
+            <h1> Curriculum Vitae </h1>
+        </div>
+    </section>
+    <section class="cv">
+        <h2 class="move appear">Education</h2>
+        <div class="cv-entry move appear">
+            <span class="cv-date">10/2021 - today</span>
+            <span class="cv-description">
+                <div class="cv-title">B.Sc. in Computer Science, RWTH Aachen University</div>
+            </span>
+        </div>
+        <div class="cv-entry move appear">
+            <span class="cv-date">10/2019 - 03/2020</span>
+            <span class="cv-description">
+                <div class="cv-title">Intro to Programming Course, FH Münster</div>
+            </span>
+        </div>
+        <div class="cv-entry move appear">
+            <span class="cv-date">07/2013 - 07/2021</span>
+            <span class="cv-description">
+                <div class="cv-title">High School Diploma (Abitur), Goethe-Gymnasium Ibbenbüren</div>
+            </span>
+        </div>
+
+        <h2 class="move appear">Work Experience</h2>
+
+        <div class="cv-entry move appear">
+            <span class="cv-date">07/2025 - today</span>
+            <span class="cv-description">
+                <div class="cv-title">Technology Business Partner Intern, Green Climate Fund (GCF)</div>
+                <p>Bridging internal tech teams and cross-departmental stakeholders by supporting projects ranging from
+                    small AI applications to large-scale global climate initiatives.</p>
+                <p>Contributing to the digital transformation of an international climate finance organization.</p>
+                <div class="tech-tags">
+                    <span>Project Management</span>
+                    <span>Digital Transformation</span>
                 </div>
-            </section>
+            </span>
+        </div>
 
-            <!-- CV Section -->
-            <section class="banner appear" id="cv">
-                <div style="width: 100%;">
-                    <h1> Curriculum Vitae </h1>
+
+        <div class="cv-entry move appear">
+            <span class="cv-date">04/2025 - 05/2025</span>
+            <span class="cv-description">
+                <div class="cv-title">Fullstack Web Developer Intern, Teutoburger Ölmühle GmbH</div>
+                <p>Redesigned and rebuilt the company's internal intranet from scratch using Angular and FastAPI,
+                    replacing a legacy PHP multi-page application.</p>
+                <p>Integrated the system directly with Microsoft NAV databases and introduced Git-based version control
+                    with CI/CD for automated deployment.</p>
+                <div class="tech-tags">
+                    <span>Angular</span>
+                    <span>FastAPI</span>
+                    <span>TypeScript</span>
+                    <span>Python</span>
+                    <span>Microsoft NAV</span>
+                    <span>SQL</span>
+                    <span>Git</span>
+                    <span>CI/CD</span>
                 </div>
-            </section>
-            <section class="cv">
-                <h2 class="move appear">Education</h2>
-                <div class="cv-entry move appear">
-                    <span class="cv-date">10/2021 - today</span>
-                    <span class="cv-description">
-                        <div class="cv-title">Computer Science B. Sc., RWTH Aachen</div>
-                    </span>
+            </span>
+        </div>
+
+        <div class="cv-entry move appear">
+            <span class="cv-date">02/2025 - 05/2025</span>
+            <span class="cv-description">
+                <div class="cv-title">Research Assistant, Learning Technologies Group, RWTH Aachen</div>
+                <p>Designed and deployed containerized analytics engines and REST APIs to process and visualize
+                    large-scale student data from multiple German universities in real time.</p>
+                <p>Optimized the data pipeline using multiprocessing, resulting in up to 5× faster processing speeds.
+                </p>
+                <div class="tech-tags">
+                    <span>Python</span>
+                    <span>Flask</span>
+                    <span>Docker</span>
+                    <span>REST</span>
+                    <span>MongoDB</span>
+                    <span>Git</span>
+                    <span>Data Engineering</span>
                 </div>
-                <div class="cv-entry move appear">
-                    <span class="cv-date">10/2019 - 03/2020</span>
-                    <span class="cv-description">
-                        <div class="cv-title">"Introduction to Programming" course, FH Münster</div>
-                    </span>
+            </span>
+        </div>
+
+        <div class="cv-entry move appear">
+            <span class="cv-date">10/2024 - 04/2025</span>
+            <span class="cv-description">
+                <div class="cv-title">Teaching Assistant, RWTH Aachen University</div>
+                <p>Taught weekly Python programming classes to over 40 students in the “Introduction to Programming for
+                    Data-Driven Sciences” course.</p>
+                <p>Created practice exercises, guided students through computational thinking, and gave personalized
+                    feedback to improve understanding and engagement.</p>
+                <div class="tech-tags">
+                    <span>Python</span>
+                    <span>Pandas</span>
+                    <span>Teaching</span>
+                    <span>Data Analysis</span>
+                    <span>Mentorship</span>
                 </div>
-                <div class="cv-entry move appear">
-                    <span class="cv-date">07/2013 - 07/2021</span>
-                    <span class="cv-description">
-                        <div class="cv-title">High School Diploma (Abitur), Goethe-Gymnasium Ibbenbüren</div>
-                    </span>
+            </span>
+        </div>
+
+        <div class="cv-entry move appear">
+            <span class="cv-date">07/2019 - 07/2021</span>
+            <span class="cv-description">
+                <div class="cv-title">Robotics Instructor, Goethe-Gymnasium Ibbenbüren</div>
+                <p>Led weekly robotics workshops for up to 20 students, teaching engineering and programming using LEGO
+                    MINDSTORMS EV3 kits.</p>
+                <p>Helped organize regional and national robotics competitions involving schools across Germany.</p>
+                <div class="tech-tags">
+                    <span>LEGO EV3</span>
+                    <span>Robotics</span>
+                    <span>Mentoring</span>
+                    <span>Education</span>
                 </div>
+            </span>
+        </div>
 
-                <h2 class="move appear">Work Experience</h2>
-                <div class="cv-entry move appear">
-                    <span class="cv-date">04/2025 - today</span>
-                    <span class="cv-description">
-                      <div class="cv-title">Internship at Teutoburger Ölmühle GmbH</div>
-                      <p>Redevelopment of the company intranet from scratch using Angular and FastAPI, replacing legacy PHP MPA system. Integration directly with the Microsoft NAV database.</p>
-                      <div class="tech-tags">
-                        <span>Angular</span>
-                        <span>FastAPI</span>
-                        <span>Python</span>
-                        <span>TypeScript</span>
-                        <span>CSS</span>
-                        <span>Microsoft NAV</span>
-                        <span>SQL</span>
-                      </div>
-                    </span>
-                  </div>
-                  
-                <div class="cv-entry move appear">
-                    <span class="cv-date">02/2025 - today</span>
-                    <span class="cv-description">
-                        <div class="cv-title">Student Assistant at the Learning Technologies Research Group at RWTH Aachen. </div>
-                        <p> Optimization and developement of analytic engines in Python to process and analyze student data. </p>
-                        <div class="tech-tags">
-                            <span>Python</span>
-                            <span>Docker</span>
-                            <span>Git</span>
-                            <span>MongoDB</span>
-                          </div>
-                    </span>
+        <h2 class="move appear">Honors and Awards</h2>
+        <div class="cv-entry move appear">
+            <span class="cv-date">01/2025</span>
+            <span class="cv-description">
+                <div class="cv-title">7# place at RWTH Game Jam 2025</div>
+            </span>
+        </div>
+        <div class="cv-entry move appear">
+            <span class="cv-date">07/2024</span>
+            <span class="cv-description">
+                <div class="cv-title">2# place at RWTH Game Jam 2024</div>
+            </span>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="banner appear" id="projects-section">
+        <div class="appear" style="width: 100%;">
+            <h1> Projects </h1>
+            <p> Explore most of these and more projects on my GitHub page! </p>
+            <a href="https://github.com/Wellbek" target="_blank" rel="noopener noreferrer">
+                <div class="pulse" id="githubBtn">
+                    <span style=" --i:0;"></span>
+                    <span style=" --i:1;"></span>
+                    <span style=" --i:2;"></span>
+                    <i class="fa-brands fa-github"></i>
                 </div>
-                <div class="cv-entry move appear">
-                    <span class="cv-date">10/2024 - 03/2025</span>
-                    <span class="cv-description">
-                        <div class="cv-title">Tutor for "Introduction into Programming for data-driven Sciences" course at RWTH Aachen</div>
-                        <p>Led weekly tutoring sessions for up to 40 students.</p>
-                        <p>Developed Python exercises, guided students through core programming concepts, and provided detailed feedback on assignments.</p>
-                    </span>
-                    <div class="tech-tags">
-                        <span>Python</span>
-                        <span>Pandas</span>
-                      </div>
+            </a>
+        </div>
+    </section>
+    <section class="appear" id="projects">
+        <div id="projects-filter">
+            <!-- Categories Dropdown -->
+            <select id="category-filter" onchange="filterDivs(this.value)">
+                <!-- Dynamically added -->
+            </select>
+
+            <!-- Programming Languages Dropdown -->
+            <select id="language-filter" onchange="filterDivs(this.value)">
+                <!-- Dynamically added -->
+            </select>
+
+            <!-- Frameworks Dropdown -->
+            <select id="framework-filter" onchange="filterDivs(this.value)">
+                <!-- Dynamically added -->
+            </select>
+        </div>
+
+        <div id="projects-container">
+            <div class="project-entry"
+                data-tags="c:frontend c:backend c:website c:api l:java l:typescript f:springboot f:angular">
+                <div class="project-image">
+                    <img src="assets/images/ba_ui.png" alt="Speech Function Caller UI" class="zoomable">
                 </div>
-                <div class="cv-entry move appear">
-                    <span class="cv-date">07/2019 - 07/2021</span>
-                    <span class="cv-description">
-                        <div class="cv-title">Teacher in the Roboting Club Goethe-Gymnasium Ibbenbüren</div>
-                        <p>Supervised and taught up to 20 students the fundamentals of robot development with LEGO MINDSTORMS EV3.</p>
-                    </span>
+                <div class="project-text">
+                    <h2>Speech Function Caller</h2>
+                    <p>Modular framework for hands-free voice control of web applications.</p>
+                    <p>Using Azure Whisper and GPT Function Calling to turn spoken commands into executable browser
+                        actions.</p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/SpeechFunctionCaller" target="_blank"
+                        rel="noopener noreferrer">Visit GitHub</a>
                 </div>
-
-                <h2 class="move appear">Honors and Awards</h2>
-                <div class="cv-entry move appear">
-                    <span class="cv-date">07/2024</span>
-                    <span class="cv-description"> 
-                        <div class="cv-title">2# place at RWTH Game Jam 2024</div>
-                    </span>
-                </div>
-            </section>
-
-            <!-- Projects -->
-            <section class="banner appear" id="projects-section">
-                <div class="appear" style="width: 100%;">
-                    <h1> Projects </h1>
-                    <p> Explore most of these and more projects on my GitHub page! </p>
-                    <a href="https://github.com/Wellbek" target="_blank" rel="noopener noreferrer">
-                        <div class="pulse" id ="githubBtn">
-                            <span style=" --i:0;"></span>
-                            <span style=" --i:1;"></span>
-                            <span style=" --i:2;"></span>
-                            <i class="fa-brands fa-github"></i>
-                        </div>
-                    </a>
-                </div>
-            </section>
-            <section class="appear" id="projects">
-                <div id="projects-filter">
-                    <!-- Categories Dropdown -->
-                    <select id="category-filter" onchange="filterDivs(this.value)">
-                        <!-- Dynamically added -->
-                    </select>
-
-                    <!-- Programming Languages Dropdown -->
-                    <select id="language-filter" onchange="filterDivs(this.value)">
-                        <!-- Dynamically added -->
-                    </select>
-                
-                    <!-- Frameworks Dropdown -->
-                    <select id="framework-filter" onchange="filterDivs(this.value)">
-                        <!-- Dynamically added -->
-                    </select>
-                </div>
-                
-                <div id="projects-container">
-                    <div class="project-entry" data-tags="c:frontend c:backend c:website c:api l:java l:typescript f:springboot f:angular">
-                        <div class="project-image">
-                            <img src="assets/images/ba_ui.png" alt="Speech Function Caller UI" class="zoomable">
-                        </div>
-                        <div class="project-text">
-                            <h2>Speech Function Caller</h2>
-                            <p>Modular framework for hands-free voice control of web applications.</p>
-                            <p>Using Azure Whisper and GPT Function Calling to turn spoken commands into executable browser actions.</p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/SpeechFunctionCaller" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry" data-tags="c:frontend c:api l:dart f:flutter">
-                        <div class="project-image">
-                            <video class="video-loop" autoplay muted loop>
-                                <source src="assets/videos/weather-app-showcase.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <img src="assets/images/weather-app-thumbnail.png" alt="Weather App" class="video_on_hover">
-                        </div>
-                        <div class="project-text">
-                            <h2>Weather App</h2>
-                            <p>A simple multiplatfrom weather application created using Flutter and Dart and using API from OpenWeatherMap.</p>
-                            <p>The app offers real-time weather updates, a 24-hour weather graph, and a 3-day forecast, along with light/dark mode, location search, saved locations, and live tracking.</p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/WeatherApp" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry" data-tags="c:backend c:frontend c:website l:html l:css l:javascript">
-                        <div class="project-image">
-                            <img src="assets/images/portfolio-website-thumbnail.PNG" alt="Portfolio Website" class="zoomable">
-                        </div>
-                        <div class="project-text">
-                            <h2>Portfolio Website (THIS)</h2>
-                            <p> My personal portfolio website</p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/wellbek.github.io" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry"  data-tags="c:embedded l:c">
-                        <div class="project-image">
-                            <video class="video-loop" autoplay muted loop>
-                                <source src="assets/videos/psp-showcase.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <img src="assets/images/psp-thumbnail.PNG" alt="ATmega644 datasheet" class="video_on_hover">
-                        </div>
-                        <div class="project-text">
-                            <h2>System Programming Lab</h2>
-                            <p>Compulsory university lab course</p>
-                            <p>Created a basic operating system in C for a simple microcontroller, including signal processing, interrupt handling, resource and memory management, process scheduling, and interfacing with external devices.</p>
-                            <p>To conclude the course, snake was implemented on our own operating system.</p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/PSP" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry"  data-tags="c:gamedev l:gdscript l:c++ f:godot">
-                        <div class="project-image">
-                            <video class="video-loop" autoplay muted loop>
-                                <source src="assets/videos/game-physics-showcase.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <img src="assets/images/game-physics-thumbnail.PNG" alt="Game Physics Lab" class="video_on_hover">
-                        </div>
-                        <div class="project-text">
-                            <h2>Game Physics Lab</h2>
-                            <p> Elective university lab course</p>
-                            <p> In a team of 3 created a custom physics engine for Godot 4.2.1, including collision detection, collision handling, and different type of joints. </p>
-                            <p> To conclude the course, a 3D tower defense game was developed utilizing our own phyics engine. </p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/customphysics" target="_blank" rel="noopener noreferrer">Visit Physics Engine GitHub</a>
-                            <a href="https://github.com/Wellbek/customphysics" target="_blank" rel="noopener noreferrer">Visit Game GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry"  data-tags="c:gamedev l:gdscript f:godot">
-                        <div class="project-image">
-                            <img src="assets/images/watt-thumbnail.png" alt="Watt's The Matter!" class="zoomable">
-                        </div>
-                        <div class="project-text">
-                            <h2>Watt's The Matter!</h2>
-                            <p> Part of the 48 Hours RWTH Aachen Summer Game Jam 2024</p>
-                            <p> Topic: "Running out of Power"</p>
-                            <p> Placed #2 in a Team of 4 </p>
-                            <div class="tech-tags"></div>
-                            <a href="https://fekex.itch.io/watts-the-matter" target="_blank" rel="noopener noreferrer">Visit Itch.io</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry"  data-tags="c:gamedev c:api l:gdscript f:godot">
-                        <div class="project-image">
-                            <img src="assets/images/tft-thumbnail.jpg" alt="Teamfight Tactics" class="zoomable">
-                        </div>
-                        <div class="project-text">
-                            <h2>Teafight Tactics</h2>
-                            <p>My own version of RIOT's Teamfight Tactics made in Godot4.2.1 and using Steamworks API for a lobby system and multiplayer functionalities.</p>
-                            <p>Turn-based multiplayer strategy game where players assemble a team of units and battle against each others. Each player must strategically position their units and deploy specific combinations and synergies to outsmart and overpower their opponents.</p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/Teafight-Tactics" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry" data-tags="c:hacking l:c++">
-                        <div class="project-image">
-                            <img src="assets/images/knifechanger-thumbnail.png" alt="CSGO Skinchanger" class="zoomable">
-                        </div>
-                        <div class="project-text">
-                            <h2>Counter Strike Skinchanger</h2>
-                            <p>Console based external CSGO Skin- and Knifechanger made in C++.</p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/WellSkinz" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry" data-tags="c:gamedev l:c# f:unity">
-                        <div class="project-image">
-                            <video class="video-loop" autoplay muted loop>
-                                <source src="assets/videos/simplistickart-timerace-showcase.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <img src="assets/images/simplistickart-thumbnail.png" alt="Game Physics Lab" class="video_on_hover">
-                        </div>
-                        <div class="project-text">
-                            <h2>Simplistic Kart</h2>
-                            <p>Mario Kart-Inspired Racing Game developed in Unity during school break (2020).</p>
-                            <p>Includes time race and 4-player local split-screen modes with drifting, boosting, and item boxes.</p>
-                            <p>Designed for controller gameplay.</p>
-                            <div class="tech-tags"></div>
-                            <a href="https://github.com/Wellbek/SimplisticKart" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
-                        </div>
-                    </div>
-
-                    <div class="project-entry"  data-tags="c:gamedev l:gdscript f:godot">
-                        <div class="project-image">
-                            <img src="assets/images/fleetingfields-thumbnail.png" alt="Fleeting Fields" class="zoomable">
-                        </div>
-                        <div class="project-text">
-                            <h2>Fleeting Fields</h2>
-                            <p> Part of the 48 Hours RWTH Aachen Winter Game Jam 2025</p>
-                            <p> Topic: "Nothing is Permanent"</p>
-                            <p> Placed #7 in a Team of 5 </p>
-                            <div class="tech-tags"></div>
-                            <a href="https://fekex.itch.io/fleeting-fields" target="_blank" rel="noopener noreferrer">Visit Itch.io</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="overlay"></div>
-            </section>
-            <div class="pulse move appear" id="moreProjectsBtn">
-                <span style=" --i:0;"></span>
-                <span style=" --i:1;"></span>
-                <span style=" --i:2;"></span>
-                <i class="fa-solid fa-arrow-down"></i>
             </div>
 
-            <!-- Publications Section -->
-            <section class="banner appear" id="publications">
-                <div style="width: 100%;">
-                    <h1> Publications </h1>
-                    <p> My publications (descendent by time) </p>
+            <div class="project-entry" data-tags="c:frontend c:api l:dart f:flutter">
+                <div class="project-image">
+                    <video class="video-loop" autoplay muted loop>
+                        <source src="assets/videos/weather-app-showcase.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <img src="assets/images/weather-app-thumbnail.png" alt="Weather App" class="video_on_hover">
                 </div>
-            </section>
-            <section class="publications">
-                <div class="publication-entry move appear">
-                    <div class="publication-authors">Louis Wellmeyer</div>
-                    <a href="assets/publications/Enabling_Voice_Input_for_Data_Entry_through_LLMs_in_MontiGem.pdf" class="publication-link" target="_blank">Enabling Voice Input for Data Entry through LLMs in MontiGem</a>
-                    <div class="publication-context">Bachelor Thesis, Chair of Software Engineering at RWTH Aachen, Wintersemester 2024/25</div>
+                <div class="project-text">
+                    <h2>Weather App</h2>
+                    <p>A simple multiplatfrom weather application created using Flutter and Dart and using API from
+                        OpenWeatherMap.</p>
+                    <p>The app offers real-time weather updates, a 24-hour weather graph, and a 3-day forecast, along
+                        with light/dark mode, location search, saved locations, and live tracking.</p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/WeatherApp" target="_blank" rel="noopener noreferrer">Visit
+                        GitHub</a>
                 </div>
-                <div class="publication-entry move appear">
-                    <div class="publication-authors">Louis Wellmeyer</div>
-                    <a href="assets/publications/Pursuing_Ideal_Regression_Testing_for_HPC_A_Comparative_Framework_Analysis.pdf" class="publication-link" target="_blank">Pursuing Ideal Regression Testing for HPC: A Comparative Framework Analysis</a>
-                    <div class="publication-context">Seminar Course, Chair for High Performance Computing at RWTH Aachen, Wintersemester 2023/24</div>
-                </div>
-                <div class="publication-entry move appear">
-                    <div class="publication-authors">Louis Wellmeyer</div>
-                    <a href="assets/publications/Simulating_Stiffness_of_Virtual_Objects_with_Haptic_Jamming_Devices_An_Overview.pdf" class="publication-link" target="_blank">Simulating Stiffness of Virtual Objects with Haptic Jamming Devices: An Overview</a>
-                    <div class="publication-context">Seminar Course, Virtual Reality & Immersive Visualization Group at RWTH Aachen, 2022</div>
-                </div>
-            </section>
+            </div>
 
-            <!-- Footer -->
-            <footer id="contact">
-                <div class="footer-top">
-                    <h3 id="name">Contact me.</h3>
-                    <ul class="social-links">
-                        <!-- <li><a href="https://twitter.com/hubertjhustle" target="_blank">Twitter</a></li> -->
-                        <li><i class="fas fa-phone"></i> +49 15730942746 </li>
-                        <li><a href="https://www.linkedin.com/in/louiswellmeyer" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
-                        <li><a href="https://github.com/wellbek" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a></li>
-                    </ul>
+            <div class="project-entry" data-tags="c:backend c:frontend c:website l:html l:css l:javascript">
+                <div class="project-image">
+                    <img src="assets/images/portfolio-website-thumbnail.PNG" alt="Portfolio Website" class="zoomable">
                 </div>
-                <div class="email-form">
-                    <form id="email-form">
-                        <p> Or, preferably shoot me a mail! </p>
-                        <p> <i class="fa-solid fa-envelope"></i> wellmeyer.louis@gmail.com</p>
-                        <input type="email" id="email" placeholder="Your email" required>
-                        <textarea id="message" placeholder="Your message" required></textarea>
-                        <button type="submit" onclick="sendMail()">Send Email</button>
-                    </form>
+                <div class="project-text">
+                    <h2>Portfolio Website (THIS)</h2>
+                    <p> My personal portfolio website</p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/wellbek.github.io" target="_blank"
+                        rel="noopener noreferrer">Visit GitHub</a>
                 </div>
-                <hr>
-                <div class="copyright">
-                    <p>&copy; 2025 Louis Wellmeyer. All rights reserved.</p>
-                </div>
-            </footer>
+            </div>
 
-            <!-- Custom Cursor -->
-            <!-- <div class="cursor contrast"></div> -->
-            
-            <!-- JavaScript -->
-            <script src="js/main.js"></script>
-        </body>
+            <div class="project-entry" data-tags="c:embedded l:c">
+                <div class="project-image">
+                    <video class="video-loop" autoplay muted loop>
+                        <source src="assets/videos/psp-showcase.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <img src="assets/images/psp-thumbnail.PNG" alt="ATmega644 datasheet" class="video_on_hover">
+                </div>
+                <div class="project-text">
+                    <h2>System Programming Lab</h2>
+                    <p>Compulsory university lab course</p>
+                    <p>Created a basic operating system in C for a simple microcontroller, including signal processing,
+                        interrupt handling, resource and memory management, process scheduling, and interfacing with
+                        external devices.</p>
+                    <p>To conclude the course, snake was implemented on our own operating system.</p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/PSP" target="_blank" rel="noopener noreferrer">Visit GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-entry" data-tags="c:gamedev l:gdscript l:c++ f:godot">
+                <div class="project-image">
+                    <video class="video-loop" autoplay muted loop>
+                        <source src="assets/videos/game-physics-showcase.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <img src="assets/images/game-physics-thumbnail.PNG" alt="Game Physics Lab" class="video_on_hover">
+                </div>
+                <div class="project-text">
+                    <h2>Game Physics Lab</h2>
+                    <p> Elective university lab course</p>
+                    <p> In a team of 3 created a custom physics engine for Godot 4.2.1, including collision detection,
+                        collision handling, and different type of joints. </p>
+                    <p> To conclude the course, a 3D tower defense game was developed utilizing our own phyics engine.
+                    </p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/customphysics" target="_blank" rel="noopener noreferrer">Visit
+                        Physics Engine GitHub</a>
+                    <a href="https://github.com/Wellbek/customphysics" target="_blank" rel="noopener noreferrer">Visit
+                        Game GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-entry" data-tags="c:gamedev l:gdscript f:godot">
+                <div class="project-image">
+                    <img src="assets/images/watt-thumbnail.png" alt="Watt's The Matter!" class="zoomable">
+                </div>
+                <div class="project-text">
+                    <h2>Watt's The Matter!</h2>
+                    <p> Part of the 48 Hours RWTH Aachen Summer Game Jam 2024</p>
+                    <p> Topic: "Running out of Power"</p>
+                    <p> Placed #2 in a Team of 4 </p>
+                    <div class="tech-tags"></div>
+                    <a href="https://fekex.itch.io/watts-the-matter" target="_blank" rel="noopener noreferrer">Visit
+                        Itch.io</a>
+                </div>
+            </div>
+
+            <div class="project-entry" data-tags="c:gamedev c:api l:gdscript f:godot">
+                <div class="project-image">
+                    <img src="assets/images/tft-thumbnail.jpg" alt="Teamfight Tactics" class="zoomable">
+                </div>
+                <div class="project-text">
+                    <h2>Teafight Tactics</h2>
+                    <p>My own version of RIOT's Teamfight Tactics made in Godot4.2.1 and using Steamworks API for a
+                        lobby system and multiplayer functionalities.</p>
+                    <p>Turn-based multiplayer strategy game where players assemble a team of units and battle against
+                        each others. Each player must strategically position their units and deploy specific
+                        combinations and synergies to outsmart and overpower their opponents.</p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/Teafight-Tactics" target="_blank"
+                        rel="noopener noreferrer">Visit GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-entry" data-tags="c:hacking l:c++">
+                <div class="project-image">
+                    <img src="assets/images/knifechanger-thumbnail.png" alt="CSGO Skinchanger" class="zoomable">
+                </div>
+                <div class="project-text">
+                    <h2>Counter Strike Skinchanger</h2>
+                    <p>Console based external CSGO Skin- and Knifechanger made in C++.</p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/WellSkinz" target="_blank" rel="noopener noreferrer">Visit
+                        GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-entry" data-tags="c:gamedev l:c# f:unity">
+                <div class="project-image">
+                    <video class="video-loop" autoplay muted loop>
+                        <source src="assets/videos/simplistickart-timerace-showcase.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <img src="assets/images/simplistickart-thumbnail.png" alt="Game Physics Lab" class="video_on_hover">
+                </div>
+                <div class="project-text">
+                    <h2>Simplistic Kart</h2>
+                    <p>Mario Kart-Inspired Racing Game developed in Unity during school break (2020).</p>
+                    <p>Includes time race and 4-player local split-screen modes with drifting, boosting, and item boxes.
+                    </p>
+                    <p>Designed for controller gameplay.</p>
+                    <div class="tech-tags"></div>
+                    <a href="https://github.com/Wellbek/SimplisticKart" target="_blank" rel="noopener noreferrer">Visit
+                        GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-entry" data-tags="c:gamedev l:gdscript f:godot">
+                <div class="project-image">
+                    <img src="assets/images/fleetingfields-thumbnail.png" alt="Fleeting Fields" class="zoomable">
+                </div>
+                <div class="project-text">
+                    <h2>Fleeting Fields</h2>
+                    <p> Part of the 48 Hours RWTH Aachen Winter Game Jam 2025</p>
+                    <p> Topic: "Nothing is Permanent"</p>
+                    <p> Placed #7 in a Team of 5 </p>
+                    <div class="tech-tags"></div>
+                    <a href="https://fekex.itch.io/fleeting-fields" target="_blank" rel="noopener noreferrer">Visit
+                        Itch.io</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="overlay"></div>
+    </section>
+    <div class="pulse move appear" id="moreProjectsBtn">
+        <span style=" --i:0;"></span>
+        <span style=" --i:1;"></span>
+        <span style=" --i:2;"></span>
+        <i class="fa-solid fa-arrow-down"></i>
+    </div>
+
+    <!-- Publications Section -->
+    <section class="banner appear" id="publications">
+        <div style="width: 100%;">
+            <h1> Publications </h1>
+            <p> My publications (descendent by time) </p>
+        </div>
+    </section>
+    <section class="publications">
+        <div class="publication-entry move appear">
+            <div class="publication-authors">Louis Wellmeyer</div>
+            <a href="assets/publications/Enabling_Voice_Input_for_Data_Entry_through_LLMs_in_MontiGem.pdf"
+                class="publication-link" target="_blank">Enabling Voice Input for Data Entry through LLMs in
+                MontiGem</a>
+            <div class="publication-context">Bachelor Thesis, Chair of Software Engineering at RWTH Aachen,
+                Wintersemester 2024/25</div>
+        </div>
+        <div class="publication-entry move appear">
+            <div class="publication-authors">Louis Wellmeyer</div>
+            <a href="assets/publications/Pursuing_Ideal_Regression_Testing_for_HPC_A_Comparative_Framework_Analysis.pdf"
+                class="publication-link" target="_blank">Pursuing Ideal Regression Testing for HPC: A Comparative
+                Framework Analysis</a>
+            <div class="publication-context">Seminar Course, Chair for High Performance Computing at RWTH Aachen,
+                Wintersemester 2023/24</div>
+        </div>
+        <div class="publication-entry move appear">
+            <div class="publication-authors">Louis Wellmeyer</div>
+            <a href="assets/publications/Simulating_Stiffness_of_Virtual_Objects_with_Haptic_Jamming_Devices_An_Overview.pdf"
+                class="publication-link" target="_blank">Simulating Stiffness of Virtual Objects with Haptic Jamming
+                Devices: An Overview</a>
+            <div class="publication-context">Seminar Course, Virtual Reality & Immersive Visualization Group at RWTH
+                Aachen, 2022</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-top">
+            <h3 id="name">Contact me.</h3>
+            <ul class="social-links">
+                <!-- <li><a href="https://twitter.com/hubertjhustle" target="_blank">Twitter</a></li> -->
+                <li><i class="fas fa-phone"></i> +49 15730942746 </li>
+                <li><a href="https://www.linkedin.com/in/louiswellmeyer" target="_blank"><i
+                            class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
+                <li><a href="https://github.com/wellbek" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                </li>
+            </ul>
+        </div>
+        <div class="email-form">
+            <form id="email-form">
+                <p> Or, preferably shoot me a mail! </p>
+                <p> <i class="fa-solid fa-envelope"></i> wellmeyer.louis@gmail.com</p>
+                <input type="email" id="email" placeholder="Your email" required>
+                <textarea id="message" placeholder="Your message" required></textarea>
+                <button type="submit" onclick="sendMail()">Send Email</button>
+            </form>
+        </div>
+        <hr>
+        <div class="copyright">
+            <p>&copy; 2025 Louis Wellmeyer. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom Cursor -->
+    <!-- <div class="cursor contrast"></div> -->
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+
 </html>
