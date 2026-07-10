@@ -1092,10 +1092,14 @@ img {
     overflow: auto;
     height: auto;
   }
+  #dragon-canvas {
+    display: none;
+  }
   .deck {
     flex-direction: column;
     height: auto;
-    padding-top: var(--header-h);
+    padding: var(--header-h) 14px 0;
+    gap: 12px;
     overflow-x: visible;
     overflow-y: visible;
     scroll-snap-type: none;
@@ -1108,9 +1112,9 @@ img {
     width: 100%;
     height: auto;
     overflow-y: visible;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    padding: 18px 20px 30px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 16px 28px;
     scroll-snap-align: none;
   }
   .col::-webkit-scrollbar {
@@ -1120,6 +1124,17 @@ img {
     position: relative;
     top: 0;
     margin: 0 0 14px;
+  }
+  .profile__photo {
+    max-width: 110px;
+  }
+  .contact-me {
+    width: 100%;
+    justify-content: center;
+  }
+  .chip {
+    width: 100%;
+    justify-content: center;
   }
 }
 @media (max-width: 720px) {
@@ -1143,6 +1158,16 @@ img {
     border-bottom: 1px solid var(--line);
     padding: 12px 22px;
     gap: 14px;
+  }
+  .deck {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .col {
+    padding: 14px 14px 24px;
+  }
+  .profile__name {
+    font-size: 30px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

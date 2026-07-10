@@ -37,7 +37,6 @@
       this.spine = [];
       for (let i = 0; i < this.segCount; i++) this.spine.push({ x: -200 - i * this.segLen, y: 0 });
       this.trail = [];           // history of head positions for stable rope
-      this.framesPerSeg = 3;     // recompute after resize relative to speed
 
       // head + cursor target
       this.head = { x: -220, y: 0 };
@@ -71,15 +70,17 @@
       };
     }
 
-    // place the dragon so it is already (partly) on screen, body trailing left
+    // place the dragon so it is already on screen, body trailing left at full length
     seed() {
       const sx = this.mouse.has ? this.mouse.x : this.W * 0.4;
       const sy = this.mouse.has ? this.mouse.y : this.H * 0.5;
       this.head.x = sx; this.head.y = sy;
-      this.framesPerSeg = Math.max(2, Math.round(this.segLen / 2));
+      this.t = 0;
+      // prefill a straight trail (leftward) long enough for the full body length
       this.trail = [];
-      const need = this.segCount * this.framesPerSeg + 4;
-      for (let i = 0; i < need; i++) this.trail.push({ x: sx - i * 2, y: sy });
+      const step = this.segLen / 2;
+      const need = Math.ceil((this.segCount * this.segLen) / step) + 4;
+      for (let i = 0; i < need; i++) this.trail.push({ x: sx - i * step, y: sy });
       for (let i = 0; i < this.segCount; i++) { this.spine[i].x = sx - i * this.segLen; this.spine[i].y = sy; }
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
@@ -135,19 +136,50 @@
       this.head.x += dx * ease;
       this.head.y += dy * ease;
 
-      // record head into trail (capped)
+      // record head into trail (capped by count)
       this.trail.push({ x: this.head.x, y: this.head.y });
-      const maxTrail = this.segCount * this.framesPerSeg + 4;
+      const maxTrail = 220;
       if (this.trail.length > maxTrail) this.trail.shift();
 
-      // --- spine: sample the head's own trail (stable rope), serpentine wiggle ---
-      const last = this.trail.length - 1;
+      // --- spine: walk the trail at FIXED spatial intervals so the body length
+      //     is constant (independent of how fast the cursor moved) ---
+      this.spine[0].x = this.head.x;
+      this.spine[0].y = this.head.y;
+      let segIdx = 1;
+      let ti = this.trail.length - 1;
+      let px = this.trail[ti].x, py = this.trail[ti].y;
+      let acc = 0;
+      for (let i = ti - 1; i >= 0 && segIdx < this.segCount; i--) {
+        const nx = this.trail[i].x, ny = this.trail[i].y;
+        let dx = px - nx, dy = py - ny;
+        let segDist = Math.hypot(dx, dy) || 0.0001;
+        while (acc + segDist >= this.segLen && segIdx < this.segCount) {
+          const f = (this.segLen - acc) / segDist;
+          const cx = px - dx * f, cy = py - dy * f;
+          this.spine[segIdx].x = cx;
+          this.spine[segIdx].y = cy;
+          segIdx++;
+          px = cx; py = cy;
+          dx = px - nx; dy = py - ny;
+          segDist = Math.hypot(dx, dy) || 0.0001;
+          acc = 0;
+        }
+        acc += segDist;
+        px = nx; py = ny;
+      }
+      // if the trail ran out, extend the remaining segments straight back so the
+      // body still has full length
+      while (segIdx < this.segCount) {
+        const prev = this.spine[segIdx - 1];
+        const back = this.spine[segIdx - 2] || prev;
+        const ang = Math.atan2(prev.y - back.y, prev.x - back.x);
+        this.spine[segIdx].x = prev.x + Math.cos(ang) * this.segLen;
+        this.spine[segIdx].y = prev.y + Math.sin(ang) * this.segLen;
+        segIdx++;
+      }
+      // serpentine wiggle
       for (let i = 0; i < this.segCount; i++) {
-        const idx = last - i * this.framesPerSeg;
-        const p = idx >= 0 ? this.trail[idx] : this.trail[0];
-        const wig = Math.sin(this.t * 0.07 - i * 0.5) * 8;
-        this.spine[i].x = p.x;
-        this.spine[i].y = p.y + wig;
+        this.spine[i].y += Math.sin(this.t * 0.07 - i * 0.5) * 8;
       }
 
       // --- legs: stepping IK, longer legs plant below the hip and step when dragged ---
@@ -229,8 +261,10 @@
     }
   }
 
+  // skip the dragon on touch / small screens (no cursor to follow, saves battery)
+  const isMobile = window.matchMedia('(pointer: coarse), (max-width: 980px)').matches;
   const dragonCanvas = $('#dragon-canvas');
-  if (dragonCanvas && !reduceMotion) {
+  if (dragonCanvas && !reduceMotion && !isMobile) {
     window.addEventListener('load', () => new DragonEngine(dragonCanvas));
   }
 
