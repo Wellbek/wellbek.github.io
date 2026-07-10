@@ -37,20 +37,16 @@
       this.spine = [];
       for (let i = 0; i < this.segCount; i++) this.spine.push({ x: -200 - i * this.segLen, y: 0 });
       this.trail = [];           // history of head positions for stable rope
+      this.framesPerSeg = 3;     // recompute after resize relative to speed
 
       // head + cursor target
       this.head = { x: -220, y: 0 };
       this.mouse = { x: 0, y: 0, has: false };
 
-      // spider-ish legs: 8 long legs along the body, alternating sides
-      const legIdx = [3, 6, 9, 12, 15, 18, 21, 24];
-      this.legs = legIdx.map((si, i) => {
-        const leg = this.makeLeg(si);
-        leg.side = (i % 2 === 0) ? -1 : 1;
-        leg.phase = i * 0.9;
-        return leg;
-      });
-      this.reach = 74; this.legL = 58;
+      // legs: pairs along the spine (index into spine), stepping IK
+      this.legs = [this.makeLeg(3), this.makeLeg(5), this.makeLeg(18), this.makeLeg(20)];
+      this.legs[0].phase = 0; this.legs[1].phase = Math.PI;
+      this.legs[2].phase = Math.PI; this.legs[3].phase = 0;
 
       this.resize();
       this.seed();
@@ -69,45 +65,27 @@
     onPointer(x, y) { this.mouse.x = x; this.mouse.y = y; this.mouse.has = true; }
 
     makeLeg(spineIdx) {
-      return { spineIdx, foot: { x: 0, y: 0 }, phase: 0, side: 1 };
+      return {
+        spineIdx, foot: { x: 0, y: 0 }, target: { x: 0, y: 0 },
+        phase: 0, stepping: false, stepT: 0, stride: 54, reach: 96,
+      };
     }
 
-    // 2-bone IK: knee position for hip(a)->foot(c) with thigh/shin l1/l2,
-    // bulging toward (bdx,bdy) so the bend follows the walk direction.
-    ikKnee(ax, ay, cx, cy, l1, l2, bdx, bdy) {
-      let dx = cx - ax, dy = cy - ay;
-      let d = Math.hypot(dx, dy);
-      const maxd = l1 + l2 - 0.5, mind = Math.abs(l1 - l2) + 0.5;
-      if (d > maxd) { const s = maxd / (d || 1); dx *= s; dy *= s; d = maxd; }
-      else if (d < mind) { const s = mind / (d || 1); dx *= s; dy *= s; d = mind; }
-      const ux = dx / d, uy = dy / d;
-      const cosA = (l1 * l1 + d * d - l2 * l2) / (2 * l1 * d);
-      const A = Math.acos(Math.max(-1, Math.min(1, cosA)));
-      const base = Math.atan2(uy, ux);
-      const k1x = ax + Math.cos(base + A) * l1, k1y = ay + Math.sin(base + A) * l1;
-      const k2x = ax + Math.cos(base - A) * l1, k2y = ay + Math.sin(base - A) * l1;
-      const mx = (ax + cx) / 2, my = (ay + cy) / 2;
-      const s1 = (k1x - mx) * bdx + (k1y - my) * bdy;
-      const s2 = (k2x - mx) * bdx + (k2y - my) * bdy;
-      return s1 >= s2 ? { x: k1x, y: k1y } : { x: k2x, y: k2y };
-    }
-
-    // place the dragon so it is already on screen, body trailing left at full length
+    // place the dragon so it is already (partly) on screen, body trailing left
     seed() {
       const sx = this.mouse.has ? this.mouse.x : this.W * 0.4;
       const sy = this.mouse.has ? this.mouse.y : this.H * 0.5;
       this.head.x = sx; this.head.y = sy;
-      this.t = 0;
-      // prefill a straight trail (leftward) long enough for the full body length
+      this.framesPerSeg = Math.max(2, Math.round(this.segLen / 2));
       this.trail = [];
-      const step = this.segLen / 2;
-      const need = Math.ceil((this.segCount * this.segLen) / step) + 4;
-      for (let i = 0; i < need; i++) this.trail.push({ x: sx - i * step, y: sy });
+      const need = this.segCount * this.framesPerSeg + 4;
+      for (let i = 0; i < need; i++) this.trail.push({ x: sx - i * 2, y: sy });
       for (let i = 0; i < this.segCount; i++) { this.spine[i].x = sx - i * this.segLen; this.spine[i].y = sy; }
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        leg.foot.x = hip.x; leg.foot.y = hip.y + leg.side * this.reach;
-        leg.knee = this.ikKnee(hip.x, hip.y, leg.foot.x, leg.foot.y, this.legL, this.legL, 1, 0);
+        leg.foot.x = hip.x; leg.foot.y = hip.y + leg.reach;
+        leg.knee = { x: (hip.x + leg.foot.x) / 2, y: (hip.y + leg.foot.y) / 2 + 10 };
+        leg.stepping = false; leg.stepT = 0;
       }
     }
 
@@ -157,70 +135,45 @@
       this.head.x += dx * ease;
       this.head.y += dy * ease;
 
-      // record head into trail (capped by count)
+      // record head into trail (capped)
       this.trail.push({ x: this.head.x, y: this.head.y });
-      const maxTrail = 220;
+      const maxTrail = this.segCount * this.framesPerSeg + 4;
       if (this.trail.length > maxTrail) this.trail.shift();
 
-      // --- spine: walk the trail at FIXED spatial intervals so the body length
-      //     is constant (independent of how fast the cursor moved) ---
-      this.spine[0].x = this.head.x;
-      this.spine[0].y = this.head.y;
-      let segIdx = 1;
-      let ti = this.trail.length - 1;
-      let px = this.trail[ti].x, py = this.trail[ti].y;
-      let acc = 0;
-      for (let i = ti - 1; i >= 0 && segIdx < this.segCount; i--) {
-        const nx = this.trail[i].x, ny = this.trail[i].y;
-        let dx = px - nx, dy = py - ny;
-        let segDist = Math.hypot(dx, dy) || 0.0001;
-        while (acc + segDist >= this.segLen && segIdx < this.segCount) {
-          const f = (this.segLen - acc) / segDist;
-          const cx = px - dx * f, cy = py - dy * f;
-          this.spine[segIdx].x = cx;
-          this.spine[segIdx].y = cy;
-          segIdx++;
-          px = cx; py = cy;
-          dx = px - nx; dy = py - ny;
-          segDist = Math.hypot(dx, dy) || 0.0001;
-          acc = 0;
-        }
-        acc += segDist;
-        px = nx; py = ny;
-      }
-      // if the trail ran out, extend the remaining segments straight back so the
-      // body still has full length
-      while (segIdx < this.segCount) {
-        const prev = this.spine[segIdx - 1];
-        const back = this.spine[segIdx - 2] || prev;
-        const ang = Math.atan2(prev.y - back.y, prev.x - back.x);
-        this.spine[segIdx].x = prev.x + Math.cos(ang) * this.segLen;
-        this.spine[segIdx].y = prev.y + Math.sin(ang) * this.segLen;
-        segIdx++;
-      }
-      // serpentine wiggle
+      // --- spine: sample the head's own trail (stable rope), serpentine wiggle ---
+      const last = this.trail.length - 1;
       for (let i = 0; i < this.segCount; i++) {
-        this.spine[i].y += Math.sin(this.t * 0.07 - i * 0.5) * 8;
+        const idx = last - i * this.framesPerSeg;
+        const p = idx >= 0 ? this.trail[idx] : this.trail[0];
+        const wig = Math.sin(this.t * 0.07 - i * 0.5) * 8;
+        this.spine[i].x = p.x;
+        this.spine[i].y = p.y + wig;
       }
 
-      // --- legs: spider-ish, bend/sway procedurally over time (no walking gait) ---
-      const t = this.t, reach = this.reach, L = this.legL;
+      // --- legs: stepping IK, longer legs plant below the hip and step when dragged ---
+      const headVX = this.trail.length > 1 ? this.trail[this.trail.length - 1].x - this.trail[Math.max(0, this.trail.length - 4)].x : 0;
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        // body tangent + perpendicular normal at this hip
-        const a = this.spine[Math.max(0, leg.spineIdx - 1)];
-        const b = this.spine[Math.min(this.segCount - 1, leg.spineIdx + 1)];
-        let tx = b.x - a.x, ty = b.y - a.y;
-        const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
-        const nx = -ty * leg.side, ny = tx * leg.side;
-        // foot target sways over time: reach breathes in/out, foot drifts fore/aft,
-        // each leg phase-shifted so the legs living-undulate like a spider
-        const out = reach + Math.sin(t * 0.08 + leg.phase) * 9;
-        const along = Math.sin(t * 0.07 + leg.phase * 1.3) * 20;
-        leg.foot.x = hip.x + nx * out + tx * along;
-        leg.foot.y = hip.y + ny * out + ty * along;
-        // bent knee via 2-bone IK, bulging forward along the body
-        leg.knee = this.ikKnee(hip.x, hip.y, leg.foot.x, leg.foot.y, L, L, tx, ty);
+        const desiredFootX = hip.x - 6;
+        const desiredFootY = hip.y + leg.reach;
+        const distToPlanted = Math.hypot(leg.foot.x - desiredFootX, leg.foot.y - desiredFootY);
+
+        if (!leg.stepping && distToPlanted > leg.stride) {
+          leg.stepping = true; leg.stepT = 0;
+          leg.startFoot = { x: leg.foot.x, y: leg.foot.y };
+          leg.target = { x: desiredFootX + Math.max(-16, Math.min(16, headVX * 2)), y: desiredFootY };
+        }
+        if (leg.stepping) {
+          leg.stepT += 0.1;
+          const k = Math.min(leg.stepT, 1);
+          const e = k * k * (3 - 2 * k);
+          leg.foot.x = leg.startFoot.x + (leg.target.x - leg.startFoot.x) * e;
+          leg.foot.y = leg.startFoot.y + (leg.target.y - leg.startFoot.y) * e - Math.sin(k * Math.PI) * 30;
+          if (k >= 1) leg.stepping = false;
+        }
+        const kneeX = (hip.x + leg.foot.x) / 2 + (leg.spineIdx < this.segCount / 2 ? 10 : -10);
+        const kneeY = (hip.y + leg.foot.y) / 2 + 12;
+        leg.knee = { x: kneeX, y: kneeY };
       }
     }
 
@@ -240,8 +193,8 @@
       }
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        bones.push({ a: hip, b: leg.knee, r: 7 });
-        bones.push({ a: leg.knee, b: leg.foot, r: 6 });
+        bones.push({ a: hip, b: leg.knee, r: 6 });
+        bones.push({ a: leg.knee, b: leg.foot, r: 5 });
       }
 
       const cell = this.cell, half = cell / 2;
