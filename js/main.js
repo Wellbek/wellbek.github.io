@@ -46,6 +46,9 @@
       this.legs = [this.makeLeg(3), this.makeLeg(5), this.makeLeg(18), this.makeLeg(20)];
       this.legs[0].phase = 0; this.legs[1].phase = Math.PI;
       this.legs[2].phase = Math.PI; this.legs[3].phase = 0;
+      // top-down: legs splay to both sides of the body (alternating)
+      this.legs[0].side = -1; this.legs[1].side = 1;
+      this.legs[2].side = -1; this.legs[3].side = 1;
 
       this.resize();
       this.seed();
@@ -66,7 +69,7 @@
     makeLeg(spineIdx) {
       return {
         spineIdx, foot: { x: 0, y: 0 }, target: { x: 0, y: 0 },
-        phase: 0, stepping: false, stepT: 0, stride: 54, reach: 96,
+        phase: 0, stepping: false, stepT: 0, stride: 54, reach: 88, side: 1,
       };
     }
 
@@ -84,8 +87,8 @@
       for (let i = 0; i < this.segCount; i++) { this.spine[i].x = sx - i * this.segLen; this.spine[i].y = sy; }
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        leg.foot.x = hip.x; leg.foot.y = hip.y + leg.reach;
-        leg.knee = { x: (hip.x + leg.foot.x) / 2, y: (hip.y + leg.foot.y) / 2 + 10 };
+        leg.foot.x = hip.x; leg.foot.y = hip.y + leg.side * leg.reach;
+        leg.knee = { x: hip.x, y: (hip.y + leg.foot.y) / 2 + leg.side * 6 };
         leg.stepping = false; leg.stepT = 0;
       }
     }
@@ -182,29 +185,42 @@
         this.spine[i].y += Math.sin(this.t * 0.07 - i * 0.5) * 8;
       }
 
-      // --- legs: stepping IK, longer legs plant below the hip and step when dragged ---
+      // --- legs: top-down, splaying perpendicular to the body on BOTH sides ---
       const headVX = this.trail.length > 1 ? this.trail[this.trail.length - 1].x - this.trail[Math.max(0, this.trail.length - 4)].x : 0;
+      const fwd = Math.max(-1, Math.min(1, headVX / 24));
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        const desiredFootX = hip.x - 6;
-        const desiredFootY = hip.y + leg.reach;
+        // body tangent + perpendicular normal at this hip
+        const a = this.spine[Math.max(0, leg.spineIdx - 1)];
+        const b = this.spine[Math.min(this.segCount - 1, leg.spineIdx + 1)];
+        let tx = b.x - a.x, ty = b.y - a.y;
+        const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+        const nx = -ty * leg.side, ny = tx * leg.side;
+        // foot plants perpendicular to the body, nudged back along the tangent
+        const desiredFootX = hip.x - tx * 8 + nx * leg.reach;
+        const desiredFootY = hip.y - ty * 8 + ny * leg.reach;
         const distToPlanted = Math.hypot(leg.foot.x - desiredFootX, leg.foot.y - desiredFootY);
 
         if (!leg.stepping && distToPlanted > leg.stride) {
           leg.stepping = true; leg.stepT = 0;
           leg.startFoot = { x: leg.foot.x, y: leg.foot.y };
-          leg.target = { x: desiredFootX + Math.max(-16, Math.min(16, headVX * 2)), y: desiredFootY };
+          // step forward along the body in the direction of travel
+          const step = 10 + fwd * 16;
+          leg.target = { x: desiredFootX + tx * step, y: desiredFootY + ty * step };
         }
         if (leg.stepping) {
           leg.stepT += 0.1;
           const k = Math.min(leg.stepT, 1);
           const e = k * k * (3 - 2 * k);
-          leg.foot.x = leg.startFoot.x + (leg.target.x - leg.startFoot.x) * e;
-          leg.foot.y = leg.startFoot.y + (leg.target.y - leg.startFoot.y) * e - Math.sin(k * Math.PI) * 30;
+          // ease toward the target, with a small outward lift mid-step
+          const lift = Math.sin(k * Math.PI) * 10;
+          leg.foot.x = leg.startFoot.x + (leg.target.x - leg.startFoot.x) * e + nx * lift;
+          leg.foot.y = leg.startFoot.y + (leg.target.y - leg.startFoot.y) * e + ny * lift;
           if (k >= 1) leg.stepping = false;
         }
-        const kneeX = (hip.x + leg.foot.x) / 2 + (leg.spineIdx < this.segCount / 2 ? 10 : -10);
-        const kneeY = (hip.y + leg.foot.y) / 2 + 12;
+        // knee sits between hip and foot, pushed outward along the normal
+        const kneeX = (hip.x + leg.foot.x) / 2 + nx * 7;
+        const kneeY = (hip.y + leg.foot.y) / 2 + ny * 7;
         leg.knee = { x: kneeX, y: kneeY };
       }
     }
