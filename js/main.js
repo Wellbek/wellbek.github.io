@@ -49,6 +49,10 @@
       // top-down: legs splay to both sides of the body (alternating)
       this.legs[0].side = -1; this.legs[1].side = 1;
       this.legs[2].side = -1; this.legs[3].side = 1;
+      // feet spread along the body (front forward, back aft) for a walking stance
+      this.legs[0].stance = 24; this.legs[1].stance = 10;
+      this.legs[2].stance = -10; this.legs[3].stance = -24;
+      this.reachSide = 42; this.legL = 34;
 
       this.resize();
       this.seed();
@@ -69,8 +73,28 @@
     makeLeg(spineIdx) {
       return {
         spineIdx, foot: { x: 0, y: 0 }, target: { x: 0, y: 0 },
-        phase: 0, stepping: false, stepT: 0, stride: 54, reach: 88, side: 1,
+        phase: 0, stepping: false, stepT: 0, stride: 44, side: 1, stance: 0,
       };
+    }
+
+    // 2-bone IK: knee position for hip(a)->foot(c) with thigh/shin l1/l2,
+    // bulging toward (bdx,bdy) so the bend follows the walk direction.
+    ikKnee(ax, ay, cx, cy, l1, l2, bdx, bdy) {
+      let dx = cx - ax, dy = cy - ay;
+      let d = Math.hypot(dx, dy);
+      const maxd = l1 + l2 - 0.5, mind = Math.abs(l1 - l2) + 0.5;
+      if (d > maxd) { const s = maxd / (d || 1); dx *= s; dy *= s; d = maxd; }
+      else if (d < mind) { const s = mind / (d || 1); dx *= s; dy *= s; d = mind; }
+      const ux = dx / d, uy = dy / d;
+      const cosA = (l1 * l1 + d * d - l2 * l2) / (2 * l1 * d);
+      const A = Math.acos(Math.max(-1, Math.min(1, cosA)));
+      const base = Math.atan2(uy, ux);
+      const k1x = ax + Math.cos(base + A) * l1, k1y = ay + Math.sin(base + A) * l1;
+      const k2x = ax + Math.cos(base - A) * l1, k2y = ay + Math.sin(base - A) * l1;
+      const mx = (ax + cx) / 2, my = (ay + cy) / 2;
+      const s1 = (k1x - mx) * bdx + (k1y - my) * bdy;
+      const s2 = (k2x - mx) * bdx + (k2y - my) * bdy;
+      return s1 >= s2 ? { x: k1x, y: k1y } : { x: k2x, y: k2y };
     }
 
     // place the dragon so it is already on screen, body trailing left at full length
@@ -87,8 +111,8 @@
       for (let i = 0; i < this.segCount; i++) { this.spine[i].x = sx - i * this.segLen; this.spine[i].y = sy; }
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        leg.foot.x = hip.x; leg.foot.y = hip.y + leg.side * leg.reach;
-        leg.knee = { x: hip.x, y: (hip.y + leg.foot.y) / 2 + leg.side * 6 };
+        leg.foot.x = hip.x + leg.stance; leg.foot.y = hip.y + leg.side * this.reachSide;
+        leg.knee = this.ikKnee(hip.x, hip.y, leg.foot.x, leg.foot.y, this.legL, this.legL, 1, 0);
         leg.stepping = false; leg.stepT = 0;
       }
     }
@@ -185,9 +209,10 @@
         this.spine[i].y += Math.sin(this.t * 0.07 - i * 0.5) * 8;
       }
 
-      // --- legs: top-down, splaying perpendicular to the body on BOTH sides ---
+      // --- legs: top-down, bent via 2-bone IK, feet placed along the walk direction ---
       const headVX = this.trail.length > 1 ? this.trail[this.trail.length - 1].x - this.trail[Math.max(0, this.trail.length - 4)].x : 0;
       const fwd = Math.max(-1, Math.min(1, headVX / 24));
+      const reachSide = this.reachSide, L = this.legL;
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
         // body tangent + perpendicular normal at this hip
@@ -196,32 +221,30 @@
         let tx = b.x - a.x, ty = b.y - a.y;
         const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
         const nx = -ty * leg.side, ny = tx * leg.side;
-        // foot plants perpendicular to the body, nudged back along the tangent
-        const desiredFootX = hip.x - tx * 8 + nx * leg.reach;
-        const desiredFootY = hip.y - ty * 8 + ny * leg.reach;
+        // desired foot: out to the side + stance offset along the body
+        const desiredFootX = hip.x + nx * reachSide + tx * leg.stance;
+        const desiredFootY = hip.y + ny * reachSide + ty * leg.stance;
         const distToPlanted = Math.hypot(leg.foot.x - desiredFootX, leg.foot.y - desiredFootY);
 
         if (!leg.stepping && distToPlanted > leg.stride) {
           leg.stepping = true; leg.stepT = 0;
           leg.startFoot = { x: leg.foot.x, y: leg.foot.y };
           // step forward along the body in the direction of travel
-          const step = 10 + fwd * 16;
+          const step = 14 + fwd * 18;
           leg.target = { x: desiredFootX + tx * step, y: desiredFootY + ty * step };
         }
         if (leg.stepping) {
           leg.stepT += 0.1;
           const k = Math.min(leg.stepT, 1);
           const e = k * k * (3 - 2 * k);
-          // ease toward the target, with a small outward lift mid-step
-          const lift = Math.sin(k * Math.PI) * 10;
-          leg.foot.x = leg.startFoot.x + (leg.target.x - leg.startFoot.x) * e + nx * lift;
-          leg.foot.y = leg.startFoot.y + (leg.target.y - leg.startFoot.y) * e + ny * lift;
+          // ease toward the target, lifting the foot inward mid-step
+          const lift = Math.sin(k * Math.PI) * 12;
+          leg.foot.x = leg.startFoot.x + (leg.target.x - leg.startFoot.x) * e - nx * lift;
+          leg.foot.y = leg.startFoot.y + (leg.target.y - leg.startFoot.y) * e - ny * lift;
           if (k >= 1) leg.stepping = false;
         }
-        // knee sits between hip and foot, pushed outward along the normal
-        const kneeX = (hip.x + leg.foot.x) / 2 + nx * 7;
-        const kneeY = (hip.y + leg.foot.y) / 2 + ny * 7;
-        leg.knee = { x: kneeX, y: kneeY };
+        // bent knee via 2-bone IK, bulging forward along the travel direction
+        leg.knee = this.ikKnee(hip.x, hip.y, leg.foot.x, leg.foot.y, L, L, tx, ty);
       }
     }
 
