@@ -42,17 +42,15 @@
       this.head = { x: -220, y: 0 };
       this.mouse = { x: 0, y: 0, has: false };
 
-      // legs: pairs along the spine (index into spine), stepping IK
-      this.legs = [this.makeLeg(3), this.makeLeg(5), this.makeLeg(18), this.makeLeg(20)];
-      this.legs[0].phase = 0; this.legs[1].phase = Math.PI;
-      this.legs[2].phase = Math.PI; this.legs[3].phase = 0;
-      // top-down: legs splay to both sides of the body (alternating)
-      this.legs[0].side = -1; this.legs[1].side = 1;
-      this.legs[2].side = -1; this.legs[3].side = 1;
-      // feet spread along the body (front forward, back aft) for a walking stance
-      this.legs[0].stance = 24; this.legs[1].stance = 10;
-      this.legs[2].stance = -10; this.legs[3].stance = -24;
-      this.reachSide = 42; this.legL = 34;
+      // spider-ish legs: 8 long legs along the body, alternating sides
+      const legIdx = [3, 6, 9, 12, 15, 18, 21, 24];
+      this.legs = legIdx.map((si, i) => {
+        const leg = this.makeLeg(si);
+        leg.side = (i % 2 === 0) ? -1 : 1;
+        leg.phase = i * 0.9;
+        return leg;
+      });
+      this.reach = 74; this.legL = 58;
 
       this.resize();
       this.seed();
@@ -71,10 +69,7 @@
     onPointer(x, y) { this.mouse.x = x; this.mouse.y = y; this.mouse.has = true; }
 
     makeLeg(spineIdx) {
-      return {
-        spineIdx, foot: { x: 0, y: 0 }, target: { x: 0, y: 0 },
-        phase: 0, stepping: false, stepT: 0, stride: 44, side: 1, stance: 0,
-      };
+      return { spineIdx, foot: { x: 0, y: 0 }, phase: 0, side: 1 };
     }
 
     // 2-bone IK: knee position for hip(a)->foot(c) with thigh/shin l1/l2,
@@ -111,9 +106,8 @@
       for (let i = 0; i < this.segCount; i++) { this.spine[i].x = sx - i * this.segLen; this.spine[i].y = sy; }
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        leg.foot.x = hip.x + leg.stance; leg.foot.y = hip.y + leg.side * this.reachSide;
+        leg.foot.x = hip.x; leg.foot.y = hip.y + leg.side * this.reach;
         leg.knee = this.ikKnee(hip.x, hip.y, leg.foot.x, leg.foot.y, this.legL, this.legL, 1, 0);
-        leg.stepping = false; leg.stepT = 0;
       }
     }
 
@@ -209,10 +203,8 @@
         this.spine[i].y += Math.sin(this.t * 0.07 - i * 0.5) * 8;
       }
 
-      // --- legs: top-down, bent via 2-bone IK, feet placed along the walk direction ---
-      const headVX = this.trail.length > 1 ? this.trail[this.trail.length - 1].x - this.trail[Math.max(0, this.trail.length - 4)].x : 0;
-      const fwd = Math.max(-1, Math.min(1, headVX / 24));
-      const reachSide = this.reachSide, L = this.legL;
+      // --- legs: spider-ish, bend/sway procedurally over time (no walking gait) ---
+      const t = this.t, reach = this.reach, L = this.legL;
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
         // body tangent + perpendicular normal at this hip
@@ -221,29 +213,13 @@
         let tx = b.x - a.x, ty = b.y - a.y;
         const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
         const nx = -ty * leg.side, ny = tx * leg.side;
-        // desired foot: out to the side + stance offset along the body
-        const desiredFootX = hip.x + nx * reachSide + tx * leg.stance;
-        const desiredFootY = hip.y + ny * reachSide + ty * leg.stance;
-        const distToPlanted = Math.hypot(leg.foot.x - desiredFootX, leg.foot.y - desiredFootY);
-
-        if (!leg.stepping && distToPlanted > leg.stride) {
-          leg.stepping = true; leg.stepT = 0;
-          leg.startFoot = { x: leg.foot.x, y: leg.foot.y };
-          // step forward along the body in the direction of travel
-          const step = 14 + fwd * 18;
-          leg.target = { x: desiredFootX + tx * step, y: desiredFootY + ty * step };
-        }
-        if (leg.stepping) {
-          leg.stepT += 0.1;
-          const k = Math.min(leg.stepT, 1);
-          const e = k * k * (3 - 2 * k);
-          // ease toward the target, lifting the foot inward mid-step
-          const lift = Math.sin(k * Math.PI) * 12;
-          leg.foot.x = leg.startFoot.x + (leg.target.x - leg.startFoot.x) * e - nx * lift;
-          leg.foot.y = leg.startFoot.y + (leg.target.y - leg.startFoot.y) * e - ny * lift;
-          if (k >= 1) leg.stepping = false;
-        }
-        // bent knee via 2-bone IK, bulging forward along the travel direction
+        // foot target sways over time: reach breathes in/out, foot drifts fore/aft,
+        // each leg phase-shifted so the legs living-undulate like a spider
+        const out = reach + Math.sin(t * 0.08 + leg.phase) * 9;
+        const along = Math.sin(t * 0.07 + leg.phase * 1.3) * 20;
+        leg.foot.x = hip.x + nx * out + tx * along;
+        leg.foot.y = hip.y + ny * out + ty * along;
+        // bent knee via 2-bone IK, bulging forward along the body
         leg.knee = this.ikKnee(hip.x, hip.y, leg.foot.x, leg.foot.y, L, L, tx, ty);
       }
     }
@@ -264,8 +240,8 @@
       }
       for (const leg of this.legs) {
         const hip = this.spine[leg.spineIdx];
-        bones.push({ a: hip, b: leg.knee, r: 6 });
-        bones.push({ a: leg.knee, b: leg.foot, r: 5 });
+        bones.push({ a: hip, b: leg.knee, r: 7 });
+        bones.push({ a: leg.knee, b: leg.foot, r: 6 });
       }
 
       const cell = this.cell, half = cell / 2;
