@@ -337,11 +337,18 @@ img {
   min-width: 0;
 }
 
-.profile__photo {
-  aspect-ratio: 1/1;
+.profile__photo.thumb {
+  aspect-ratio: auto !important;
   width: 100%;
   max-width: 140px;
-  margin-bottom: 12px;
+  margin: 0 auto 12px;
+}
+
+.profile__photo.thumb img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
 }
 
 .profile__name {
@@ -1125,7 +1132,7 @@ img {
     top: 0;
     margin: 0 0 14px;
   }
-  .profile__photo {
+  .profile__photo.thumb {
     max-width: 110px;
   }
   .contact-me {
