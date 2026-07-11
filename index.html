@@ -45,7 +45,7 @@
     </a>
     <nav class="nav" aria-label="Primary">
       <a href="#profile" class="nav__link">about</a>
-      <a href="#journey" class="nav__link">journey</a>
+      <a href="#journey" class="nav__link">experience</a>
       <a href="#research" class="nav__link">research</a>
       <a href="#projects" class="nav__link">projects</a>
       <a href="#certs" class="nav__link">certs</a>
@@ -160,32 +160,41 @@
       </div>
     </section>
 
-    <!-- ════ JOURNEY COLUMN (vertical timetable) ════ -->
+    <!-- ════ EXPERIENCE & EDUCATION COLUMN (chart / list) ════ -->
     <section class="col col--journey" id="journey">
       <div class="col__head">
         <span class="col__num mono">01</span>
-        <h2 class="col__title">journey</h2>
+        <h2 class="col__title">Experience<br>&amp; Education</h2>
       </div>
       <div class="col__body">
-        <div class="exp" data-js-hook="journey">
-          <div class="exp__axis mono" data-js-hook="journeyAxis" aria-hidden="true"></div>
-          <div class="exp__body">
-            <div class="exp__lanes" data-js-hook="journeyLanes"></div>
-            <div class="exp__freelance" data-js-hook="journeyFreelance">
-              <button class="exp__freelance-bar" data-id="freelance" aria-label="Freelance and side projects">
-                <span class="exp__freelance-text">Freelance &middot; Side Projects</span>
-              </button>
+        <div class="exp-tabs" data-js-hook="expTabs" role="tablist" aria-label="Experience view">
+          <button class="exp-tab is-active" data-view="chart" role="tab" aria-selected="true">chart</button>
+          <button class="exp-tab" data-view="list" role="tab" aria-selected="false">list</button>
+        </div>
+        <div class="exp-view" data-js-hook="expViewChart">
+          <div class="exp" data-js-hook="journey">
+            <div class="exp__axis mono" data-js-hook="journeyAxis" aria-hidden="true"></div>
+            <div class="exp__body">
+              <div class="exp__lanes" data-js-hook="journeyLanes"></div>
+              <div class="exp__freelance" data-js-hook="journeyFreelance">
+                <button class="exp__freelance-bar" data-id="freelance" aria-label="Freelance and side projects">
+                  <span class="exp__freelance-text">Freelance &middot; Side Projects</span>
+                </button>
+              </div>
+              <div class="exp__now mono" data-js-hook="journeyNow" aria-hidden="true"><span>now</span></div>
             </div>
-            <div class="exp__now mono" data-js-hook="journeyNow" aria-hidden="true"><span>now</span></div>
+          </div>
+          <p class="journey__hint mono">// click a block to expand details</p>
+          <div class="exp__legend mono" aria-hidden="true">
+            <span><i class="lg lg--edu"></i>Education</span>
+            <span><i class="lg lg--ibb"></i>Ibbenbüren</span>
+            <span><i class="lg lg--aachen"></i>Aachen</span>
+            <span><i class="lg lg--seoul"></i>Seoul</span>
+            <span><i class="lg lg--now"></i>now</span>
           </div>
         </div>
-        <p class="journey__hint mono">// click a block to expand details</p>
-        <div class="exp__legend mono" aria-hidden="true">
-          <span><i class="lg lg--edu"></i>Education</span>
-          <span><i class="lg lg--ibb"></i>Ibbenbüren</span>
-          <span><i class="lg lg--aachen"></i>Aachen</span>
-          <span><i class="lg lg--seoul"></i>Seoul</span>
-          <span><i class="lg lg--now"></i>now</span>
+        <div class="exp-view" data-js-hook="expViewList" hidden>
+          <div class="exp-list" data-js-hook="journeyList"></div>
         </div>
         <div class="detail" data-js-hook="journeyDetail" hidden>
           <button class="detail__close mono" data-js-hook="detailClose" aria-label="Close">[ esc ]</button>

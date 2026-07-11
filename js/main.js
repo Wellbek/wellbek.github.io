@@ -255,7 +255,7 @@
       tags: ['Robotics', 'Teaching', 'Leadership'],
     },
     {
-      id: 'bsc', kind: 'edu', label: 'B.Sc. Computer Science · RWTH',
+      id: 'bsc', kind: 'edu', label: 'B.Sc. Computer Science @ RWTH Aachen',
       start: dy(2021, 10), end: dy(2025, 9),
       role: 'B.Sc. Computer Science', company: 'RWTH Aachen University', location: 'Aachen, DE',
       period: 'Oct 2021 - Sep 2025',
@@ -278,7 +278,7 @@
       tags: ['Python', 'Pandas', 'Teaching', 'Data Science'],
     },
     {
-      id: 'ra', kind: 'work-cyan', label: 'Data Eng. RA · RWTH',
+      id: 'ra', kind: 'work-cyan', label: 'DE RA',
       start: dy(2025, 2), end: dy(2025, 5),
       role: 'Data Engineering Research Assistant', company: 'RWTH Aachen · Learning Technologies', location: 'Aachen, DE',
       period: 'Feb 2025 - May 2025',
@@ -313,21 +313,11 @@
         'Developed enterprise Finance and HR platforms (Next.js, TypeScript, PostgreSQL, Azure, SAML/SCIM), including a multi-year budgeting platform with approval workflows, SSO and DocuSign integration.',
       ],
       tags: ['Microsoft Fabric', 'NetCDF', 'NLP', 'Next.js', 'Azure', 'SAML/SCIM', 'DocuSign', 'Project Management'],
-      featured: true,
       // Add your images here:
       // images: ['assets/images/experience/gcf-1.png', 'assets/images/experience/gcf-2.png', 'assets/images/experience/gcf-3.png', 'assets/images/experience/gcf-4.png'],
     },
     {
-      id: 'hackseoul', kind: 'point', label: 'Hack Seoul 2025 win',
-      start: dy(2025, 5), end: dy(2025, 5),
-      role: '1st Place - Hack Seoul 2025', company: 'Coupang, Seoul', location: 'Seoul, KR',
-      period: 'May 2025',
-      bullets: ['Won "AI for Real-World Impact & Future Ventures" with GreenLenseAPI, an agentic AI microservice orchestra.'],
-      tags: ['Agentic AI', 'Microservices', 'Hackathon'],
-      image: 'assets/images/hackseoul2025.png',
-    },
-    {
-      id: 'kaist', kind: 'edu', label: 'M.S. Data Science · KAIST',
+      id: 'kaist', kind: 'edu', label: 'M.S. Data Science @ KAIST',
       start: dy(2026, 9), end: dy(2028, 8),
       role: 'M.S. Data Science', company: 'KAIST · Graduate School of Data Science', location: 'Seoul, KR',
       period: 'Sep 2026 - Aug 2028',
@@ -363,7 +353,7 @@
     return TRACK.edu;
   }
 
-  const SHORT = { gym: 'Robotics', bsc: 'B.Sc.', ta: 'DS TA', ra: 'DataEng RA', oelmuehle: 'Ölmühle', gcf: 'GCF', hackseoul: 'Hack Seoul', kaist: 'M.S.' };
+  const SHORT = { gym: 'Robotics', bsc: 'B.Sc. Computer Science @ RWTH Aachen', ta: 'DS TA', ra: 'DE RA', oelmuehle: 'Ölmühle', gcf: 'GCF', kaist: 'M.S. Data Science @ KAIST' };
 
   // Synthetic entry for the green freelance/side-projects rail.
   const FREELANCE_ENTRY = {
@@ -406,18 +396,28 @@
         if (assigned === -1) { lanes.push([item]); item.lane = lanes.length - 1; }
         else { item.lane = assigned; lanes[assigned].push(item); }
       });
-      // shrink each item to the width its overlap group needs
-      sorted.forEach((item) => {
-        const active = sorted.filter((o) => o !== item && (o.start < item.end && o.end > item.start));
-        const width = 100 / (active.length + 1);
-        [item, ...active].forEach((oi) => { if (oi.width === undefined || width < oi.width) oi.width = width; });
-      });
       return lanes;
     }
 
     const spans = JOURNEY.filter((e) => e.kind !== 'point');
     const lanes = calculateLanes(spans);
     const totalLanes = Math.max(lanes.length, 1);
+
+    // Peak concurrency per span: the most items running at the same instant
+    // at any point during this span (including itself). A span that never
+    // overlaps another peaks at 1 -> full width; 2 concurrent -> 50% each;
+    // 3 concurrent -> 33% each. Sampled at every span's start (the only
+    // points where concurrency can increase).
+    const startTimes = spans.map((s) => s.start);
+    const peakOf = (e) => {
+      let peak = 1;
+      for (const t of startTimes) {
+        if (t < e.start || t > e.end) continue;
+        const c = spans.filter((o) => o.start <= t && o.end > t).length;
+        if (c > peak) peak = c;
+      }
+      return peak;
+    };
 
     let html = '';
     spans.forEach((e) => {
@@ -431,8 +431,21 @@
       // grow toward the start boundary (upward) but never past the neighbor above.
       const h = Math.max(trueH, Math.min(3.0, trueH + Math.max(0, gapAbove)));
       const top = topS - h;
-      const left = (e.lane * (100 / totalLanes));
-      const width = e.width || (100 / totalLanes);
+      // Width follows peak concurrency: 1 -> 100%, 2 -> 50%, 3 -> 33%, ...
+      // Overlapping spans pack edge-to-edge by lane so neighbors nearly touch;
+      // a solitary span (peak 1) takes the full width since it shares time with
+      // nothing else.
+      const laneW = 100 / totalLanes;
+      const barGap = 1.4; // % gutter between side-by-side bars
+      const peak = peakOf(e);
+      let left, width;
+      if (peak > 1) {
+        left = e.lane * laneW + barGap / 2;
+        width = 100 / peak - barGap;
+      } else {
+        left = 0;
+        width = 100;
+      }
       const tr = trackOf(e);
       const star = e.featured ? '<span class="exp__bar-star" aria-hidden="true">&#9733;</span>' : '';
       html += `<button class="exp__bar exp__bar--${tr.cls}${e.featured ? ' is-featured' : ''}" data-id="${e.id}"`
@@ -517,6 +530,51 @@
       detail.hidden = true;
       $$('.exp__bar.is-active, .exp__freelance-bar.is-active').forEach((b) => b.classList.remove('is-active'));
     };
+
+    // ---- list view: work experience first, then education (each newest-first) ----
+    const listEl = $('[data-js-hook="journeyList"]');
+    if (listEl) {
+      const spans = [...JOURNEY].filter((e) => e.kind !== 'point');
+      const byStartDesc = (a, b) => b.start - a.start;
+      const work = spans.filter((e) => e.kind !== 'edu').sort(byStartDesc);
+      const edu = spans.filter((e) => e.kind === 'edu').sort(byStartDesc);
+      const itemHtml = (e) => {
+        const tr = trackOf(e);
+        return `<button class="exp-item exp-item--${tr.cls}" data-id="${e.id}">`
+          + `<span class="exp-item__period mono">${esc(e.period)}</span>`
+          + `<span class="exp-item__role">${esc(e.role)}</span>`
+          + `<span class="exp-item__co">${esc(e.company)} <span class="dim">·</span> ${esc(e.location)}</span>`
+          + `<span class="exp-item__tags mono">${e.tags.map((t) => esc(t)).join(' · ')}</span>`
+          + `</button>`;
+      };
+      const groupHtml = (label, items, isFirst) =>
+        `<div class="exp-list__group">`
+        + `<span class="exp-list__head mono${isFirst ? '' : ' exp-list__head--gap'}">${label}</span>`
+        + items.map(itemHtml).join('')
+        + `</div>`;
+      listEl.innerHTML = groupHtml('work experience', work, true) + groupHtml('education', edu, false);
+      $$('.exp-item', listEl).forEach((btn) => btn.addEventListener('click', () => open(btn.dataset.id)));
+    }
+
+    // ---- chart / list tab toggle ----
+    const tabsEl = $('[data-js-hook="expTabs"]');
+    const viewChart = $('[data-js-hook="expViewChart"]');
+    const viewList = $('[data-js-hook="expViewList"]');
+    if (tabsEl && viewChart && viewList) {
+      tabsEl.addEventListener('click', (ev) => {
+        const tab = ev.target.closest('.exp-tab');
+        if (!tab) return;
+        const view = tab.dataset.view;
+        $$('.exp-tab', tabsEl).forEach((t) => {
+          const on = t === tab;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', String(on));
+        });
+        viewChart.hidden = view !== 'chart';
+        viewList.hidden = view !== 'list';
+        if (detail && !detail.hidden) {} // keep detail open across switches
+      });
+    }
 
     $$('.exp__bar', lanesEl).forEach((bar) => bar.addEventListener('click', () => open(bar.dataset.id)));
     const fBar = $('.exp__freelance-bar', freelanceEl);
