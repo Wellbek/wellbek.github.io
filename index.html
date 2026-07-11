@@ -167,11 +167,26 @@
         <h2 class="col__title">journey</h2>
       </div>
       <div class="col__body">
-        <div class="journey" data-js-hook="journey">
-          <div class="journey__axis mono" data-js-hook="journeyAxis" aria-hidden="true"></div>
-          <div class="journey__lanes" data-js-hook="journeyLanes"></div>
+        <div class="exp" data-js-hook="journey">
+          <div class="exp__axis mono" data-js-hook="journeyAxis" aria-hidden="true"></div>
+          <div class="exp__body">
+            <div class="exp__lanes" data-js-hook="journeyLanes"></div>
+            <div class="exp__freelance" data-js-hook="journeyFreelance">
+              <button class="exp__freelance-bar" data-id="freelance" aria-label="Freelance and side projects">
+                <span class="exp__freelance-text">Freelance &middot; Side Projects</span>
+              </button>
+            </div>
+            <div class="exp__now mono" data-js-hook="journeyNow" aria-hidden="true"><span>now</span></div>
+          </div>
         </div>
         <p class="journey__hint mono">// click a block to expand details</p>
+        <div class="exp__legend mono" aria-hidden="true">
+          <span><i class="lg lg--edu"></i>Education</span>
+          <span><i class="lg lg--ibb"></i>Ibbenbüren</span>
+          <span><i class="lg lg--aachen"></i>Aachen</span>
+          <span><i class="lg lg--seoul"></i>Seoul</span>
+          <span><i class="lg lg--now"></i>now</span>
+        </div>
         <div class="detail" data-js-hook="journeyDetail" hidden>
           <button class="detail__close mono" data-js-hook="detailClose" aria-label="Close">[ esc ]</button>
           <div class="detail__inner" data-js-hook="detailInner"></div>

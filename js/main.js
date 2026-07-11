@@ -244,7 +244,7 @@
 
   const JOURNEY = [
     {
-      id: 'gym', lane: 0, kind: 'work-amber', label: 'Robotics President · Goethe-Gym.',
+      id: 'gym', kind: 'work-amber', label: 'Robotics President · Goethe-Gym.',
       start: dy(2019, 7), end: dy(2021, 7),
       role: 'Robotics Club President', company: 'Goethe-Gymnasium Ibbenbüren', location: 'Ibbenbüren, DE',
       period: 'Jul 2019 - Jul 2021',
@@ -255,7 +255,7 @@
       tags: ['Robotics', 'Teaching', 'Leadership'],
     },
     {
-      id: 'bsc', lane: 1, kind: 'edu', label: 'B.Sc. Computer Science · RWTH',
+      id: 'bsc', kind: 'edu', label: 'B.Sc. Computer Science · RWTH',
       start: dy(2021, 10), end: dy(2025, 9),
       role: 'B.Sc. Computer Science', company: 'RWTH Aachen University', location: 'Aachen, DE',
       period: 'Oct 2021 - Sep 2025',
@@ -266,7 +266,7 @@
       tags: ['CS', 'RWTH', 'ML', 'HCI'],
     },
     {
-      id: 'ta', lane: 2, kind: 'work-cyan', label: 'Data Science TA · RWTH',
+      id: 'ta', kind: 'work-cyan', label: 'Data Science TA · RWTH',
       start: dy(2024, 10), end: dy(2025, 4),
       role: 'Data Science Teaching Assistant', company: 'RWTH Aachen · Learning Technologies', location: 'Aachen, DE',
       period: 'Oct 2024 - Apr 2025',
@@ -278,7 +278,7 @@
       tags: ['Python', 'Pandas', 'Teaching', 'Data Science'],
     },
     {
-      id: 'ra', lane: 2, kind: 'work-cyan', label: 'Data Eng. RA · RWTH',
+      id: 'ra', kind: 'work-cyan', label: 'Data Eng. RA · RWTH',
       start: dy(2025, 2), end: dy(2025, 5),
       role: 'Data Engineering Research Assistant', company: 'RWTH Aachen · Learning Technologies', location: 'Aachen, DE',
       period: 'Feb 2025 - May 2025',
@@ -289,7 +289,7 @@
       tags: ['Python', 'Flask', 'Docker', 'REST', 'Multiprocessing'],
     },
     {
-      id: 'oelmuehle', lane: 3, kind: 'work-mag', label: 'Fullstack Dev · Ölmühle',
+      id: 'oelmuehle', kind: 'work-mag', label: 'Fullstack Dev · Ölmühle',
       start: dy(2025, 4), end: dy(2025, 5),
       role: 'Fullstack Developer', company: 'Teutoburger Ölmühle GmbH', location: 'Ibbenbüren, DE',
       period: 'Apr 2025 - May 2025',
@@ -301,7 +301,7 @@
       tags: ['Angular', 'FastAPI', 'MS NAV', 'CI/CD', 'GitHub Actions'],
     },
     {
-      id: 'gcf', lane: 3, kind: 'work-acid', label: 'Technical Business Partner · GCF',
+      id: 'gcf', kind: 'work-acid', label: 'Technical Business Partner · GCF',
       start: dy(2025, 7), end: dy(2026, 7),
       role: 'Technical Business Partner', company: 'Green Climate Fund (GCF) · under UNFCCC', location: 'Songdo, KR',
       period: 'Jul 2025 - Jul 2026',
@@ -314,9 +314,11 @@
       ],
       tags: ['Microsoft Fabric', 'NetCDF', 'NLP', 'Next.js', 'Azure', 'SAML/SCIM', 'DocuSign', 'Project Management'],
       featured: true,
+      // Add your images here:
+      // images: ['assets/images/experience/gcf-1.png', 'assets/images/experience/gcf-2.png', 'assets/images/experience/gcf-3.png', 'assets/images/experience/gcf-4.png'],
     },
     {
-      id: 'hackseoul', lane: 4, kind: 'point', label: 'Hack Seoul 2025 win',
+      id: 'hackseoul', kind: 'point', label: 'Hack Seoul 2025 win',
       start: dy(2025, 5), end: dy(2025, 5),
       role: '1st Place - Hack Seoul 2025', company: 'Coupang, Seoul', location: 'Seoul, KR',
       period: 'May 2025',
@@ -325,7 +327,7 @@
       image: 'assets/images/hackseoul2025.png',
     },
     {
-      id: 'kaist', lane: 4, kind: 'edu', label: 'M.S. Data Science · KAIST',
+      id: 'kaist', kind: 'edu', label: 'M.S. Data Science · KAIST',
       start: dy(2026, 9), end: dy(2028, 8),
       role: 'M.S. Data Science', company: 'KAIST · Graduate School of Data Science', location: 'Seoul, KR',
       period: 'Sep 2026 - Aug 2028',
@@ -334,87 +336,191 @@
     },
   ];
 
-  // timeline span: earliest start .. (latest end year + 1), so nothing is cut off
-  const RANGE_START = Math.floor(Math.min(...JOURNEY.map((e) => e.start)));
+  // timeline span: earliest start - 1 .. latest end + 1, with head/tail room.
+  const RANGE_START = Math.floor(Math.min(...JOURNEY.map((e) => e.start))) - 1;
   const RANGE_END = Math.floor(Math.max(...JOURNEY.map((e) => e.end))) + 1;
   const SPAN = RANGE_END - RANGE_START;
   const pct = (v) => ((v - RANGE_START) / SPAN) * 100;
 
+  // The green freelance/side-projects rail spans this whole range.
+  const FREELANCE_START = 2019;
+  const FREELANCE_END = 2027;
+
+  // Color track: education gets its own color; everything else is colored by
+  // location (Ibbenbueren / Aachen / Seoul), like MS Teams category colors.
+  const TRACK = {
+    edu:    { cls: 'edu',    label: 'Education' },
+    ibb:    { cls: 'ibb',    label: 'Ibbenbueren' },
+    aachen: { cls: 'aachen', label: 'Aachen' },
+    seoul:  { cls: 'seoul',  label: 'Seoul' },
+  };
+  function trackOf(e) {
+    if (e.kind === 'edu') return TRACK.edu;
+    const loc = (e.location || '').toLowerCase();
+    if (loc.includes('ibbenb')) return TRACK.ibb;
+    if (loc.includes('aachen')) return TRACK.aachen;
+    if (loc.includes('seoul') || loc.includes('songdo')) return TRACK.seoul;
+    return TRACK.edu;
+  }
+
+  const SHORT = { gym: 'Robotics', bsc: 'B.Sc.', ta: 'DS TA', ra: 'DataEng RA', oelmuehle: 'Ölmühle', gcf: 'GCF', hackseoul: 'Hack Seoul', kaist: 'M.S.' };
+
+  // Synthetic entry for the green freelance/side-projects rail.
+  const FREELANCE_ENTRY = {
+    id: 'freelance', role: 'Freelance & Side Projects',
+    company: 'Self-directed · alongside formal path', location: 'Remote / KR / DE',
+    period: '2019 - present',
+    bullets: [
+      'Alongside studies and full-time roles, I continuously take on freelance engagements and build side projects - from enterprise intranet rebuilds to hackathon-winning agentic AI services.',
+      'See the Side Projects column for a selection of shipped work.',
+    ],
+    tags: ['Freelance', 'Side Projects', 'Hackathons', 'Open Source'],
+  };
+
   function buildTimeline() {
     const lanesEl = $('[data-js-hook="journeyLanes"]');
     const axisEl = $('[data-js-hook="journeyAxis"]');
+    const freelanceEl = $('[data-js-hook="journeyFreelance"]');
+    const nowEl = $('[data-js-hook="journeyNow"]');
     if (!lanesEl || !axisEl) return;
+
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
     // vertical year axis (most recent at top, earliest at bottom)
     let axisHtml = '';
-    for (let y = RANGE_START; y <= RANGE_END; y++) axisHtml += `<span class="journey__year" style="top:${100 - pct(y)}%;">'${String(y).slice(2)}</span>`;
+    for (let y = RANGE_START; y <= RANGE_END; y++) {
+      axisHtml += `<span class="exp__year" style="top:${100 - pct(y)}%;">'${String(y).slice(2)}</span>`;
+    }
     axisEl.innerHTML = axisHtml;
 
-    const laneCount = 5;
-    const lanes = Array.from({ length: laneCount }, () => []);
-    JOURNEY.forEach((e) => { if (lanes[e.lane]) lanes[e.lane].push(e); });
+    // Lane-splitting for overlapping spans (calendar-style), points excluded.
+    function calculateLanes(items) {
+      const sorted = [...items].sort((a, b) => a.start - b.start);
+      const lanes = [];
+      sorted.forEach((item) => {
+        let assigned = -1;
+        for (let i = 0; i < lanes.length; i++) {
+          const last = lanes[i][lanes[i].length - 1];
+          if (item.start >= last.end) { assigned = i; break; }
+        }
+        if (assigned === -1) { lanes.push([item]); item.lane = lanes.length - 1; }
+        else { item.lane = assigned; lanes[assigned].push(item); }
+      });
+      // shrink each item to the width its overlap group needs
+      sorted.forEach((item) => {
+        const active = sorted.filter((o) => o !== item && (o.start < item.end && o.end > item.start));
+        const width = 100 / (active.length + 1);
+        [item, ...active].forEach((oi) => { if (oi.width === undefined || width < oi.width) oi.width = width; });
+      });
+      return lanes;
+    }
 
-    const SHORT = { gym: 'Robotics', bsc: 'B.Sc.', ta: 'DS TA', ra: 'DataEng RA', oelmuehle: 'Ölmühle', gcf: 'GCF', hackseoul: 'Hack Seoul', kaist: 'M.S.' };
+    const spans = JOURNEY.filter((e) => e.kind !== 'point');
+    const lanes = calculateLanes(spans);
+    const totalLanes = Math.max(lanes.length, 1);
 
     let html = '';
-    lanes.forEach((items) => {
-      html += '<div class="journey__lane">';
-      items.forEach((e) => {
-        if (e.kind === 'point') {
-          const top = 100 - pct(e.start);
-          html += `<button class="j-bar j-bar--point" data-id="${e.id}" style="top:${top}%;" aria-label="${e.label}"><span class="j-bar__lbl">${SHORT[e.id] || e.label}</span></button>`;
-        } else {
-          const top = 100 - pct(e.end);
-          const h = Math.max(pct(e.end) - pct(e.start), 1.4);
-          html += `<button class="j-bar j-bar--${e.kind}" data-id="${e.id}" style="top:${top}%;height:${h}%;" aria-label="${e.label}">${SHORT[e.id] || e.label}</button>`;
-        }
-      });
-      html += '</div>';
+    spans.forEach((e) => {
+      const trueH = pct(e.end) - pct(e.start);
+      const topS = 100 - pct(e.start); // lower boundary (earlier time)
+      // gap to the next-later item in the same lane - caps how far we may grow.
+      const laneArr = lanes[e.lane] || [];
+      const idx = laneArr.indexOf(e);
+      const above = idx + 1 < laneArr.length ? laneArr[idx + 1] : null;
+      const gapAbove = above ? pct(above.start) - pct(e.end) : Infinity;
+      // grow toward the start boundary (upward) but never past the neighbor above.
+      const h = Math.max(trueH, Math.min(3.0, trueH + Math.max(0, gapAbove)));
+      const top = topS - h;
+      const left = (e.lane * (100 / totalLanes));
+      const width = e.width || (100 / totalLanes);
+      const tr = trackOf(e);
+      const star = e.featured ? '<span class="exp__bar-star" aria-hidden="true">&#9733;</span>' : '';
+      html += `<button class="exp__bar exp__bar--${tr.cls}${e.featured ? ' is-featured' : ''}" data-id="${e.id}"`
+        + ` style="top:${top}%;height:${h}%;left:${left}%;width:${width}%"`
+        + ` title="${esc(e.role)} · ${esc(e.period)}"`
+        + ` aria-label="${esc(e.label)}">`
+        + `<span class="exp__bar-label">${star}${esc(SHORT[e.id] || e.label)}</span>`
+        + `<span class="exp__bar-period mono">${esc(e.period)}</span>`
+        + `</button>`;
+    });
+    // points sit on top as milestone dots
+    JOURNEY.filter((e) => e.kind === 'point').forEach((e) => {
+      const top = 100 - pct(e.start);
+      const tr = trackOf(e);
+      html += `<button class="exp__bar exp__bar--point exp__bar--${tr.cls}" data-id="${e.id}"`
+        + ` style="top:${top}%;" aria-label="${esc(e.label)}">`
+        + `<span class="exp__bar-point-lbl">${esc(SHORT[e.id] || e.label)}</span>`
+        + `</button>`;
     });
     lanesEl.innerHTML = html;
+
+    // green freelance rail: spans 2019-2027, fixed 15%-ish column, never splits
+    if (freelanceEl) {
+      const fTop = 100 - pct(FREELANCE_END);
+      const fH = Math.max(pct(FREELANCE_END) - pct(FREELANCE_START), 1.6);
+      const bar = $('.exp__freelance-bar', freelanceEl);
+      if (bar) bar.style.cssText = `top:${fTop}%;height:${fH}%;`;
+    }
+
+    // "now" line at today's date
+    if (nowEl) {
+      const now = new Date();
+      const nowVal = now.getFullYear() + now.getMonth() / 12 + (now.getDate() - 1) / 365;
+      nowEl.style.top = `${100 - pct(nowVal)}%`;
+    }
 
     const detail = $('[data-js-hook="journeyDetail"]');
     const detailInner = $('[data-js-hook="detailInner"]');
     const detailClose = $('[data-js-hook="detailClose"]');
 
     const open = (id) => {
-      const e = JOURNEY.find((x) => x.id === id);
+      const e = id === 'freelance' ? FREELANCE_ENTRY : JOURNEY.find((x) => x.id === id);
       if (!e || !detail) return;
-      $$('.j-bar.is-active').forEach((b) => b.classList.remove('is-active'));
-      const btn = $(`.j-bar[data-id="${id}"]`);
+      $$('.exp__bar.is-active, .exp__freelance-bar.is-active').forEach((b) => b.classList.remove('is-active'));
+      const btn = $(`[data-id="${id}"]`, lanesEl.parentElement) || $(`[data-id="${id}"]`);
       if (btn) btn.classList.add('is-active');
 
-      const media = e.image
-        ? `<img src="${e.image}" alt="${e.company}">`
-        : `<div class="detail__placeholder">// no preview attached<br>${e.company}</div>`;
+      const images = e.images || (e.image ? [e.image] : []);
+      let media = '';
+      if (images.length === 1) {
+        media = `<div class="detail__media"><img src="${images[0]}" alt="${esc(e.company)}"></div>`;
+      } else if (images.length > 1) {
+        media = `<div class="detail__media detail__gallery detail__gallery--${images.length}">`
+          + images.map((img, i) => `<img src="${img}" alt="${esc(e.company)} ${i + 1}">`).join('')
+          + `</div>`;
+      }
 
       detailInner.innerHTML = `
-        <div>
-          <div class="detail__meta">${e.period} · ${e.location}</div>
-          <h3 class="detail__role">${e.role}</h3>
-          <p class="detail__co">${e.company}</p>
-          <ul class="detail__bullets">${e.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
-          <div class="detail__tags">${e.tags.map((t) => `<span>${t}</span>`).join('')}</div>
+        <div class="detail__head">
+          <div class="detail__meta mono">${esc(e.period)} &middot; ${esc(e.location)}</div>
+          <h3 class="detail__role">${esc(e.role)}</h3>
+          <p class="detail__co">${esc(e.company)}</p>
         </div>
-        <div class="detail__media">${media}</div>`;
+        <ul class="detail__bullets">${e.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
+        <div class="detail__tags">${e.tags.map((t) => `<span>${esc(t)}</span>`).join('')}</div>
+        ${media}`;
       detail.hidden = false;
-      // wire the media thumb placeholder
-      const mImg = $('img', detailInner);
-      if (mImg && e.image) {
+
+      $$('img', detailInner).forEach((mImg, idx) => {
+        if (!images[idx]) return;
         mImg.addEventListener('error', () => {
           const wrap = mImg.parentElement;
-          if (wrap) wrap.innerHTML = `<div class="detail__placeholder">// add image<br>${e.image}</div>`;
+          const ph = `<div class="detail__placeholder">// add image<br>${esc(images[idx])}</div>`;
+          if (wrap && wrap.classList.contains('detail__gallery')) mImg.outerHTML = ph;
+          else if (wrap) wrap.innerHTML = ph;
         });
-      }
+      });
     };
 
     const close = () => {
       if (!detail) return;
       detail.hidden = true;
-      $$('.j-bar.is-active').forEach((b) => b.classList.remove('is-active'));
+      $$('.exp__bar.is-active, .exp__freelance-bar.is-active').forEach((b) => b.classList.remove('is-active'));
     };
 
-    $$('.j-bar', lanesEl).forEach((bar) => bar.addEventListener('click', () => open(bar.dataset.id)));
+    $$('.exp__bar', lanesEl).forEach((bar) => bar.addEventListener('click', () => open(bar.dataset.id)));
+    const fBar = $('.exp__freelance-bar', freelanceEl);
+    fBar?.addEventListener('click', () => open('freelance'));
     detailClose?.addEventListener('click', close);
     document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') close(); });
   }
