@@ -234,6 +234,188 @@
   // background animation.
 
   // ===========================================================================
+  // ASCII SWARM - independent flocks of boids drifting across the background
+  // Classic boid rules (separation, alignment, cohesion) within each flock,
+  // plus a slowly-turning per-flock cruise heading so groups migrate across
+  // the space instead of milling in place, and a soft edge steer so flocks
+  // stay on screen and turn together rather than tearing apart at the edges.
+  // Rendered with the same distance-field-to-ASCII rasterization as the
+  // dragon above. No mouse interaction.
+  // ===========================================================================
+
+  class SwarmEngine {
+    constructor(canvas) {
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d', { alpha: true });
+      this.cell = 14;
+      this.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      this.running = !reduceMotion;
+      this.cols = 0; this.rows = 0;
+
+      this.flockCount = 4;
+      this.boidsPerFlock = 11;
+      this.neighborDist = 90;
+      this.separationDist = 34;
+      this.maxSpeed = 1.7;
+      this.minSpeed = 0.6;
+      this.maxForce = 0.045;
+      this.edgeMargin = 70;
+      this.dotRadius = 5;
+
+      this.flocks = [];
+
+      this.resize();
+      this.seed();
+      window.addEventListener('resize', () => this.resize());
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { this.running = false; }
+        else if (!reduceMotion) { this.running = true; this.loop(); }
+      });
+      if (this.running) this.loop();
+    }
+
+    seed() {
+      this.flocks = [];
+      for (let f = 0; f < this.flockCount; f++) {
+        const cx = this.W * (0.2 + 0.6 * Math.random());
+        const cy = this.H * (0.2 + 0.6 * Math.random());
+        const heading = Math.random() * Math.PI * 2;
+        const boids = [];
+        for (let i = 0; i < this.boidsPerFlock; i++) {
+          const a = Math.random() * Math.PI * 2;
+          const r = Math.random() * 60;
+          boids.push({
+            x: cx + Math.cos(a) * r,
+            y: cy + Math.sin(a) * r,
+            vx: Math.cos(heading) * this.minSpeed,
+            vy: Math.sin(heading) * this.minSpeed,
+          });
+        }
+        this.flocks.push({ heading, boids });
+      }
+    }
+
+    resize() {
+      const w = window.innerWidth, h = window.innerHeight;
+      this.W = w; this.H = h;
+      this.canvas.width = Math.floor(w * this.dpr);
+      this.canvas.height = Math.floor(h * this.dpr);
+      this.canvas.style.width = w + 'px';
+      this.canvas.style.height = h + 'px';
+      this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      this.ctx.font = `${this.cell}px 'CommitMono', monospace`;
+      this.ctx.textBaseline = 'top';
+      this.cols = Math.ceil(w / this.cell) + 1;
+      this.rows = Math.ceil(h / this.cell) + 1;
+    }
+
+    step() {
+      for (const flock of this.flocks) {
+        // slowly turn the flock's cruise heading for organic, subrandom migration
+        flock.heading += (Math.random() - 0.5) * 0.12;
+        const driftX = Math.cos(flock.heading) * this.maxForce * 0.9;
+        const driftY = Math.sin(flock.heading) * this.maxForce * 0.9;
+
+        const boids = flock.boids;
+        for (const b of boids) {
+          let sepX = 0, sepY = 0, sepN = 0;
+          let aliX = 0, aliY = 0, aliN = 0;
+          let cohX = 0, cohY = 0, cohN = 0;
+
+          for (const o of boids) {
+            if (o === b) continue;
+            const dx = o.x - b.x, dy = o.y - b.y;
+            const d = Math.hypot(dx, dy);
+            if (d < this.neighborDist) {
+              aliX += o.vx; aliY += o.vy; aliN++;
+              cohX += o.x; cohY += o.y; cohN++;
+              if (d < this.separationDist && d > 0.001) {
+                sepX -= dx / d; sepY -= dy / d; sepN++;
+              }
+            }
+          }
+
+          let ax = 0, ay = 0;
+          if (sepN) { ax += (sepX / sepN) * 0.09; ay += (sepY / sepN) * 0.09; }
+          if (aliN) { ax += (aliX / aliN - b.vx) * 0.045; ay += (aliY / aliN - b.vy) * 0.045; }
+          if (cohN) { ax += (cohX / cohN - b.x) * 0.0006; ay += (cohY / cohN - b.y) * 0.0006; }
+          ax += driftX; ay += driftY;
+          ax += (Math.random() - 0.5) * 0.02;
+          ay += (Math.random() - 0.5) * 0.02;
+
+          // soft steer back inward near the edges, so flocks turn together
+          // rather than individual boids drifting off screen
+          const m = this.edgeMargin;
+          if (b.x < m) ax += (m - b.x) * 0.006;
+          else if (b.x > this.W - m) ax -= (b.x - (this.W - m)) * 0.006;
+          if (b.y < m) ay += (m - b.y) * 0.006;
+          else if (b.y > this.H - m) ay -= (b.y - (this.H - m)) * 0.006;
+
+          const aMag = Math.hypot(ax, ay);
+          if (aMag > this.maxForce) { ax = (ax / aMag) * this.maxForce; ay = (ay / aMag) * this.maxForce; }
+
+          b.vx += ax; b.vy += ay;
+          const speed = Math.hypot(b.vx, b.vy) || 0.001;
+          const clamped = Math.max(this.minSpeed, Math.min(this.maxSpeed, speed));
+          b.vx = (b.vx / speed) * clamped;
+          b.vy = (b.vy / speed) * clamped;
+
+          b.x += b.vx; b.y += b.vy;
+        }
+      }
+    }
+
+    render() {
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, this.W, this.H);
+      ctx.fillStyle = BODY_COLOR;
+
+      const dots = [];
+      for (const flock of this.flocks) {
+        for (const b of flock.boids) dots.push(b);
+      }
+
+      const cell = this.cell, half = cell / 2, r = this.dotRadius;
+      for (let ry = 0; ry < this.rows; ry++) {
+        for (let rx = 0; rx < this.cols; rx++) {
+          const px = rx * cell + half, py = ry * cell + half;
+          let best = Infinity;
+          for (let i = 0; i < dots.length; i++) {
+            const d = Math.hypot(px - dots[i].x, py - dots[i].y) - r;
+            if (d < best) best = d;
+            if (best < -4) break;
+          }
+          let idx;
+          if (best < -3) idx = RAMP.length - 1;
+          else if (best < 3) idx = RAMP.length - 2 - Math.floor((best + 3) / 6 * (RAMP.length - 2));
+          else if (best < 8) idx = 1 + Math.floor((8 - best) / 5 * 2);
+          else continue;
+          if (idx < 1) continue;
+          if (idx >= RAMP.length) idx = RAMP.length - 1;
+          ctx.globalAlpha = idx <= 2 ? 0.25 : 0.85;
+          ctx.fillText(RAMP[idx], rx * cell, ry * cell);
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    loop() {
+      if (!this.running) return;
+      this.step();
+      this.render();
+      this.raf = requestAnimationFrame(() => this.loop());
+    }
+  }
+
+  // swarm runs wherever the dragon used to (skipped on touch / small screens
+  // and reduced-motion, matching prior behavior and saving battery)
+  const isMobile = window.matchMedia('(pointer: coarse), (max-width: 980px)').matches;
+  const swarmCanvas = $('#dragon-canvas');
+  if (swarmCanvas && !reduceMotion && !isMobile) {
+    window.addEventListener('load', () => new SwarmEngine(swarmCanvas));
+  }
+
+  // ===========================================================================
   // CAREER JOURNEY TIMELINE
   // ===========================================================================
 
