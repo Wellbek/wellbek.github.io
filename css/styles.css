@@ -300,14 +300,7 @@ img {
   padding: 14px 16px 12px;
   background: linear-gradient(rgba(10, 10, 11, 0.96), rgba(10, 10, 11, 0.88));
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
   z-index: 3;
-}
-
-.col__num {
-  color: var(--faint);
-  font-size: 10px;
-  letter-spacing: 0.2em;
 }
 
 .col__title {
