@@ -260,7 +260,7 @@ img {
   flex-direction: row;
   height: 100vh;
   padding: var(--header-h) 44px 0;
-  gap: 16px;
+  gap: 32px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
@@ -366,7 +366,7 @@ img {
 .profile__contact {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   margin-bottom: 11px;
 }
 
@@ -809,7 +809,7 @@ img {
 .exp-list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   background: var(--line);
   border: 1px solid var(--line);
   border-radius: 9px;
@@ -1084,7 +1084,7 @@ img {
 .featured {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
   margin-bottom: 16px;
 }
 
@@ -1182,7 +1182,7 @@ img {
 .more__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 7px;
+  gap: 14px;
   margin-top: 8px;
 }
 
@@ -1248,7 +1248,7 @@ img {
 .certs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
 .cert {
