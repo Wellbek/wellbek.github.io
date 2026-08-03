@@ -891,66 +891,34 @@
   }
 
   // ===========================================================================
-  // HEADER SCROLL + ACTIVE NAV + MOBILE MENU
+  // DECK PAGING (arrows + edge-fade scroll affordance)
   // ===========================================================================
-  const header = $('[data-js-hook="siteHeader"]');
-  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 40);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  const navLinks = $$('.nav__link');
   const cols = $$('section.col[id]');
   const deck = $('.deck');
   const arrowLeft = $('[data-js-hook="deckLeft"]');
   const arrowRight = $('[data-js-hook="deckRight"]');
-  const setActive = (id) => {
-    navLinks.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === `#${id}`));
-  };
+  const fadeLeft = $('[data-js-hook="deckFadeLeft"]');
+  const fadeRight = $('[data-js-hook="deckFadeRight"]');
   const updateArrows = () => {
     if (!deck) return;
     const max = deck.scrollWidth - deck.clientWidth - 2;
-    if (arrowLeft) arrowLeft.disabled = deck.scrollLeft <= 2;
-    if (arrowRight) arrowRight.disabled = deck.scrollLeft >= max;
+    const hasLeft = deck.scrollLeft > 2;
+    const hasRight = deck.scrollLeft < max;
+    if (arrowLeft) arrowLeft.disabled = !hasLeft;
+    if (arrowRight) arrowRight.disabled = !hasRight;
+    fadeLeft?.classList.toggle('is-visible', hasLeft);
+    fadeRight?.classList.toggle('is-visible', hasRight);
   };
   // distance between two column left edges = one column + gap (works with margins/gaps)
   const colStep = () => cols.length > 1 ? (cols[1].offsetLeft - cols[0].offsetLeft) : (deck ? deck.clientWidth / 4 : 0);
-  // active nav = the column at the deck's left edge
-  const activeFromScroll = () => {
-    if (!deck) return;
-    const step = colStep() || 1;
-    const idx = Math.round(deck.scrollLeft / step);
-    const col = cols[idx] || cols[0];
-    if (col) setActive(col.id);
-    updateArrows();
-  };
   const pageBy = (dir) => {
     if (!deck) return;
     deck.scrollBy({ left: dir * colStep(), behavior: 'smooth' });
   };
-  navLinks.forEach((l) => {
-    l.addEventListener('click', (ev) => {
-      const id = l.getAttribute('href').slice(1);
-      const col = document.getElementById(id);
-      if (!col) return;
-      ev.preventDefault();
-      col.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-      setActive(id);
-    });
-  });
   arrowLeft?.addEventListener('click', () => pageBy(-1));
   arrowRight?.addEventListener('click', () => pageBy(1));
-  if (deck) deck.addEventListener('scroll', activeFromScroll, { passive: true });
-  activeFromScroll();
-
-  const toggle = $('#nav-toggle');
-  toggle?.addEventListener('click', () => {
-    const open = header.classList.toggle('menu-open');
-    toggle.setAttribute('aria-expanded', String(open));
-  });
-  $$('.nav__link').forEach((l) => l.addEventListener('click', () => {
-    header?.classList.remove('menu-open');
-    toggle?.setAttribute('aria-expanded', 'false');
-  }));
+  if (deck) deck.addEventListener('scroll', updateArrows, { passive: true });
+  updateArrows();
 
   // ===========================================================================
   // SCROLL REVEAL
