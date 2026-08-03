@@ -1261,12 +1261,6 @@ img {
   margin: 0;
 }
 
-.certs__foot {
-  font-size: 10px;
-  color: var(--faint);
-  margin: 14px 0 0;
-}
-
 [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
