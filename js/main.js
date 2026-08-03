@@ -596,7 +596,7 @@
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
     const TL_H = 460; // px - keep in sync with --tl-h in styles.css
-    const BAR_ICON_MAX = 30; // 3x the base 10px icon size
+    const BAR_ICON_MAX = 25; // 2.5x the base 10px icon size
 
     // Truncated text fades out instead of an ellipsis, and auto-scrolls to
     // reveal the rest on hover. Skips elements still hidden (e.g. the list
