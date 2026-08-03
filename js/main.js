@@ -1,7 +1,9 @@
 // =============================================================================
 // WELLBEK PORTFOLIO - main.js
-// Procedural ASCII dragon (Canvas 2D) that follows the cursor + career-journey
-// timeline + contact-me pixelate/scramble + thumb placeholders + interactions.
+// Procedural ASCII boid swarm (Canvas 2D) drifting across the background
+// (older cursor-following ASCII dragon kept for reference, unused) +
+// career-journey timeline + contact-me pixelate/scramble + thumb
+// placeholders + interactions.
 // =============================================================================
 
 (function () {
@@ -964,5 +966,5 @@
   const fy = $('[data-js-hook="footerYear"]');
   if (fy) fy.textContent = new Date().getFullYear();
 
-  console.log('%c// portfolio online - dragon chasing cursor', 'color:#b6ff3c');
+  console.log('%c// portfolio online - swarm drifting in the background', 'color:#b6ff3c');
 })();
