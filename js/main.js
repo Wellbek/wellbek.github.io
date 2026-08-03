@@ -13,6 +13,17 @@
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
+  // logos may ship a light and/or dark variant (item.logo / item.logoDark);
+  // falls back to whichever one is defined if only one exists
+  const currentTheme = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const logoFor = (item) => (currentTheme() === 'dark' && item.logoDark) ? item.logoDark : (item.logo || item.logoDark);
+  const refreshThemedLogos = () => {
+    $$('img[data-logo-light]').forEach((img) => {
+      const src = (currentTheme() === 'dark' && img.dataset.logoDark) ? img.dataset.logoDark : img.dataset.logoLight;
+      if (src && img.getAttribute('src') !== src) img.setAttribute('src', src);
+    });
+  };
+
   // ===========================================================================
   // PROCEDURAL ASCII DRAGON - follows the mouse smoothly
   // A serpentine body (rope spine + undulation) with stepping IK legs,
@@ -245,6 +256,14 @@
   // dragon above. No mouse interaction.
   // ===========================================================================
 
+  const getBgTrailColor = () => {
+    const rgb = getComputedStyle(document.documentElement).getPropertyValue('--bg-rgb').trim();
+    return `rgba(${rgb}, 0.16)`;
+  };
+  // the vivid lime BODY_COLOR reads fine on the near-black dark background,
+  // but washes out on white, so the swarm dots use the stronger ink green there
+  const getBodyColor = () => getComputedStyle(document.documentElement).getPropertyValue('--acid-ink').trim() || BODY_COLOR;
+
   class SwarmEngine {
     constructor(canvas) {
       this.canvas = canvas;
@@ -253,6 +272,8 @@
       this.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       this.running = !reduceMotion;
       this.cols = 0; this.rows = 0;
+      this.trailColor = getBgTrailColor();
+      this.bodyColor = getBodyColor();
 
       this.flockCount = 4;
       this.boidsPerFlock = 11;
@@ -372,9 +393,9 @@
       // fade the previous frame instead of a hard clear, so boids leave a
       // smooth flowing trail rather than blinking on/off between grid cells
       ctx.globalAlpha = 1;
-      ctx.fillStyle = 'rgba(10, 10, 11, 0.16)';
+      ctx.fillStyle = this.trailColor;
       ctx.fillRect(0, 0, this.W, this.H);
-      ctx.fillStyle = BODY_COLOR;
+      ctx.fillStyle = this.bodyColor;
 
       const dots = [];
       for (const flock of this.flocks) {
@@ -411,14 +432,20 @@
       this.render();
       this.raf = requestAnimationFrame(() => this.loop());
     }
+
+    updateTheme() {
+      this.trailColor = getBgTrailColor();
+      this.bodyColor = getBodyColor();
+    }
   }
 
   // swarm runs wherever the dragon used to (skipped on touch / small screens
   // and reduced-motion, matching prior behavior and saving battery)
   const isMobile = window.matchMedia('(pointer: coarse), (max-width: 980px)').matches;
   const swarmCanvas = $('#dragon-canvas');
+  let swarmEngine = null;
   if (swarmCanvas && !reduceMotion && !isMobile) {
-    window.addEventListener('load', () => new SwarmEngine(swarmCanvas));
+    window.addEventListener('load', () => { swarmEngine = new SwarmEngine(swarmCanvas); });
   }
 
   // ===========================================================================
@@ -433,7 +460,8 @@
       start: dy(2019, 7), end: dy(2021, 7),
       role: 'Robotics Club President', company: 'Goethe-Gymnasium Ibbenbüren', location: 'Ibbenbüren, DE',
       period: 'Jul 2019 - Jul 2021',
-      logo: 'assets/images/experience/logos/goethe-gymnasium.svg',
+      logo: 'assets/images/experience/logos/goethe-gymnasium-light.svg',
+      logoDark: 'assets/images/experience/logos/goethe-gymnasium-dark.svg',
       bullets: [
         'Led weekly robotics sessions for up to 20 students, teaching programming and engineering fundamentals up to autonomous robotic systems.',
         'Coordinated national-scale robotics competitions involving schools across Germany.',
@@ -693,8 +721,8 @@
       // icon scales up to 3x its base size, but never past 90% of the bar's own height
       const barPx = (h / 100) * TL_H;
       const iconSize = Math.min(BAR_ICON_MAX, barPx * 0.9);
-      const icon = e.logo
-        ? `<img class="exp__bar-icon" style="width:${iconSize}px;height:${iconSize}px" src="${e.logo}" alt="" aria-hidden="true">`
+      const icon = (e.logo || e.logoDark)
+        ? `<img class="exp__bar-icon" style="width:${iconSize}px;height:${iconSize}px" src="${logoFor(e)}" data-logo-light="${e.logo || e.logoDark}"${e.logoDark ? ` data-logo-dark="${e.logoDark}"` : ''} alt="" aria-hidden="true">`
         : '';
       html += `<button class="exp__bar exp__bar--${tr.cls}${e.featured ? ' is-featured' : ''}" data-id="${e.id}"`
         + ` style="top:${top}%;height:${h}%;left:${left}%;width:${width}%"`
@@ -789,8 +817,8 @@
       const edu = spans.filter((e) => e.kind === 'edu').sort(byStartDesc);
       const itemHtml = (e) => {
         const tr = trackOf(e);
-        const logo = e.logo
-          ? `<div class="exp-item__logo"><img src="${e.logo}" alt="" aria-hidden="true"></div>`
+        const logo = (e.logo || e.logoDark)
+          ? `<div class="exp-item__logo"><img src="${logoFor(e)}" data-logo-light="${e.logo || e.logoDark}"${e.logoDark ? ` data-logo-dark="${e.logoDark}"` : ''} alt="" aria-hidden="true"></div>`
           : `<div class="exp-item__logo" aria-hidden="true"></div>`;
         return `<button class="exp-item exp-item--${tr.cls}" data-id="${e.id}">`
           + logo
@@ -964,6 +992,26 @@
   arrowRight?.addEventListener('click', () => pageBy(1));
   if (deck) deck.addEventListener('scroll', updateArrows, { passive: true });
   updateArrows();
+
+  // ===========================================================================
+  // THEME TOGGLE (light default, persisted to localStorage)
+  // ===========================================================================
+  const themeToggle = $('[data-js-hook="themeToggle"]');
+  const metaThemeColor = $('[data-js-hook="metaThemeColor"]');
+  const THEME_BG = { light: '#f6f6f4', dark: '#0a0a0b' };
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (metaThemeColor) metaThemeColor.setAttribute('content', THEME_BG[theme]);
+    themeToggle?.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    swarmEngine?.updateTheme();
+    refreshThemedLogos();
+  };
+  themeToggle?.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    applyTheme(next);
+  });
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
 
   // ===========================================================================
   // SCROLL REVEAL
