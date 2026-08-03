@@ -626,7 +626,8 @@ img {
   box-shadow: 0 0 0 1.5px var(--ink);
 }
 
-.exp__bar--edu    { background: var(--violet); border: 1px solid var(--violet-d); }
+.exp__bar--edu    { background: transparent; border: 1.5px solid var(--violet); color: var(--violet); }
+.exp__bar--edu .exp__bar-star { color: var(--violet); }
 .exp__bar--ibb    { background: var(--amber); border: 1px solid var(--amber-d); }
 .exp__bar--aachen { background: var(--cyan); border: 1px solid var(--cyan-d); }
 .exp__bar--seoul  { background: var(--mag); color: #2a0410; border: 1px solid var(--mag-d); }
