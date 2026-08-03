@@ -260,6 +260,9 @@
     const rgb = getComputedStyle(document.documentElement).getPropertyValue('--bg-rgb').trim();
     return `rgba(${rgb}, 0.16)`;
   };
+  // the vivid lime BODY_COLOR reads fine on the near-black dark background,
+  // but washes out on white, so the swarm dots use the stronger ink green there
+  const getBodyColor = () => getComputedStyle(document.documentElement).getPropertyValue('--acid-ink').trim() || BODY_COLOR;
 
   class SwarmEngine {
     constructor(canvas) {
@@ -270,6 +273,7 @@
       this.running = !reduceMotion;
       this.cols = 0; this.rows = 0;
       this.trailColor = getBgTrailColor();
+      this.bodyColor = getBodyColor();
 
       this.flockCount = 4;
       this.boidsPerFlock = 11;
@@ -391,7 +395,7 @@
       ctx.globalAlpha = 1;
       ctx.fillStyle = this.trailColor;
       ctx.fillRect(0, 0, this.W, this.H);
-      ctx.fillStyle = BODY_COLOR;
+      ctx.fillStyle = this.bodyColor;
 
       const dots = [];
       for (const flock of this.flocks) {
@@ -431,6 +435,7 @@
 
     updateTheme() {
       this.trailColor = getBgTrailColor();
+      this.bodyColor = getBodyColor();
     }
   }
 
