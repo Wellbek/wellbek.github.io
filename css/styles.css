@@ -153,7 +153,6 @@ img {
   padding: 0 22px;
   background: rgba(10, 10, 11, 0.82);
   backdrop-filter: blur(12px) saturate(120%);
-  border-bottom: 1px solid var(--line);
 }
 
 .brand {
@@ -213,15 +212,6 @@ img {
   color: #0a0a0b;
 }
 
-.nav__icon {
-  color: var(--dim);
-  display: flex;
-  transition: color 0.2s;
-}
-.nav__icon:hover {
-  color: var(--ink);
-}
-
 .nav__toggle {
   display: none;
   flex-direction: column;
@@ -239,30 +229,19 @@ img {
 }
 
 .deck__arrow {
-  position: fixed;
-  top: calc(var(--header-h) + (100vh - var(--header-h)) / 2);
-  transform: translateY(-50%);
-  z-index: 40;
-  width: 30px;
-  height: 54px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(20, 20, 24, 0.82);
+  background: none;
   color: var(--ink);
   border: 1px solid var(--line-2);
-  border-radius: 8px;
-  font-size: 22px;
+  border-radius: 6px;
+  font-size: 16px;
   line-height: 1;
   cursor: pointer;
-  backdrop-filter: blur(6px);
   transition: background 0.2s, color 0.2s, opacity 0.2s, border-color 0.2s;
-}
-.deck__arrow--left {
-  left: 6px;
-}
-.deck__arrow--right {
-  right: 6px;
 }
 .deck__arrow:hover {
   background: var(--acid);
@@ -270,7 +249,7 @@ img {
   border-color: var(--acid);
 }
 .deck__arrow[disabled] {
-  opacity: 0;
+  opacity: 0.25;
   pointer-events: none;
 }
 
