@@ -413,7 +413,7 @@ img {
 }
 
 .about__body {
-  color: var(--dim);
+  color: var(--ink);
   font-size: 11px;
   margin: 0 0 14px;
 }
@@ -448,7 +448,7 @@ img {
   line-height: 1.4;
 }
 .fact--joke .fact__value {
-  color: var(--dim);
+  color: var(--ink);
 }
 
 .chip {
