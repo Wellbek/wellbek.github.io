@@ -433,6 +433,7 @@
       start: dy(2019, 7), end: dy(2021, 7),
       role: 'Robotics Club President', company: 'Goethe-Gymnasium Ibbenbüren', location: 'Ibbenbüren, DE',
       period: 'Jul 2019 - Jul 2021',
+      logo: 'assets/images/experience/logos/goethe-gymnasium.svg',
       bullets: [
         'Led weekly robotics sessions for up to 20 students, teaching programming and engineering fundamentals up to autonomous robotic systems.',
         'Coordinated national-scale robotics competitions involving schools across Germany.',
@@ -444,6 +445,7 @@
       start: dy(2021, 10), end: dy(2025, 9),
       role: 'B.Sc. Computer Science', company: 'RWTH Aachen University', location: 'Aachen, DE',
       period: 'Oct 2021 - Sep 2025',
+      logo: 'assets/images/experience/logos/rwth.png',
       bullets: [
         "Built a foundation in math, algorithms, software engineering, databases, operating systems, and distributed systems.",
         "Focused on machine learning, data science, web technologies, and software architecture through advanced coursework and projects.",
@@ -464,6 +466,7 @@
       start: dy(2024, 10), end: dy(2025, 4),
       role: 'Data Science Teaching Assistant', company: 'RWTH Aachen · Learning Technologies', location: 'Aachen, DE',
       period: 'Oct 2024 - Apr 2025',
+      logo: 'assets/images/experience/logos/rwth.png',
       bullets: [
         'Instructed and mentored highly international groups of up to 40 multidisciplinary students multiple times per week.',
         'Led programming lessons in Python with a focus on data-driven applications and large-scale data analysis with Pandas.',
@@ -476,6 +479,7 @@
       start: dy(2025, 2), end: dy(2025, 5),
       role: 'Data Engineering Research Assistant', company: 'RWTH Aachen · Learning Technologies', location: 'Aachen, DE',
       period: 'Feb 2025 - May 2025',
+      logo: 'assets/images/experience/logos/rwth.png',
       bullets: [
         'Designed and deployed containerized analytic engines and RESTful APIs (Python/Flask + Docker) for real-time analysis of large student data across multiple German universities.',
         'Refactored the analysis pipeline with multiprocessing-based load balancing, making data processing up to 5× faster.',
@@ -487,6 +491,7 @@
       start: dy(2025, 4), end: dy(2025, 5),
       role: 'Fullstack Developer Intern', company: 'Teutoburger Ölmühle GmbH', location: 'Ibbenbüren, DE',
       period: 'Apr 2025 - May 2025',
+      logo: 'assets/images/experience/logos/oelmuehle.png',
       bullets: [
         'Fully redesigned and rebuilt the company intranet from scratch using Angular and FastAPI, after analyzing the legacy PHP multi-page-application codebase.',
         'Refactored the data pipeline to integrate directly with Microsoft NAV databases, enabling real-time data feedback.',
@@ -499,6 +504,7 @@
       start: dy(2025, 7), end: dy(2026, 7),
       role: 'Technical Business Partner Intern', company: 'Intern in the department of IT at Green Climate Fund (GCF) // IT Project Management, AI & Data Engineering', location: 'Songdo, KR',
       period: 'Jul 2025 - Jul 2026',
+      logo: 'assets/images/experience/logos/gcf.png',
       bullets: [
     "Led the management of 18+ cross-departmental IT initiatives in parallel, translating organizational needs into technical requirements while aligning technical solutions with operational business objectives through close collaboration with stakeholders and global technology vendors.",
     "Contributed to the development and standardization of internal operating procedures in alignment with international IT standards (e.g., ISO 16326).",
@@ -532,6 +538,7 @@
       start: dy(2026, 9), end: dy(2028, 8),
       role: 'M.S. Data Science', company: 'KAIST · Graduate School of Data Science', location: 'Daejeon, KR',
       period: 'Sep 2026 - Aug 2028',
+      logo: 'assets/images/experience/logos/kaist.png',
       bullets: ['Graduate School of Data Science in the Department of Industrial Systems Engineering @ Korea Advanced Institute of Science & Technology.', 'Advised academically by Professor Dr. Hayong Shin.'],
       tags: [],
       image: 'assets/images/experience/kaist.png'
@@ -587,6 +594,29 @@
     if (!lanesEl || !axisEl) return;
 
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+    const TL_H = 460; // px - keep in sync with --tl-h in styles.css
+    const BAR_ICON_MAX = 30; // 3x the base 10px icon size
+
+    // Truncated text fades out instead of an ellipsis, and auto-scrolls to
+    // reveal the rest on hover. Skips elements still hidden (e.g. the list
+    // view before its tab is first opened) so they get measured later.
+    const initMarquee = (el) => {
+      if (el.dataset.marqueeReady || !el.clientWidth) return;
+      const track = $('.marquee__track', el);
+      if (!track) return;
+      const overflow = track.scrollWidth - el.clientWidth;
+      el.dataset.marqueeReady = '1';
+      if (overflow <= 4) return;
+      el.classList.add('is-overflow');
+      const duration = Math.min(4, Math.max(0.6, overflow / 40));
+      el.addEventListener('mouseenter', () => {
+        track.style.transitionDuration = `${duration}s`;
+        track.style.transform = `translateX(-${overflow}px)`;
+      });
+      el.addEventListener('mouseleave', () => { track.style.transform = 'translateX(0)'; });
+    };
+    const initMarquees = (root) => $$('.marquee', root).forEach(initMarquee);
 
     // vertical year axis (most recent at top, earliest at bottom)
     let axisHtml = '';
@@ -660,12 +690,18 @@
       }
       const tr = trackOf(e);
       const star = e.featured ? '<span class="exp__bar-star" aria-hidden="true">&#9733;</span>' : '';
+      // icon scales up to 3x its base size, but never past 90% of the bar's own height
+      const barPx = (h / 100) * TL_H;
+      const iconSize = Math.min(BAR_ICON_MAX, barPx * 0.9);
+      const icon = e.logo
+        ? `<img class="exp__bar-icon" style="width:${iconSize}px;height:${iconSize}px" src="${e.logo}" alt="" aria-hidden="true">`
+        : '';
       html += `<button class="exp__bar exp__bar--${tr.cls}${e.featured ? ' is-featured' : ''}" data-id="${e.id}"`
         + ` style="top:${top}%;height:${h}%;left:${left}%;width:${width}%"`
         + ` title="${esc(e.role)} · ${esc(e.period)}"`
         + ` aria-label="${esc(e.label)}">`
-        + `<span class="exp__bar-label">${star}${esc(SHORT[e.id] || e.label)}</span>`
-        + `<span class="exp__bar-period mono">${esc(e.period)}</span>`
+        + `<span class="exp__bar-label">${icon}<span class="marquee"><span class="marquee__track">${star}${esc(SHORT[e.id] || e.label)}</span></span></span>`
+        + `<span class="exp__bar-period mono"><span class="marquee"><span class="marquee__track">${esc(e.period)}</span></span></span>`
         + `</button>`;
     });
     // points sit on top as milestone dots
@@ -678,6 +714,7 @@
         + `</button>`;
     });
     lanesEl.innerHTML = html;
+    initMarquees(lanesEl);
 
     // green freelance rail: spans 2019-2027, fixed 15%-ish column, never splits
     if (freelanceEl) {
@@ -752,11 +789,17 @@
       const edu = spans.filter((e) => e.kind === 'edu').sort(byStartDesc);
       const itemHtml = (e) => {
         const tr = trackOf(e);
+        const logo = e.logo
+          ? `<div class="exp-item__logo"><img src="${e.logo}" alt="" aria-hidden="true"></div>`
+          : `<div class="exp-item__logo" aria-hidden="true"></div>`;
         return `<button class="exp-item exp-item--${tr.cls}" data-id="${e.id}">`
+          + logo
+          + `<div class="exp-item__main">`
           + `<span class="exp-item__period mono">${esc(e.period)}</span>`
-          + `<span class="exp-item__role">${esc(e.role)}</span>`
-          + `<span class="exp-item__co">${esc(e.company)} <span class="dim">·</span> ${esc(e.location)}</span>`
+          + `<span class="exp-item__role marquee"><span class="marquee__track">${esc(e.role)}</span></span>`
+          + `<span class="exp-item__co marquee"><span class="marquee__track">${esc(e.company)} <span class="dim">·</span> ${esc(e.location)}</span></span>`
           + `<span class="exp-item__tags mono">${e.tags.map((t) => esc(t)).join(' · ')}</span>`
+          + `</div>`
           + `</button>`;
       };
       const groupHtml = (label, items, isFirst) =>
@@ -766,6 +809,7 @@
         + `</div>`;
       listEl.innerHTML = groupHtml('work experience', work, true) + groupHtml('education', edu, false);
       $$('.exp-item', listEl).forEach((btn) => btn.addEventListener('click', () => open(btn.dataset.id)));
+      initMarquees(listEl);
     }
 
     // ---- chart / list tab toggle ----
@@ -784,6 +828,7 @@
         });
         viewChart.hidden = view !== 'chart';
         viewList.hidden = view !== 'list';
+        initMarquees(view === 'list' ? listEl : lanesEl);
         if (detail && !detail.hidden) {} // keep detail open across switches
       });
     }

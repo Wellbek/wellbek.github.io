@@ -607,23 +607,45 @@ img {
 .exp__bar--seoul  { background: var(--mag); color: #2a0410; border: 1px solid var(--mag-d); }
 
 .exp__bar-label {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+.exp__bar-icon {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 20%;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.85);
 }
 .exp__bar-period {
   display: block;
   font-size: 8px;
   font-weight: 500;
   opacity: 0.72;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .exp__bar-star {
   color: #0a0a0b;
   margin-right: 3px;
+}
+
+/* fade-out + hover-to-scroll for text that overflows its box, used instead
+   of an ellipsis for the chart bar label/period and the list role/company */
+.marquee {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee__track {
+  display: inline-block;
+  transition: transform 0.5s linear;
+}
+.marquee.is-overflow {
+  mask-image: linear-gradient(to right, #000 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, #000 82%, transparent 100%);
 }
 
 /* milestone point (e.g. hackathon win) - a dot on the timeline */
@@ -807,9 +829,10 @@ img {
 }
 .exp-list__head--gap { padding-top: 12px; }
 .exp-item {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 10px;
+  align-items: center;
   text-align: left;
   background: var(--bg-2);
   border: 0;
@@ -820,6 +843,26 @@ img {
   min-width: 0;
 }
 .exp-item:hover { background: var(--panel); }
+.exp-item__logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+}
+.exp-item__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.exp-item__main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
 .exp-item--edu    { border-left-color: var(--violet); }
 .exp-item--ibb    { border-left-color: var(--amber); }
 .exp-item--aachen { border-left-color: var(--cyan); }
