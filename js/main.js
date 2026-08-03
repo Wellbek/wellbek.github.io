@@ -314,7 +314,7 @@
     step() {
       for (const flock of this.flocks) {
         // slowly turn the flock's cruise heading for organic, subrandom migration
-        flock.heading += (Math.random() - 0.5) * 0.12;
+        flock.heading += (Math.random() - 0.5) * 0.07;
         const driftX = Math.cos(flock.heading) * this.maxForce * 0.9;
         const driftY = Math.sin(flock.heading) * this.maxForce * 0.9;
 
@@ -342,8 +342,8 @@
           if (aliN) { ax += (aliX / aliN - b.vx) * 0.045; ay += (aliY / aliN - b.vy) * 0.045; }
           if (cohN) { ax += (cohX / cohN - b.x) * 0.0006; ay += (cohY / cohN - b.y) * 0.0006; }
           ax += driftX; ay += driftY;
-          ax += (Math.random() - 0.5) * 0.02;
-          ay += (Math.random() - 0.5) * 0.02;
+          ax += (Math.random() - 0.5) * 0.012;
+          ay += (Math.random() - 0.5) * 0.012;
 
           // soft steer back inward near the edges, so flocks turn together
           // rather than individual boids drifting off screen
@@ -369,7 +369,11 @@
 
     render() {
       const ctx = this.ctx;
-      ctx.clearRect(0, 0, this.W, this.H);
+      // fade the previous frame instead of a hard clear, so boids leave a
+      // smooth flowing trail rather than blinking on/off between grid cells
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = 'rgba(10, 10, 11, 0.16)';
+      ctx.fillRect(0, 0, this.W, this.H);
       ctx.fillStyle = BODY_COLOR;
 
       const dots = [];
@@ -394,7 +398,7 @@
           else continue;
           if (idx < 1) continue;
           if (idx >= RAMP.length) idx = RAMP.length - 1;
-          ctx.globalAlpha = idx <= 2 ? 0.25 : 0.85;
+          ctx.globalAlpha = idx <= 2 ? 0.16 : 0.6;
           ctx.fillText(RAMP[idx], rx * cell, ry * cell);
         }
       }
