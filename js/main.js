@@ -245,6 +245,11 @@
   // dragon above. No mouse interaction.
   // ===========================================================================
 
+  const getBgTrailColor = () => {
+    const rgb = getComputedStyle(document.documentElement).getPropertyValue('--bg-rgb').trim();
+    return `rgba(${rgb}, 0.16)`;
+  };
+
   class SwarmEngine {
     constructor(canvas) {
       this.canvas = canvas;
@@ -253,6 +258,7 @@
       this.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       this.running = !reduceMotion;
       this.cols = 0; this.rows = 0;
+      this.trailColor = getBgTrailColor();
 
       this.flockCount = 4;
       this.boidsPerFlock = 11;
@@ -372,7 +378,7 @@
       // fade the previous frame instead of a hard clear, so boids leave a
       // smooth flowing trail rather than blinking on/off between grid cells
       ctx.globalAlpha = 1;
-      ctx.fillStyle = 'rgba(10, 10, 11, 0.16)';
+      ctx.fillStyle = this.trailColor;
       ctx.fillRect(0, 0, this.W, this.H);
       ctx.fillStyle = BODY_COLOR;
 
@@ -411,14 +417,19 @@
       this.render();
       this.raf = requestAnimationFrame(() => this.loop());
     }
+
+    updateTheme() {
+      this.trailColor = getBgTrailColor();
+    }
   }
 
   // swarm runs wherever the dragon used to (skipped on touch / small screens
   // and reduced-motion, matching prior behavior and saving battery)
   const isMobile = window.matchMedia('(pointer: coarse), (max-width: 980px)').matches;
   const swarmCanvas = $('#dragon-canvas');
+  let swarmEngine = null;
   if (swarmCanvas && !reduceMotion && !isMobile) {
-    window.addEventListener('load', () => new SwarmEngine(swarmCanvas));
+    window.addEventListener('load', () => { swarmEngine = new SwarmEngine(swarmCanvas); });
   }
 
   // ===========================================================================
@@ -964,6 +975,25 @@
   arrowRight?.addEventListener('click', () => pageBy(1));
   if (deck) deck.addEventListener('scroll', updateArrows, { passive: true });
   updateArrows();
+
+  // ===========================================================================
+  // THEME TOGGLE (light default, persisted to localStorage)
+  // ===========================================================================
+  const themeToggle = $('[data-js-hook="themeToggle"]');
+  const metaThemeColor = $('[data-js-hook="metaThemeColor"]');
+  const THEME_BG = { light: '#f6f6f4', dark: '#0a0a0b' };
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (metaThemeColor) metaThemeColor.setAttribute('content', THEME_BG[theme]);
+    themeToggle?.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    swarmEngine?.updateTheme();
+  };
+  themeToggle?.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    applyTheme(next);
+  });
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
 
   // ===========================================================================
   // SCROLL REVEAL
