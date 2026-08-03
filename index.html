@@ -4,11 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Louis Wellmeyer - Data Science Graduate @KAIST, ex-GCF under UNFCCC.">
-  <meta name="theme-color" content="#0a0a0b">
+  <meta name="theme-color" content="#f6f6f4" data-js-hook="metaThemeColor">
   <meta property="og:title" content="Louis Wellmeyer">
   <meta property="og:description" content="Data Science Graduate @KAIST - ex-GCF under UNFCCC">
   <meta property="og:url" content="https://wellbek.github.io">
   <title>Louis Wellmeyer</title>
+
+  <script>
+    (function () {
+      var t;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+    })();
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +55,15 @@
       <a href="assets/Louis_Wellmeyer_CV.pdf" target="_blank" rel="noopener" class="nav__cv" title="Curriculum Vitae">cv.pdf</a>
       <button class="deck__arrow deck__arrow--left" data-js-hook="deckLeft" aria-label="Previous columns">&lsaquo;</button>
       <button class="deck__arrow deck__arrow--right" data-js-hook="deckRight" aria-label="More columns">&rsaquo;</button>
+      <button class="deck__arrow theme-toggle" data-js-hook="themeToggle" aria-label="Switch to dark theme" title="Toggle light/dark theme">
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
     </div>
   </header>
 
