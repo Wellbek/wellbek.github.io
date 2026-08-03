@@ -1,7 +1,7 @@
 # Louis Wellmeyer - Portfolio
 
 Personal portfolio site.
-Horizontal column deck with a terminal aesthetic and a procedural ASCII dragon that follows the cursor.
+Horizontal column deck with a terminal aesthetic and a procedural ASCII boid swarm drifting across the background.
 
 Hosted at <https://wellbek.github.io>.
 
@@ -9,7 +9,7 @@ Hosted at <https://wellbek.github.io>.
 
 - `index.html` - single-page markup, five columns (profile + about, journey, research, projects, certs).
 - `css/styles.scss` - source styles, compiled to `css/styles.css`.
-- `js/main.js` - dragon engine, vertical timetable, contact pixelate, deck pager.
+- `js/main.js` - swarm engine (older dragon engine kept for reference), vertical timetable, contact pixelate, deck pager.
 - `assets/` - fonts, images, publications, CV.
 
 ## Hosting
