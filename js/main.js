@@ -229,12 +229,9 @@
     }
   }
 
-  // skip the dragon on touch / small screens (no cursor to follow, saves battery)
-  const isMobile = window.matchMedia('(pointer: coarse), (max-width: 980px)').matches;
-  const dragonCanvas = $('#dragon-canvas');
-  if (dragonCanvas && !reduceMotion && !isMobile) {
-    window.addEventListener('load', () => new DragonEngine(dragonCanvas));
-  }
+  // DragonEngine is kept above for reference / future use, but is no longer
+  // instantiated from the main loop - see SwarmEngine below for the current
+  // background animation.
 
   // ===========================================================================
   // CAREER JOURNEY TIMELINE
