@@ -27,34 +27,34 @@
   font-display: swap;
 }
 :root {
-  /* light theme (default) */
-  --bg: #f6f6f4;
-  --bg-2: #ededea;
+  /* light theme (default) - white base, neutral greys, no beige tint */
+  --bg: #ffffff;
+  --bg-2: #f1f1f1;
   --panel: #ffffff;
-  --line: #dedad4;
-  --line-2: #c7c3bc;
-  --ink: #17171a;
-  --dim: #55555c;
-  --faint: #83838a;
-  --bg-rgb: 246, 246, 244;
+  --line: #e3e3e3;
+  --line-2: #cfcfcf;
+  --ink: #16161a;
+  --dim: #52525a;
+  --faint: #85858c;
+  --bg-rgb: 255, 255, 255;
   --panel-rgb: 255, 255, 255;
   --grid-rgb: 10, 10, 11;
 
   --acid: #b6ff3c;
-  --acid-d: #4f7a1a;
-  --acid-ink: #4f7a1a;
+  --acid-d: #3f6b12;
+  --acid-ink: #3f6b12;
   --cyan: #38e1ff;
-  --cyan-d: #0e7a91;
-  --cyan-ink: #0e7a91;
+  --cyan-d: #0a5a6c;
+  --cyan-ink: #0a5a6c;
   --mag: #ff4d8d;
-  --mag-d: #c31760;
-  --mag-ink: #c31760;
+  --mag-d: #a01050;
+  --mag-ink: #a01050;
   --amber: #ffb627;
-  --amber-d: #9c5c00;
-  --amber-ink: #9c5c00;
+  --amber-d: #8a5300;
+  --amber-ink: #8a5300;
   --violet: #9d7bff;
-  --violet-d: #6738cf;
-  --violet-ink: #6738cf;
+  --violet-d: #522bb0;
+  --violet-ink: #522bb0;
   --now: #ff5a5a;
   --mono: 'CommitMono', 'JetBrains Mono', ui-monospace, monospace;
   --sans: 'Inter', system-ui, sans-serif;
@@ -756,8 +756,8 @@ img {
   line-height: 1;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--acid);
-  background: rgba(10, 10, 11, 0.78);
+  color: var(--acid-ink);
+  background: rgba(var(--bg-rgb), 0.82);
   padding: 0 6px;
   border-radius: 3px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
