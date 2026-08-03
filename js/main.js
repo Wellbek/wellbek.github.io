@@ -13,6 +13,17 @@
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
+  // logos may ship a light and/or dark variant (item.logo / item.logoDark);
+  // falls back to whichever one is defined if only one exists
+  const currentTheme = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const logoFor = (item) => (currentTheme() === 'dark' && item.logoDark) ? item.logoDark : (item.logo || item.logoDark);
+  const refreshThemedLogos = () => {
+    $$('img[data-logo-light]').forEach((img) => {
+      const src = (currentTheme() === 'dark' && img.dataset.logoDark) ? img.dataset.logoDark : img.dataset.logoLight;
+      if (src && img.getAttribute('src') !== src) img.setAttribute('src', src);
+    });
+  };
+
   // ===========================================================================
   // PROCEDURAL ASCII DRAGON - follows the mouse smoothly
   // A serpentine body (rope spine + undulation) with stepping IK legs,
@@ -444,7 +455,8 @@
       start: dy(2019, 7), end: dy(2021, 7),
       role: 'Robotics Club President', company: 'Goethe-Gymnasium Ibbenbüren', location: 'Ibbenbüren, DE',
       period: 'Jul 2019 - Jul 2021',
-      logo: 'assets/images/experience/logos/goethe-gymnasium.svg',
+      logo: 'assets/images/experience/logos/goethe-gymnasium-light.svg',
+      logoDark: 'assets/images/experience/logos/goethe-gymnasium-dark.svg',
       bullets: [
         'Led weekly robotics sessions for up to 20 students, teaching programming and engineering fundamentals up to autonomous robotic systems.',
         'Coordinated national-scale robotics competitions involving schools across Germany.',
@@ -704,8 +716,8 @@
       // icon scales up to 3x its base size, but never past 90% of the bar's own height
       const barPx = (h / 100) * TL_H;
       const iconSize = Math.min(BAR_ICON_MAX, barPx * 0.9);
-      const icon = e.logo
-        ? `<img class="exp__bar-icon" style="width:${iconSize}px;height:${iconSize}px" src="${e.logo}" alt="" aria-hidden="true">`
+      const icon = (e.logo || e.logoDark)
+        ? `<img class="exp__bar-icon" style="width:${iconSize}px;height:${iconSize}px" src="${logoFor(e)}" data-logo-light="${e.logo || e.logoDark}"${e.logoDark ? ` data-logo-dark="${e.logoDark}"` : ''} alt="" aria-hidden="true">`
         : '';
       html += `<button class="exp__bar exp__bar--${tr.cls}${e.featured ? ' is-featured' : ''}" data-id="${e.id}"`
         + ` style="top:${top}%;height:${h}%;left:${left}%;width:${width}%"`
@@ -800,8 +812,8 @@
       const edu = spans.filter((e) => e.kind === 'edu').sort(byStartDesc);
       const itemHtml = (e) => {
         const tr = trackOf(e);
-        const logo = e.logo
-          ? `<div class="exp-item__logo"><img src="${e.logo}" alt="" aria-hidden="true"></div>`
+        const logo = (e.logo || e.logoDark)
+          ? `<div class="exp-item__logo"><img src="${logoFor(e)}" data-logo-light="${e.logo || e.logoDark}"${e.logoDark ? ` data-logo-dark="${e.logoDark}"` : ''} alt="" aria-hidden="true"></div>`
           : `<div class="exp-item__logo" aria-hidden="true"></div>`;
         return `<button class="exp-item exp-item--${tr.cls}" data-id="${e.id}">`
           + logo
@@ -987,6 +999,7 @@
     if (metaThemeColor) metaThemeColor.setAttribute('content', THEME_BG[theme]);
     themeToggle?.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
     swarmEngine?.updateTheme();
+    refreshThemedLogos();
   };
   themeToggle?.addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
