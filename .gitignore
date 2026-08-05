@@ -1,10 +1,6 @@
 # dependencies
 node_modules/
 
-# sass build cache
-.sass-cache/
-*.css.map
-
 # local tooling / agent artifacts
 .lavish/
 .wellagent/

@@ -1,13 +1,5 @@
 {
   "name": "wellbek.github.io",
-  "description": "Louis Wellmeyer's portfolio site - horizontal column deck, terminal aesthetic, procedural ASCII boid swarm. Static site served via GitHub Pages (no runtime build needed; SCSS is precompiled into css/styles.css).",
-  "private": true,
-  "scripts": {
-    "build": "sass css/styles.scss css/styles.css --style expanded --no-source-map",
-    "build:min": "sass css/styles.scss css/styles.css --style compressed --no-source-map",
-    "watch": "sass --watch css/styles.scss:css/styles.css"
-  },
-  "devDependencies": {
-    "sass": "^1.99.0"
-  }
+  "description": "Louis Wellmeyer's portfolio site - horizontal column deck, terminal aesthetic, procedural ASCII boid swarm. Static site served via GitHub Pages; css/styles.css is hand-authored and is the single source of truth (no build step).",
+  "private": true
 }

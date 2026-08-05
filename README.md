@@ -8,28 +8,19 @@ Hosted at <https://wellbek.github.io>.
 ## Structure
 
 - `index.html` - single-page markup, five columns (profile + about, journey, research, projects, certs).
-- `css/styles.scss` - source styles, compiled to `css/styles.css`.
+- `css/styles.css` - hand-authored styles, the single source of truth. There is no CSS build step.
 - `js/main.js` - swarm engine (older dragon engine kept for reference), vertical timetable, contact pixelate, deck pager.
 - `assets/` - fonts, images, publications, CV.
 
 ## Hosting
 
 This is a static site served by GitHub Pages from the `main` branch root.
-No build step runs on the server.
-The compiled `css/styles.css` is committed, so Pages serves it directly.
-`.nojekyll` disables Jekyll so every file is served as-is.
+Nothing is compiled, on the server or locally - every file in the repo is served as-is.
+`.nojekyll` disables Jekyll so that stays true for dotfiles too.
 
 ## Local development
 
-Requires Node.js.
-
-```bash
-npm install        # installs sass
-npm run watch      # recompiles css/styles.css on save
-npm run build      # one-off expanded build
-npm run build:min  # minified build
-```
-
+Edit `index.html`, `css/styles.css`, and `js/main.js` directly, then reload.
 Serve locally with any static server, for example:
 
 ```bash
@@ -43,4 +34,4 @@ Then open <http://localhost:8765/>.
 - Asset paths are relative so the site works at any hosting path.
 - Image slots with no file yet fall back to an `// add image` placeholder.
   Drop the referenced files into `assets/images/` to fill them in.
-- `node_modules/`, build caches, and local tool dirs are gitignored.
+- `node_modules/` and local tool dirs are gitignored.
