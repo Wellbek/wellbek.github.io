@@ -254,7 +254,7 @@ img { max-width: 100%; display: block; }
 // ---- Publications ----
 .pubs { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
 .pub { background: var(--bg-2); padding: 12px 14px; transition: background 0.2s; &:hover { background: var(--panel); } }
-.pub__thumb { aspect-ratio: 16 / 9; margin-bottom: 9px; border-radius: 6px; }
+.pub__thumb { aspect-ratio: 2 / 1; margin-bottom: 9px; border-radius: 6px; }
 .pub__title { font-size: 13px; font-weight: 700; margin: 0 0 5px; letter-spacing: -0.01em; line-height: 1.25; }
 .pub__meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 10px; color: var(--dim); margin: 0 0 7px; span:first-child { color: var(--acid); } }
 .pub__abstract { color: var(--dim); font-size: 11px; margin: 0 0 8px; }
@@ -265,10 +265,9 @@ img { max-width: 100%; display: block; }
 .proj--featured { flex: none; min-width: 0; width: 100%; }
 .proj { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: rgba(16,16,19,0.6); backdrop-filter: blur(4px); transition: border-color 0.25s, transform 0.25s var(--ease); display: flex; flex-direction: column; min-width: 0;
   &:hover { border-color: var(--acid-d); transform: translateY(-3px); .proj__thumb img { transform: scale(1.05); } } }
-.proj__thumb { aspect-ratio: 16 / 9; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
-.proj__body { padding: 12px 14px; display: flex; flex-direction: column; flex: 1; }
-.proj__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.proj__star { color: var(--acid); font-size: 9px; }
+.proj__thumb { aspect-ratio: 2 / 1; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+.proj__body { padding: 11px 14px; display: flex; flex-direction: column; flex: 1; }
+.proj__head { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 5px; }
 .proj__lang { color: var(--faint); font-size: 9px; }
 .proj__name { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px; font-family: var(--mono); }
 .proj__desc { color: var(--dim); font-size: 11px; margin: 0 0 9px; }
