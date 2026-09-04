@@ -567,9 +567,28 @@
       role: 'M.S. Data Science', company: 'KAIST · Graduate School of Data Science', location: 'Daejeon, KR',
       period: 'Sep 2026 - Aug 2028',
       logo: 'assets/images/experience/logos/kaist.png',
-      bullets: ['Graduate School of Data Science in the Department of Industrial Systems Engineering @ Korea Advanced Institute of Science & Technology.', 'Advised academically by Professor Dr. Hayong Shin.'],
-      tags: [],
+      bullets: [
+        'Graduate School of Data Science in the Department of Industrial Systems Engineering @ Korea Advanced Institute of Science & Technology.',
+        'Researching reinforcement learning for manufacturing scheduling in the System Analytics Lab, advised by Professor Dr. Hayong Shin.',
+        'Focus on policy optimization and state-of-the-art LLM post-training methods (TRPO, PPO, GRPO and variants).',
+        'Simulation-based evaluation of learned scheduling policies against classical dispatching and optimization baselines.',
+      ],
+      tags: ['Scheduling', 'Simulation', 'Reinforcement Learning', 'LLMs'],
       image: 'assets/images/experience/kaist.png'
+    },
+    {
+      // half-width bar: a society alongside the degree, not a full-weight role
+      id: 'mr', kind: 'activity', half: true, label: 'Microrobot Research · KAIST',
+      start: dy(2026, 9), end: dy(2028, 8),
+      role: 'Activities and Societies', company: 'Microrobot Research (Club) · KAIST', location: 'Daejeon, KR',
+      period: 'Sep 2026 - Aug 2028',
+      logo: 'assets/images/experience/logos/mr-kaist.png',
+      bullets: [
+        'The only robotics club at KAIST (<a href="https://mr.kaist.ac.kr/" target="_blank" rel="noopener noreferrer" class="hi">mr.kaist.ac.kr</a>), with a 40+ year track record of student-built robotic systems - bipedal robots, robotic hands, underwater drones, and task-oriented manipulators.',
+        'Focusing on Sim2Real transfer for robot control: training and validating policies in MuJoCo and NVIDIA Omniverse Isaac Sim before deploying them onto physical hardware.',
+        'The club runs an externally sponsored inter-university student robotics competition (since 2022) alongside its own project and exhibition work.',
+      ],
+      tags: ['Robotics', 'Sim2Real', 'MuJoCo', 'NVIDIA Isaac Sim', 'Omniverse', 'Reinforcement Learning'],
     },
   ];
 
@@ -590,9 +609,11 @@
     ibb:    { cls: 'ibb',    label: 'Ibbenbueren' },
     aachen: { cls: 'aachen', label: 'Aachen' },
     seoul:  { cls: 'seoul',  label: 'Seoul' },
+    act:    { cls: 'act',    label: 'Activities' },
   };
   function trackOf(e) {
     if (e.kind === 'edu') return TRACK.edu;
+    if (e.kind === 'activity') return TRACK.act;
     const loc = (e.location || '').toLowerCase();
     if (loc.includes('ibbenb')) return TRACK.ibb;
     if (loc.includes('aachen')) return TRACK.aachen;
@@ -600,7 +621,7 @@
     return TRACK.edu;
   }
 
-  const SHORT = { gym: 'Robotics', bsc: 'B.Sc. Computer Science @ RWTH Aachen', ta: 'DS TA', ra: 'DE RA', oelmuehle: 'Ölmühle', gcf: 'GCF', kaist: 'M.S. Data Science @ KAIST' };
+  const SHORT = { gym: 'Robotics', bsc: 'B.Sc. Computer Science @ RWTH Aachen', ta: 'DS TA', ra: 'DE RA', oelmuehle: 'Ölmühle', gcf: 'GCF', kaist: 'M.S. Data Science @ KAIST', mr: 'Microrobot Research' };
 
   // Synthetic entry for the green freelance/side-projects rail.
   const FREELANCE_ENTRY = {
@@ -671,22 +692,45 @@
 
     const spans = JOURNEY.filter((e) => e.kind !== 'point');
     const lanes = calculateLanes(spans);
-    const totalLanes = Math.max(lanes.length, 1);
 
     // Peak concurrency per span: the most items running at the same instant
     // at any point during this span (including itself). A span that never
     // overlaps another peaks at 1 -> full width; 2 concurrent -> 50% each;
     // 3 concurrent -> 33% each. Sampled at every span's start (the only
     // points where concurrency can increase).
+    // Entries flagged `half` count as 0.5, so they claim half the width a
+    // regular entry would get and leave the rest to whatever runs alongside.
+    const weightOf = (e) => (e.half ? 0.5 : 1);
     const startTimes = spans.map((s) => s.start);
     const peakOf = (e) => {
-      let peak = 1;
+      let peak = weightOf(e);
       for (const t of startTimes) {
         if (t < e.start || t > e.end) continue;
-        const c = spans.filter((o) => o.start <= t && o.end > t).length;
+        const c = spans.filter((o) => o.start <= t && o.end > t).reduce((sum, o) => sum + weightOf(o), 0);
         if (c > peak) peak = c;
       }
-      return peak;
+      return Math.max(peak, 1);
+    };
+
+    const barGap = 1.4; // % gutter between side-by-side bars
+    // A span alone on the track for its whole life takes the full width; every
+    // other one gets its share of the peak, minus the gutter.
+    const widthOf = (e) => {
+      const w = weightOf(e);
+      const peak = peakOf(e);
+      return peak === w ? 100 : (w / peak) * 100 - barGap;
+    };
+    // Bars pack left to right: offset by the widest overlapping bar in each
+    // lane below, so neighbours sit edge to edge regardless of their weights.
+    const leftOf = (e) => {
+      if (widthOf(e) === 100) return 0;
+      let left = barGap / 2;
+      for (let j = 0; j < e.lane; j++) {
+        const overlapping = (lanes[j] || []).filter((o) => o.start < e.end && o.end > e.start);
+        if (!overlapping.length) continue;
+        left += Math.max(...overlapping.map(widthOf)) + barGap;
+      }
+      return left;
     };
 
     let html = '';
@@ -701,21 +745,8 @@
       // grow toward the start boundary (upward) but never past the neighbor above.
       const h = Math.max(trueH, Math.min(3.0, trueH + Math.max(0, gapAbove)));
       const top = topS - h;
-      // Width follows peak concurrency: 1 -> 100%, 2 -> 50%, 3 -> 33%, ...
-      // Overlapping spans pack edge-to-edge by lane so neighbors nearly touch;
-      // a solitary span (peak 1) takes the full width since it shares time with
-      // nothing else.
-      const laneW = 100 / totalLanes;
-      const barGap = 1.4; // % gutter between side-by-side bars
-      const peak = peakOf(e);
-      let left, width;
-      if (peak > 1) {
-        left = e.lane * laneW + barGap / 2;
-        width = 100 / peak - barGap;
-      } else {
-        left = 0;
-        width = 100;
-      }
+      const width = widthOf(e);
+      const left = leftOf(e);
       const tr = trackOf(e);
       const star = e.featured ? '<span class="exp__bar-star" aria-hidden="true">&#9733;</span>' : '';
       // icon scales up to 3x its base size, but never past 90% of the bar's own height
@@ -813,8 +844,9 @@
     if (listEl) {
       const spans = [...JOURNEY].filter((e) => e.kind !== 'point');
       const byStartDesc = (a, b) => b.start - a.start;
-      const work = spans.filter((e) => e.kind !== 'edu').sort(byStartDesc);
+      const work = spans.filter((e) => e.kind !== 'edu' && e.kind !== 'activity').sort(byStartDesc);
       const edu = spans.filter((e) => e.kind === 'edu').sort(byStartDesc);
+      const act = spans.filter((e) => e.kind === 'activity').sort(byStartDesc);
       const itemHtml = (e) => {
         const tr = trackOf(e);
         const logo = (e.logo || e.logoDark)
@@ -835,7 +867,9 @@
         + `<span class="exp-list__head mono${isFirst ? '' : ' exp-list__head--gap'}">${label}</span>`
         + items.map(itemHtml).join('')
         + `</div>`;
-      listEl.innerHTML = groupHtml('work experience', work, true) + groupHtml('education', edu, false);
+      listEl.innerHTML = groupHtml('work experience', work, true)
+        + groupHtml('education', edu, false)
+        + (act.length ? groupHtml('activities and societies', act, false) : '');
       $$('.exp-item', listEl).forEach((btn) => btn.addEventListener('click', () => open(btn.dataset.id)));
       initMarquees(listEl);
     }
