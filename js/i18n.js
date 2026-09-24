@@ -96,7 +96,7 @@ export const STRINGS = {
     'contact.default': 'Kontakt',
     'contact.hover': 'wellmeyer.louis@gmail.com kopieren',
     'contact.click': '[klick]',
-    'contact.copied': '[kopieren]',
+    'contact.copied': '[kopiert]',
     'theme.toDark': 'Zum dunklen Design wechseln',
     'theme.toLight': 'Zum hellen Design wechseln',
     'detail.addImage': '// bild hinzufügen',
