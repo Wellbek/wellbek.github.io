@@ -56,8 +56,9 @@
   --violet-d: #522bb0;
   --violet-ink: #522bb0;
   --now: #ff5a5a;
-  --mono: 'CommitMono', 'JetBrains Mono', ui-monospace, monospace;
-  --sans: 'Inter', system-ui, sans-serif;
+  /* Noto Sans KR covers Hangul, which Inter and CommitMono lack */
+  --mono: 'CommitMono', 'JetBrains Mono', ui-monospace, 'Noto Sans KR', monospace;
+  --sans: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --header-h: 52px;
   --tl-h: 460px;
@@ -107,6 +108,17 @@ body {
   overflow: hidden;
   position: relative;
   height: 100vh;
+}
+
+/* Korean: wrap between words rather than inside them, and drop the wide
+   tracking that is meant for uppercase Latin labels */
+:root[lang="ko"] body {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+:root[lang="ko"] .fact__label,
+:root[lang="ko"] .exp__freelance-text {
+  letter-spacing: 0.04em;
 }
 
 .mono {
@@ -249,6 +261,36 @@ img {
 
 .theme-toggle {
   margin-left: 2px;
+}
+
+.lang-switch {
+  display: flex;
+  height: 26px;
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lang-switch__btn {
+  min-width: 30px;
+  padding: 0 7px;
+  background: none;
+  border: 0;
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.lang-switch__btn + .lang-switch__btn {
+  border-left: 1px solid var(--line-2);
+}
+.lang-switch__btn:hover {
+  color: var(--ink);
+  background: var(--bg-2);
+}
+.lang-switch__btn[aria-pressed="true"] {
+  background: var(--acid);
+  color: #0a0a0b;
 }
 .theme-toggle__icon--moon {
   display: none;
@@ -434,17 +476,15 @@ img {
   padding-top: 14px;
 }
 
-.about__lede {
-  font-size: 13px;
-  line-height: 1.5;
+/* both intro paragraphs share one style */
+.about__text {
+  font-size: 12px;
+  line-height: 1.6;
   color: var(--ink);
   margin: 0 0 10px;
 }
-
-.about__body {
-  color: var(--ink);
-  font-size: 11px;
-  margin: 0 0 14px;
+.about__text:last-of-type {
+  margin-bottom: 14px;
 }
 
 .facts {
@@ -799,7 +839,7 @@ img {
 .exp__legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 12px;
+  gap: 8px 10px;
   margin: 0 2px;
   font-size: 9px;
   color: var(--dim);
@@ -1145,6 +1185,9 @@ img {
 .pub__link {
   font-size: 10px;
   color: var(--acid-ink);
+}
+.pub__link + .pub__link {
+  margin-left: 14px;
 }
 .pub__link:hover {
   color: var(--ink);

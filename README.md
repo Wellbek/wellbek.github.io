@@ -10,6 +10,7 @@ Hosted at <https://wellbek.github.io>.
 - `index.html` - single-page markup, five columns (profile + about, journey, research, projects, certs).
 - `css/styles.css` - hand-authored styles, the single source of truth. There is no CSS build step.
 - `js/main.js` - swarm engine (older dragon engine kept for reference), vertical timetable, contact pixelate, deck pager.
+- `js/i18n.js` - German and Korean translations; English lives in the markup (`data-i18n` keys) and the `JOURNEY` data.
 - `assets/` - fonts, images, publications, CV.
 
 ## Hosting

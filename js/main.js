@@ -6,8 +6,15 @@
 // placeholders + interactions.
 // =============================================================================
 
+import { LANGS, STRINGS, JOURNEY_I18N, TAG_I18N, localizePeriod } from './i18n.js';
+
 (function () {
   'use strict';
+
+  // ---- language state (English default, persisted to localStorage) ----
+  let lang = 'en';
+  try { const l = localStorage.getItem('lang'); if (LANGS.includes(l)) lang = l; } catch (e) {}
+  const t = (key) => (STRINGS[lang] && STRINGS[lang][key]) ?? STRINGS.en[key] ?? key;
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (s, c = document) => c.querySelector(s);
@@ -630,9 +637,22 @@
     period: '2019 - present',
     bullets: [
       'Alongside studies and full-time roles, I continuously take on freelance engagements and build side projects - from enterprise platform maintenance, ongoing enhancements & bugfixes, open source contr., to hobby-development and competitive programming & hackathons.',
-      '(See the Side Projects column for some of my "more or less" compelted work.)',
+      '(See the Side Projects column for some of my "more or less" completed work.)',
     ],
     tags: ['Freelance', 'Side Projects', 'Hackathons', 'Open Source'],
+  };
+
+  // an entry with its text fields in the current language
+  const loc = (e) => {
+    const tr = (JOURNEY_I18N[lang] && JOURNEY_I18N[lang][e.id]) || {};
+    const tags = TAG_I18N[lang] || {};
+    return {
+      ...e,
+      ...tr,
+      short: tr.short || SHORT[e.id] || e.label,
+      period: localizePeriod(e.period, lang),
+      tags: e.tags.map((tag) => tags[tag] || tag),
+    };
   };
 
   function buildTimeline() {
@@ -733,47 +753,51 @@
       return left;
     };
 
-    let html = '';
-    spans.forEach((e) => {
-      const trueH = pct(e.end) - pct(e.start);
-      const topS = 100 - pct(e.start); // lower boundary (earlier time)
-      // gap to the next-later item in the same lane - caps how far we may grow.
-      const laneArr = lanes[e.lane] || [];
-      const idx = laneArr.indexOf(e);
-      const above = idx + 1 < laneArr.length ? laneArr[idx + 1] : null;
-      const gapAbove = above ? pct(above.start) - pct(e.end) : Infinity;
-      // grow toward the start boundary (upward) but never past the neighbor above.
-      const h = Math.max(trueH, Math.min(3.0, trueH + Math.max(0, gapAbove)));
-      const top = topS - h;
-      const width = widthOf(e);
-      const left = leftOf(e);
-      const tr = trackOf(e);
-      const star = e.featured ? '<span class="exp__bar-star" aria-hidden="true">&#9733;</span>' : '';
-      // icon scales up to 3x its base size, but never past 90% of the bar's own height
-      const barPx = (h / 100) * TL_H;
-      const iconSize = Math.min(BAR_ICON_MAX, barPx * 0.9);
-      const icon = (e.logo || e.logoDark)
-        ? `<img class="exp__bar-icon" style="width:${iconSize}px;height:${iconSize}px" src="${logoFor(e)}" data-logo-light="${e.logo || e.logoDark}"${e.logoDark ? ` data-logo-dark="${e.logoDark}"` : ''} alt="" aria-hidden="true">`
-        : '';
-      html += `<button class="exp__bar exp__bar--${tr.cls}${e.featured ? ' is-featured' : ''}" data-id="${e.id}"`
-        + ` style="top:${top}%;height:${h}%;left:${left}%;width:${width}%"`
-        + ` title="${esc(e.role)} · ${esc(e.period)}"`
-        + ` aria-label="${esc(e.label)}">`
-        + `<span class="exp__bar-label">${icon}<span class="marquee"><span class="marquee__track">${star}${esc(SHORT[e.id] || e.label)}</span></span></span>`
-        + `<span class="exp__bar-period mono"><span class="marquee"><span class="marquee__track">${esc(e.period)}</span></span></span>`
-        + `</button>`;
-    });
-    // points sit on top as milestone dots
-    JOURNEY.filter((e) => e.kind === 'point').forEach((e) => {
-      const top = 100 - pct(e.start);
-      const tr = trackOf(e);
-      html += `<button class="exp__bar exp__bar--point exp__bar--${tr.cls}" data-id="${e.id}"`
-        + ` style="top:${top}%;" aria-label="${esc(e.label)}">`
-        + `<span class="exp__bar-point-lbl">${esc(SHORT[e.id] || e.label)}</span>`
-        + `</button>`;
-    });
-    lanesEl.innerHTML = html;
-    initMarquees(lanesEl);
+    const renderBars = () => {
+      let html = '';
+      spans.forEach((raw) => {
+        const e = loc(raw);
+        const trueH = pct(e.end) - pct(e.start);
+        const topS = 100 - pct(e.start); // lower boundary (earlier time)
+        // gap to the next-later item in the same lane - caps how far we may grow.
+        const laneArr = lanes[e.lane] || [];
+        const idx = laneArr.indexOf(raw);
+        const above = idx + 1 < laneArr.length ? laneArr[idx + 1] : null;
+        const gapAbove = above ? pct(above.start) - pct(e.end) : Infinity;
+        // grow toward the start boundary (upward) but never past the neighbor above.
+        const h = Math.max(trueH, Math.min(3.0, trueH + Math.max(0, gapAbove)));
+        const top = topS - h;
+        const width = widthOf(raw);
+        const left = leftOf(raw);
+        const tr = trackOf(e);
+        const star = e.featured ? '<span class="exp__bar-star" aria-hidden="true">&#9733;</span>' : '';
+        // icon scales up to 3x its base size, but never past 90% of the bar's own height
+        const barPx = (h / 100) * TL_H;
+        const iconSize = Math.min(BAR_ICON_MAX, barPx * 0.9);
+        const icon = (e.logo || e.logoDark)
+          ? `<img class="exp__bar-icon" style="width:${iconSize}px;height:${iconSize}px" src="${logoFor(e)}" data-logo-light="${e.logo || e.logoDark}"${e.logoDark ? ` data-logo-dark="${e.logoDark}"` : ''} alt="" aria-hidden="true">`
+          : '';
+        html += `<button class="exp__bar exp__bar--${tr.cls}${e.featured ? ' is-featured' : ''}" data-id="${e.id}"`
+          + ` style="top:${top}%;height:${h}%;left:${left}%;width:${width}%"`
+          + ` title="${esc(e.role)} · ${esc(e.period)}"`
+          + ` aria-label="${esc(e.short)}">`
+          + `<span class="exp__bar-label">${icon}<span class="marquee"><span class="marquee__track">${star}${esc(e.short)}</span></span></span>`
+          + `<span class="exp__bar-period mono"><span class="marquee"><span class="marquee__track">${esc(e.period)}</span></span></span>`
+          + `</button>`;
+      });
+      // points sit on top as milestone dots
+      JOURNEY.filter((e) => e.kind === 'point').map(loc).forEach((e) => {
+        const top = 100 - pct(e.start);
+        const tr = trackOf(e);
+        html += `<button class="exp__bar exp__bar--point exp__bar--${tr.cls}" data-id="${e.id}"`
+          + ` style="top:${top}%;" aria-label="${esc(e.short)}">`
+          + `<span class="exp__bar-point-lbl">${esc(e.short)}</span>`
+          + `</button>`;
+      });
+      lanesEl.innerHTML = html;
+      initMarquees(lanesEl);
+      $$('.exp__bar', lanesEl).forEach((bar) => bar.addEventListener('click', () => open(bar.dataset.id)));
+    };
 
     // green freelance rail: spans 2019-2027, fixed 15%-ish column, never splits
     if (freelanceEl) {
@@ -794,9 +818,12 @@
     const detailInner = $('[data-js-hook="detailInner"]');
     const detailClose = $('[data-js-hook="detailClose"]');
 
+    let openId = null;
     const open = (id) => {
-      const e = id === 'freelance' ? FREELANCE_ENTRY : JOURNEY.find((x) => x.id === id);
-      if (!e || !detail) return;
+      const raw = id === 'freelance' ? FREELANCE_ENTRY : JOURNEY.find((x) => x.id === id);
+      if (!raw || !detail) return;
+      const e = loc(raw);
+      openId = id;
       $$('.exp__bar.is-active, .exp__freelance-bar.is-active').forEach((b) => b.classList.remove('is-active'));
       const btn = $(`[data-id="${id}"]`, lanesEl.parentElement) || $(`[data-id="${id}"]`);
       if (btn) btn.classList.add('is-active');
@@ -826,7 +853,7 @@
         if (!images[idx]) return;
         mImg.addEventListener('error', () => {
           const wrap = mImg.parentElement;
-          const ph = `<div class="detail__placeholder">// add image<br>${esc(images[idx])}</div>`;
+          const ph = `<div class="detail__placeholder">${esc(t('detail.addImage'))}<br>${esc(images[idx])}</div>`;
           if (wrap && wrap.classList.contains('detail__gallery')) mImg.outerHTML = ph;
           else if (wrap) wrap.innerHTML = ph;
         });
@@ -835,19 +862,22 @@
 
     const close = () => {
       if (!detail) return;
+      openId = null;
       detail.hidden = true;
       $$('.exp__bar.is-active, .exp__freelance-bar.is-active').forEach((b) => b.classList.remove('is-active'));
     };
 
     // ---- list view: work experience first, then education (each newest-first) ----
     const listEl = $('[data-js-hook="journeyList"]');
-    if (listEl) {
+    const renderList = () => {
+      if (!listEl) return;
       const spans = [...JOURNEY].filter((e) => e.kind !== 'point');
       const byStartDesc = (a, b) => b.start - a.start;
       const work = spans.filter((e) => e.kind !== 'edu' && e.kind !== 'activity').sort(byStartDesc);
       const edu = spans.filter((e) => e.kind === 'edu').sort(byStartDesc);
       const act = spans.filter((e) => e.kind === 'activity').sort(byStartDesc);
-      const itemHtml = (e) => {
+      const itemHtml = (raw) => {
+        const e = loc(raw);
         const tr = trackOf(e);
         const logo = (e.logo || e.logoDark)
           ? `<div class="exp-item__logo"><img src="${logoFor(e)}" data-logo-light="${e.logo || e.logoDark}"${e.logoDark ? ` data-logo-dark="${e.logoDark}"` : ''} alt="" aria-hidden="true"></div>`
@@ -867,12 +897,12 @@
         + `<span class="exp-list__head mono${isFirst ? '' : ' exp-list__head--gap'}">${label}</span>`
         + items.map(itemHtml).join('')
         + `</div>`;
-      listEl.innerHTML = groupHtml('work experience', work, true)
-        + groupHtml('education', edu, false)
-        + (act.length ? groupHtml('activities and societies', act, false) : '');
+      listEl.innerHTML = groupHtml(t('list.work'), work, true)
+        + groupHtml(t('list.edu'), edu, false)
+        + (act.length ? groupHtml(t('list.act'), act, false) : '');
       $$('.exp-item', listEl).forEach((btn) => btn.addEventListener('click', () => open(btn.dataset.id)));
       initMarquees(listEl);
-    }
+    };
 
     // ---- chart / list tab toggle ----
     const tabsEl = $('[data-js-hook="expTabs"]');
@@ -895,14 +925,22 @@
       });
     }
 
-    $$('.exp__bar', lanesEl).forEach((bar) => bar.addEventListener('click', () => open(bar.dataset.id)));
     const fBar = $('.exp__freelance-bar', freelanceEl);
     fBar?.addEventListener('click', () => open('freelance'));
     detailClose?.addEventListener('click', close);
     document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') close(); });
+
+    renderBars();
+    renderList();
+    // re-render all text in the current language, keeping an open detail open
+    return () => {
+      renderBars();
+      renderList();
+      if (openId) open(openId);
+    };
   }
 
-  buildTimeline();
+  const rerenderTimeline = buildTimeline();
 
   // ===========================================================================
   // THUMB PLACEHOLDERS - swap to "// add image" when the image is missing
@@ -988,11 +1026,11 @@
       }
       const hint = contactBtn.querySelector('.contact-me__hint');
       contactBtn.classList.add('copied');
-      if (hint) hint.textContent = '[copied]';
-      setTimeout(() => { contactBtn.classList.remove('copied'); if (hint) hint.textContent = '[click]'; }, 1600);
+      if (hint) hint.textContent = t('contact.copied');
+      setTimeout(() => { contactBtn.classList.remove('copied'); if (hint) hint.textContent = t('contact.click'); }, 1600);
     };
 
-    contactBtn.addEventListener('mouseenter', () => animatePixelate(contactBtn.dataset.hover, 9, 1, 320));
+    contactBtn.addEventListener('mouseenter', () => animatePixelate(t('contact.hover'), 9, 1, 320));
     contactBtn.addEventListener('mouseleave', () => cancelAnimationFrame(raf));
     contactBtn.addEventListener('click', copyEmail);
   }
@@ -1036,7 +1074,7 @@
   const applyTheme = (theme) => {
     document.documentElement.setAttribute('data-theme', theme);
     if (metaThemeColor) metaThemeColor.setAttribute('content', THEME_BG[theme]);
-    themeToggle?.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    themeToggle?.setAttribute('aria-label', t(theme === 'dark' ? 'theme.toLight' : 'theme.toDark'));
     swarmEngine?.updateTheme();
     refreshThemedLogos();
   };
@@ -1046,6 +1084,35 @@
     applyTheme(next);
   });
   applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+  // ===========================================================================
+  // LANGUAGE SWITCH (en / de / ko)
+  // Markup text is tagged with data-i18n; English is read from the markup the
+  // first time an element is translated, so index.html stays the source.
+  // ===========================================================================
+  const langSwitch = $('[data-js-hook="langSwitch"]');
+  const applyLang = (next) => {
+    lang = next;
+    document.documentElement.setAttribute('lang', lang);
+    $$('[data-i18n]').forEach((el) => {
+      if (el.dataset.i18nEn === undefined) el.dataset.i18nEn = el.innerHTML;
+      const tr = STRINGS[lang] && STRINGS[lang][el.dataset.i18n];
+      el.innerHTML = lang === 'en' || tr === undefined ? el.dataset.i18nEn : tr;
+    });
+    if (contactText) contactText.textContent = t('contact.default');
+    const hint = contactBtn && contactBtn.querySelector('.contact-me__hint');
+    if (hint && !contactBtn.classList.contains('copied')) hint.textContent = t('contact.click');
+    themeToggle?.setAttribute('aria-label', t(currentTheme() === 'dark' ? 'theme.toLight' : 'theme.toDark'));
+    $$('.lang-switch__btn', langSwitch).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    rerenderTimeline();
+  };
+  langSwitch?.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.lang-switch__btn');
+    if (!btn || btn.dataset.lang === lang) return;
+    try { localStorage.setItem('lang', btn.dataset.lang); } catch (e) {}
+    applyLang(btn.dataset.lang);
+  });
+  if (lang !== 'en') applyLang(lang);
 
   // ===========================================================================
   // SCROLL REVEAL
