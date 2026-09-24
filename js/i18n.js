@@ -43,7 +43,7 @@ export const STRINGS = {
     'fact.experience.v': '4 Jahre Erfahrung in Data Engineering, Full-Stack-Entwicklung, Lehre und Projektmanagement',
     'fact.languages.v': 'Deutsch (Muttersprache), Englisch (fließend), Koreanisch (Grundwissen)',
 
-    'col.journey': 'erfahrung<br>&amp; ausbildung',
+    'col.journey': 'Erfahrung<br>&amp; Ausbildung',
     'tab.chart': 'Kalendar',
     'tab.list': 'Liste',
     'freelance': 'Freelance &amp; Side-Projects',
