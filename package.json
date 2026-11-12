@@ -1,5 +1,5 @@
 {
   "name": "wellbek.github.io",
-  "description": "Louis Wellmeyer's portfolio site - horizontal column deck, terminal aesthetic, procedural ASCII boid swarm. Static site served via GitHub Pages; css/styles.css is hand-authored and is the single source of truth (no build step).",
+  "description": "Louis Wellmeyer's personal academic homepage - single page, monochrome stipple look. Static site served via GitHub Pages; css/site.css is hand-authored and is the single source of truth (no build step).",
   "private": true
 }

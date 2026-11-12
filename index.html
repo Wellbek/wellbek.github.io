@@ -1,448 +1,380 @@
 <!DOCTYPE html>
-<html lang="en" data-mode="portfolio">
+<html lang="en" data-theme="dusk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Louis Wellmeyer - Data Science Graduate @KAIST, ex-GCF under UNFCCC.">
-  <meta name="theme-color" content="#f6f6f4" data-js-hook="metaThemeColor">
-  <meta property="og:title" content="Louis Wellmeyer">
-  <meta property="og:description" content="Data Science Graduate @KAIST - ex-GCF under UNFCCC">
-  <meta property="og:url" content="https://wellbek.github.io">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Louis Wellmeyer</title>
+  <meta name="description" content="Louis Wellmeyer - M.S. student in Data Science at KAIST. Research on LLM post-training, scheduling optimization, and simulation in manufacturing.">
+  <meta name="theme-color" content="#12141a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Louis Wellmeyer">
+  <meta property="og:description" content="M.S. student in Data Science at KAIST. LLM post-training, scheduling optimization, and simulation in manufacturing.">
+  <meta property="og:url" content="https://wellbek.github.io/">
+  <meta property="og:image" content="https://wellbek.github.io/assets/images/profile.jpg">
+  <link rel="icon" href="assets/images/favicon-lw.svg" type="image/svg+xml">
 
   <script>
+    /* Set the theme before first paint (default: dusk). */
     (function () {
-      var t;
-      try { t = localStorage.getItem('theme'); } catch (e) {}
-      document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+      var t = 'dusk';
+      try { var s = localStorage.getItem('theme'); if (s === 'paper' || s === 'dusk') t = s; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-  <link rel="icon" href="assets/images/favicon-lw.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Louis Wellmeyer",
-    "jobTitle": "Data Scientist",
-    "telephone": "+82-10-4214-2866",
+    "jobTitle": "Graduate student, Data Science",
+    "affiliation": { "@type": "CollegeOrUniversity", "name": "KAIST" },
     "email": "wellmeyer.louis@gmail.com",
-    "url": "https://wellbek.github.io",
+    "url": "https://wellbek.github.io/",
     "sameAs": ["https://github.com/wellbek", "https://www.linkedin.com/in/louiswellmeyer"]
   }
   </script>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <!-- ════ Background layers ════ -->
-  <canvas id="dragon-canvas" aria-hidden="true"></canvas>
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-veil" aria-hidden="true"></div>
-  <div class="scanlines" aria-hidden="true"></div>
+  <div class="page" id="top">
+    <div class="banner" aria-hidden="true"></div>
 
-  <!-- ════ Header ════ -->
-  <header class="site-header" data-js-hook="siteHeader">
-    <a href="#profile" class="brand" aria-label="Home">
-      <span class="brand__bracket">[</span>louis<span class="brand__bracket">]</span>
-    </a>
-    <div class="nav__actions">
-      <a href="assets/Louis_Wellmeyer_CV.pdf" target="_blank" rel="noopener" class="nav__cv" title="Curriculum Vitae">cv.pdf</a>
-      <button class="deck__arrow deck__arrow--left" data-js-hook="deckLeft" aria-label="Previous columns">&lsaquo;</button>
-      <button class="deck__arrow deck__arrow--right" data-js-hook="deckRight" aria-label="More columns">&rsaquo;</button>
-      <div class="lang-switch" data-js-hook="langSwitch" role="group" aria-label="Language">
-        <button class="lang-switch__btn mono" data-lang="en" lang="en" aria-pressed="true" title="English">EN</button>
-        <button class="lang-switch__btn mono" data-lang="de" lang="de" aria-pressed="false" title="Deutsch">DE</button>
-        <button class="lang-switch__btn mono" data-lang="ko" lang="ko" aria-pressed="false" title="한국어">KO</button>
-      </div>
-      <button class="deck__arrow theme-toggle" data-js-hook="themeToggle" aria-label="Switch to dark theme" title="Toggle light/dark theme">
-        <svg class="theme-toggle__icon theme-toggle__icon--sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-        </svg>
-        <svg class="theme-toggle__icon theme-toggle__icon--moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-      </button>
-    </div>
-  </header>
+    <header class="nav">
+      <nav class="nav__in" aria-label="Main">
+        <a class="brand" href="#top">Louis Wellmeyer</a>
+        <a href="#research">Research</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="cv.html">CV</a>
+        <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to the paper theme">paper</button>
+      </nav>
+    </header>
 
-  <div class="deck__fade deck__fade--left" data-js-hook="deckFadeLeft" aria-hidden="true"></div>
-  <div class="deck__fade deck__fade--right" data-js-hook="deckFadeRight" aria-hidden="true"></div>
+    <main class="wrap" id="main">
 
-  <main id="top" class="deck">
-
-    <!-- ════ PROFILE + ABOUT COLUMN ════ -->
-    <section class="col col--profile" id="profile">
-      <div class="col__body">
-        <div class="profile__photo thumb">
-          <img src="assets/images/profile.png" alt="Louis Wellmeyer">
-          <span class="thumb__missing mono">// add photo<br>assets/images/profile.png</span>
-        </div>
-        <h1 class="profile__name">Louis&nbsp;Wellmeyer</h1>
-        <p class="profile__title mono">M.S. Data Science @KAIST <span class="dim">-</span> ex-GCF (UNFCCC)</p>
-        <p class="profile__sub" data-i18n="profile.sub">AI Systems • Data Engineering • IT Project Management • Enterprise Platforms</p>
-        <div class="profile__contact">
-          <button class="contact-me" data-js-hook="contactMe"
-                  data-email="wellmeyer.louis@gmail.com">
-            <span class="contact-me__text" data-js-hook="contactText">contact me</span>
-            <canvas class="contact-me__px" data-js-hook="contactPx" aria-hidden="true"></canvas>
-            <span class="contact-me__hint mono">[click]</span>
-          </button>
-          <a class="chip chip--phone" href="tel:+8242142866">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.46 15.46 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24a11.36 11.36 0 0 0 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1a11.36 11.36 0 0 0 .57 3.57a1 1 0 0 1-.24 1.02l-2.2 2.2z"/></svg>
-            +82-10-4214-2866
-          </a>
-          <a class="chip" href="assets/Louis_Wellmeyer_CV.pdf" target="_blank" rel="noopener">cv.pdf</a>
-        </div>
-        <p class="profile__loc mono"><span class="dot"></span> <span data-i18n="profile.loc">Seoul, KR · prev. Aachen, DE</span></p>
-        <p class="profile__loc mono" data-i18n="profile.langs">German (Native), English (Fluent), Korean (Intermediate)</p>
-        <div class="profile__socials">
-          <a href="https://github.com/wellbek" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/louiswellmeyer" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </a>
-        </div>
-
-        <div class="about">
-          <p class="about__text" data-i18n="about.lede">
-          I'm Louis, a software and data scientist, engineer passionate about designing large-scale systems, particularly those involving complex and data-intensive workloads. My professional experience spans AI, data engineering, enterprise software, and technical project management across research, industry, and international organizations.
+      <!-- ===== header ===== -->
+      <div class="hero">
+        <img class="portrait" src="assets/images/profile.jpg" width="128" height="128" alt="Portrait of Louis Wellmeyer">
+        <div class="hero__text">
+          <h1>Louis Wellmeyer</h1>
+          <p class="role">M.S. student in Data Science, KAIST</p>
+          <p class="meta">Daejeon / Seoul, South Korea</p>
+          <p class="links">
+            <a href="mailto:wellmeyer.louis@gmail.com">Email</a><span>|</span>
+            <a href="cv.html">CV</a><span>|</span>
+            <a href="https://github.com/wellbek" target="_blank" rel="noopener noreferrer">GitHub</a><span>|</span>
+            <a href="https://www.linkedin.com/in/louiswellmeyer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </p>
-          <p class="about__text" data-i18n="about.body">
-          During my time at the
-          <a href="https://greenclimate.fund/" target="_blank" rel="noopener noreferrer" class="hi">Green Climate Fund</a>,
-          I worked as a Technical Business Partner, leading cross-functional digital transformation initiatives while developing AI-powered applications, enterprise platforms, and large-scale climate data pipelines. Previously, I built analytics platforms, taught data science at RWTH Aachen, and rebuilt enterprise software from the ground up. I'm currently pursuing my M.S. in Data Science at KAIST, where I research reinforcement learning for manufacturing scheduling in the <span class="hi">System Analytics Lab</span> under Professor <a href="mailto:hyshin@kaist.edu" class="hi">Dr. Hayong Shin</a>, with a focus on policy optimization and state-of-the-art LLM post-training methods (TRPO, PPO, GRPO and variants).
-          </p>
-          <div class="facts" role="list">
-            <div class="fact" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.role">role</span>
-              <span class="fact__value">AI Systems Engineer · Data Engineer · Technical PM</span>
-            </div>
+        </div>
+      </div>
 
-            <div class="fact" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.interests">interests</span>
-              <span class="fact__value" data-i18n="fact.interests.v">Scheduling, Simulation, Reinforcement Learning, LLMs</span>
-            </div>
+      <!-- ===== about ===== -->
+      <div class="about">
+        <p>I am an M.S. student in Data Science at KAIST, advised by <a href="mailto:hyshin@kaist.edu">Professor Hayong Shin</a> in the <a href="http://sal.kaist.ac.kr/" target="_blank" rel="noopener noreferrer">System Analytics Lab</a> at KAIST. My general research focus is on LLM post-training methods, optimization (scheduling), and simulation particularly in the manufacturing domain.</p>
+        <p>I earned my B.Sc. (2025) in Computer Science from RWTH Aachen University. My bachelor thesis, written at the Chair of Software Engineering, studied voice input for structured data entry through LLMs. At RWTH's Learning Technologies group I was a research assistant in data engineering and a teaching assistant for data science. Before starting at KAIST, I spent a year in the IT department of the <a href="https://greenclimate.fund/" target="_blank" rel="noopener noreferrer">Green Climate Fund</a> (UNFCCC) in Songdo as a Technical Business Partner, where I led IT initiatives as a Project Manager and had the opportunity to build data pipelines and AI tooling.</p>
+        <p>I have been making small games and applications since early middle school; for a full list, see <a href="https://github.com/wellbek" target="_blank" rel="noopener noreferrer">my GitHub</a>.</p>
+        <p>Outside of research, I like staying active and have played football all my life. I grew up raising multiple pets, and I enjoy installation art and galleries.</p>
+      </div>
 
-            <div class="fact" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.stack">stack</span>
-              <span class="fact__value">Python, Go, SQL // Pandas, Scikit-learn, PyTorch // FastAPI, REST APIs, PostgreSQL, Redis, MongoDB // Docker, Kubernetes, Git, Azure, GitHub Actions</span>
-            </div>
+      <div class="dots" aria-hidden="true"></div>
 
-            <div class="fact" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.experience">experience</span>
-              <span class="fact__value" data-i18n="fact.experience.v">4 YoE across data engineering, fullstack dev, teaching, and project management</span>
-            </div>
+      <!-- ===== news ===== -->
+      <section id="news" aria-labelledby="h-news">
+        <h2 id="h-news">News</h2>
+        <ul class="news">
+          <li><time datetime="2026-09">Sep 2026</time><span>Started the M.S. in Data Science at KAIST, joining the System Analytics Lab.</span></li>
+          <li><time datetime="2026-07">Jul 2026</time><span>Finished a year as Technical Business Partner at the Green Climate Fund (UNFCCC).</span></li>
+          <li><time datetime="2025">2025</time><span>Finalist at Hack Seoul 2025 (AngelHack x Coupang) with an agentic product-insight API.</span></li>
+          <li><time datetime="2025-04">Apr 2025</time><span>Completed my B.Sc. in Computer Science at RWTH Aachen University.</span></li>
+        </ul>
+      </section>
 
-            <div class="fact" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.current">current</span>
-              <span class="fact__value">M.S. Data Science @ KAIST GSDS · System Analytics Lab</span>
-            </div>
+      <div class="dots" aria-hidden="true"></div>
 
-            <div class="fact" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.previous">previous</span>
-              <span class="fact__value">Technical Business Partner @ Green Climate Fund (UNFCCC)</span>
+      <!-- ===== research ===== -->
+      <section id="research" aria-labelledby="h-research">
+        <h2 id="h-research">Research</h2>
+        <p class="interests"><b>Interests:</b> LLM post-training methods, optimization (scheduling), and simulation, particularly in the manufacturing domain. Currently at the <a href="http://sal.kaist.ac.kr/" target="_blank" rel="noopener noreferrer">System Analytics Lab</a>, KAIST.</p>
+        <ol class="pubs" style="margin-top:14px">
+          <li>
+            <span class="code">[T1]</span>
+            <div>
+              <h3>Enabling Voice Input for Data Entry through LLMs in MontiGem</h3>
+              <p class="venue">Bachelor thesis, Chair of Software Engineering, RWTH Aachen University, 2024/25</p>
+              <p>Natural-language voice input for structured data entry in the MontiGem framework, using LLMs for intent parsing and slot filling.</p>
+              <a class="lnk" href="assets/publications/Enabling_Voice_Input_for_Data_Entry_through_LLMs_in_MontiGem.pdf" target="_blank" rel="noopener">PDF</a>
+              <a class="lnk" href="https://github.com/Wellbek/SpeechFunctionCaller" target="_blank" rel="noopener noreferrer">Code</a>
             </div>
+          </li>
+          <li>
+            <span class="code">[S1]</span>
+            <div>
+              <h3>Pursuing Ideal Regression Testing for HPC: A Comparative Framework Analysis</h3>
+              <p class="venue">Seminar paper, High-Performance Computing, RWTH Aachen University, 2023/24</p>
+              <p>Comparative analysis of regression-testing frameworks for HPC, evaluating correctness, overhead, and scalability across parallel environments.</p>
+              <a class="lnk" href="assets/publications/Pursuing_Ideal_Regression_Testing_for_HPC_A_Comparative_Framework_Analysis.pdf" target="_blank" rel="noopener">PDF</a>
+            </div>
+          </li>
+          <li>
+            <span class="code">[S2]</span>
+            <div>
+              <h3>Simulating Stiffness of Virtual Objects with Haptic Jamming Devices: An Overview</h3>
+              <p class="venue">Seminar paper, Virtual Reality, RWTH Aachen University, 2022</p>
+              <p>Overview of techniques for simulating varying stiffness in virtual objects using haptic jamming interfaces: particle, layer, and hybrid approaches.</p>
+              <a class="lnk" href="assets/publications/Simulating_Stiffness_of_Virtual_Objects_with_Haptic_Jamming_Devices_An_Overview.pdf" target="_blank" rel="noopener">PDF</a>
+            </div>
+          </li>
+        </ol>
+      </section>
 
-            <div class="fact" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.languages">languages</span>
-              <span class="fact__value" data-i18n="fact.languages.v">German (Native), English (Fluent), Korean (Intermediate)</span>
-            </div>
+      <div class="dots" aria-hidden="true"></div>
 
-            <div class="fact fact--joke" role="listitem">
-              <span class="fact__label mono" data-i18n="fact.setup">Primary Coding Setup</span>
-              <span class="fact__value">Arch Linux, Neovim // Claude Code with GLM, Claude, Deepseek</span>
-            </div>
+      <!-- ===== experience & education ===== -->
+      <section id="experience" aria-labelledby="h-experience">
+        <h2 id="h-experience">Education and experience</h2>
+
+        <h3 class="sub">Education</h3>
+
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/kaist.png" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>M.S., Data Science</h3><span class="when">Sep 2026 - Aug 2028</span></div>
+            <p class="org">KAIST, Graduate School of Data Science, Daejeon, South Korea</p>
+            <ul>
+              <li>Reinforcement learning for manufacturing scheduling in the System Analytics Lab, advised by Professor Hayong Shin.</li>
+              <li>Focus on policy optimization and LLM post-training methods (TRPO, PPO, GRPO and variants).</li>
+              <li>Simulation-based evaluation of learned scheduling policies against classical dispatching and optimization baselines.</li>
+            </ul>
           </div>
-        </div>
-      </div>
-    </section>
+        </article>
 
-    <!-- ════ EXPERIENCE & EDUCATION COLUMN (chart / list) ════ -->
-    <section class="col col--journey" id="journey">
-      <div class="col__head">
-        <h2 class="col__title" data-i18n="col.journey">experience<br>&amp; education</h2>
-      </div>
-      <div class="col__body">
-        <div class="exp-tabs" data-js-hook="expTabs" role="tablist" aria-label="Experience view">
-          <button class="exp-tab is-active" data-view="chart" role="tab" aria-selected="true" data-i18n="tab.chart">chart</button>
-          <button class="exp-tab" data-view="list" role="tab" aria-selected="false" data-i18n="tab.list">list</button>
-        </div>
-        <div class="exp-view" data-js-hook="expViewChart">
-          <div class="exp" data-js-hook="journey">
-            <div class="exp__axis mono" data-js-hook="journeyAxis" aria-hidden="true"></div>
-            <div class="exp__body">
-              <div class="exp__lanes" data-js-hook="journeyLanes"></div>
-              <div class="exp__freelance" data-js-hook="journeyFreelance">
-                <button class="exp__freelance-bar" data-id="freelance" aria-label="Freelance and side projects">
-                  <span class="exp__freelance-text" data-i18n="freelance">Freelance & Side Projects</span>
-                </button>
-              </div>
-              <div class="exp__now mono" data-js-hook="journeyNow" aria-hidden="true"><span data-i18n="now">now</span></div>
-            </div>
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/rwth.png" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>B.Sc., Computer Science</h3><span class="when">Oct 2021 - Sep 2025</span></div>
+            <p class="org">RWTH Aachen University, Aachen, Germany</p>
+            <ul>
+              <li>Foundation in mathematics, algorithms, software engineering, databases, operating systems, and distributed systems, with advanced coursework in machine learning, data science, and software architecture.</li>
+              <li>Thesis: <a href="#research">Enabling Voice Input for Data Entry through LLMs in MontiGem</a>.</li>
+            </ul>
           </div>
-          <p class="journey__hint mono" data-i18n="journey.hint">// click a block to expand details</p>
-          <div class="exp__legend mono" aria-hidden="true">
-            <span><i class="lg lg--edu"></i><span data-i18n="legend.edu">Education</span></span>
-            <span><i class="lg lg--ibb"></i>Ibbenbüren, DE</span>
-            <span><i class="lg lg--aachen"></i>Aachen, DE</span>
-            <span><i class="lg lg--seoul"></i>Seoul, KR</span>
+        </article>
+
+        <h3 class="sub">Experience</h3>
+
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/dlr.svg" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>Scientific Researcher (Intern) <span class="badge">incoming</span></h3><span class="when">From Jan 2027</span></div>
+            <p class="org">German Aerospace Center (DLR), Institute of Flight Systems, Unmanned Aerial Vehicles, Braunschweig, Germany</p>
+            <ul>
+              <li>Multi-agent deep reinforcement learning for UAVs: working with a multi-agent RL training environment and extending it with UAV-relevant features.</li>
+            </ul>
           </div>
-        </div>
-        <div class="exp-view" data-js-hook="expViewList" hidden>
-          <div class="exp-list" data-js-hook="journeyList"></div>
-        </div>
-        <div class="detail" data-js-hook="journeyDetail" hidden>
-          <button class="detail__close mono" data-js-hook="detailClose" aria-label="Close">[ esc ]</button>
-          <div class="detail__inner" data-js-hook="detailInner"></div>
-        </div>
-      </div>
-    </section>
+        </article>
 
-    <!-- ════ RESEARCH COLUMN ════ -->
-    <section class="col" id="research">
-      <div class="col__head">
-        <h2 class="col__title" data-i18n="col.research">research</h2>
-      </div>
-      <div class="col__body">
-        <div class="pubs">
-          <article class="pub">
-            <div class="pub__thumb thumb">
-              <img src="assets/images/research/voice-input-montigem.png" alt="Voice Input for Data Entry">
-              <span class="thumb__missing mono">// add image<br>research/voice-input-montigem.png</span>
-            </div>
-            <div class="pub__body">
-              <h3 class="pub__title">Enabling Voice Input for Data Entry through LLMs in MontiGem</h3>
-              <p class="pub__meta mono"><span data-i18n="pub.thesis">Bachelor Thesis · RWTH SE</span><span>2024/25</span></p>
-              <p class="pub__abstract" data-i18n="pub.voice.abs">Natural-language voice input for structured data entry in the MontiGem framework, using LLMs for intent parsing and slot filling.</p>
-              <a class="pub__link mono" href="assets/publications/Enabling_Voice_Input_for_Data_Entry_through_LLMs_in_MontiGem.pdf" target="_blank" rel="noopener" data-i18n="pub.read">&rarr; read paper</a>
-              <a class="pub__link mono" href="https://github.com/Wellbek/SpeechFunctionCaller" target="_blank" rel="noopener" data-i18n="pub.code">&rarr; code</a>
-            </div>
-          </article>
-          <article class="pub">
-            <div class="pub__thumb thumb">
-              <img src="assets/images/research/hpc-regression-testing.png" alt="HPC Regression Testing">
-              <span class="thumb__missing mono">// add image<br>research/hpc-regression-testing.png</span>
-            </div>
-            <div class="pub__body">
-              <h3 class="pub__title">Pursuing Ideal Regression Testing for HPC: A Comparative Framework Analysis</h3>
-              <p class="pub__meta mono"><span data-i18n="pub.hpc.meta">Seminar · RWTH HPC</span><span>2023/24</span></p>
-              <p class="pub__abstract" data-i18n="pub.hpc.abs">Comparative analysis of regression-testing frameworks for HPC, evaluating correctness, overhead, and scalability across parallel environments.</p>
-              <a class="pub__link mono" href="assets/publications/Pursuing_Ideal_Regression_Testing_for_HPC_A_Comparative_Framework_Analysis.pdf" target="_blank" rel="noopener" data-i18n="pub.read">&rarr; read paper</a>
-            </div>
-          </article>
-          <article class="pub">
-            <div class="pub__thumb thumb">
-              <img src="assets/images/research/haptic-jamming.png" alt="Haptic Jamming Stiffness">
-              <span class="thumb__missing mono">// add image<br>research/haptic-jamming.png</span>
-            </div>
-            <div class="pub__body">
-              <h3 class="pub__title">Simulating Stiffness of Virtual Objects with Haptic Jamming Devices: An Overview</h3>
-              <p class="pub__meta mono"><span data-i18n="pub.vr.meta">Seminar · RWTH VR</span><span>2022</span></p>
-              <p class="pub__abstract" data-i18n="pub.vr.abs">Overview of techniques for simulating varying stiffness in virtual objects using haptic jamming interfaces - particle, layer, and hybrid approaches.</p>
-              <a class="pub__link mono" href="assets/publications/Simulating_Stiffness_of_Virtual_Objects_with_Haptic_Jamming_Devices_An_Overview.pdf" target="_blank" rel="noopener" data-i18n="pub.read">&rarr; read paper</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════ SIDE PROJECTS COLUMN ════ -->
-    <section class="col col--projects" id="projects">
-      <div class="col__head">
-        <h2 class="col__title" data-i18n="col.projects">side<br>projects</h2>
-      </div>
-      <div class="col__body">
-        <!-- featured: horizontal scroll row - add more <article class="proj proj--featured"> cards here -->
-        <div class="featured" data-js-hook="featured">
-          <article class="proj proj--featured">
-            <div class="proj__thumb thumb">
-              <img src="assets/images/projects/thinkslides.png" alt="ThinkSlides">
-              <span class="thumb__missing mono">// add image<br>projects/thinkslides.png</span>
-            </div>
-            <div class="proj__body">
-              <div class="proj__head"><span class="proj__lang mono">Next.js · Go · Python</span></div>
-              <h3 class="proj__name" data-i18n="proj.thinkslides.name">Multi-Agent Presentation Generation</h3>
-              <p class="proj__desc" data-i18n="proj.thinkslides.desc">Multi-tenant app generating branded PowerPoint via a ReAct agent that streams thoughts + tool calls over SSE. 5-service stack.</p>
-              <a class="proj__link mono" href="https://github.com/wellbek" target="_blank" rel="noopener" data-i18n="proj.private">&rarr; private repo - ask for access</a>
-            </div>
-          </article>
-          <article class="proj proj--featured">
-            <div class="proj__thumb thumb">
-              <img src="assets/images/nasa_turbofan_twin.png" alt="NASA-Turbofan-Twin">
-              <span class="thumb__missing mono">// add image<br>nasa_turbofan_twin.png</span>
-            </div>
-            <div class="proj__body">
-              <div class="proj__head"><span class="proj__lang mono">Python</span></div>
-              <h3 class="proj__name" data-i18n="proj.nasa.name">NASA Engine Maintenance Prediction</h3>
-              <p class="proj__desc" data-i18n="proj.nasa.desc">Full data science lifecycle project to predict maintenance and model RUL of NASA rocket engines.</p>
-              <a class="proj__link mono" href="https://github.com/Wellbek/NASA-Turbofan-Twin" target="_blank" rel="noopener">&rarr; github.com/Wellbek/NASA-Turbofan-Twin</a>
-            </div>
-          </article>
-          <article class="proj proj--featured">
-            <div class="proj__thumb thumb">
-              <img src="assets/images/hackseoul2025.png" alt="GreenLense Agentic AI API">
-              <span class="thumb__missing mono">// add image<br>hackseoul2025.png</span>
-            </div>
-            <div class="proj__body">
-              <div class="proj__head"><span class="proj__lang mono">Python · OpenAI</span></div>
-              <h3 class="proj__name" data-i18n="proj.greenlense.name">Agentic product-insights API - finalist hackseoul 2025 (AngelHack x Coupang)</h3>
-              <p class="proj__desc" data-i18n="proj.greenlense.desc">Built agentic AI product-insight API within 36 hours - Hack Seoul 2025 finalist.</p>
-              <a class="proj__link mono" href="https://github.com/Wellbek/GreenLenseAPI" target="_blank" rel="noopener">&rarr; github.com/Wellbek/GreenLenseAPI</a>
-            </div>
-          </article>
-          <article class="proj proj--featured">
-            <div class="proj__thumb thumb">
-              <img src="assets/images/projects/wellm-nvim.png" alt="wellm.nvim">
-              <span class="thumb__missing mono">// add image<br>projects/wellm-nvim.png</span>
-            </div>
-            <div class="proj__body">
-              <div class="proj__head"><span class="proj__lang mono">Lua</span></div>
-              <h3 class="proj__name" data-i18n="proj.wellm.name">Neovim LLM integration plugin</h3>
-              <p class="proj__desc" data-i18n="proj.wellm.desc">Fully async, streaming LLM integration for Neovim - native function-calling, symbol-outline injection cuts context ~90%.</p>
-              <a class="proj__link mono" href="https://github.com/wellbek/wellm.nvim" target="_blank" rel="noopener">&rarr; github.com/wellbek/wellm.nvim</a>
-            </div>
-          </article>
-          <article class="proj proj--featured">
-            <div class="proj__thumb thumb">
-              <img src="assets/images/projects/construction-site-classifier.png" alt="Construction Site Classifier">
-              <span class="thumb__missing mono">// add image<br>projects/construction-site-classifier.png</span>
-            </div>
-            <div class="proj__body">
-              <div class="proj__head"><span class="proj__lang mono">Python · scikit-learn</span></div>
-              <h3 class="proj__name" data-i18n="proj.construction.name">Construction Site Image Classifier - no deep learning</h3>
-              <p class="proj__desc" data-i18n="proj.construction.desc">Worker-vs-vehicle classification from HOG shape and color-histogram features, correlation-pruned - random forest hits 90% against 80% for a linear SVM.</p>
-              <a class="proj__link mono" href="https://github.com/Wellbek/Construction-Site-Classifier" target="_blank" rel="noopener">&rarr; github.com/Wellbek/Construction-Site-Classifier</a>
-            </div>
-          </article>
-        </div>
-
-        <div class="more">
-          <div class="more__head">
-            <span class="more__label mono" data-i18n="more.label">// also built</span>
-            <a class="more__github mono" href="https://github.com/wellbek" target="_blank" rel="noopener" data-i18n="more.github">&rarr; more on github.com/wellbek</a>
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/mr-kaist.png" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>Member, Microrobot Research (club)</h3><span class="when">Sep 2026 - Aug 2028</span></div>
+            <p class="org"><a href="https://mr.kaist.ac.kr/" target="_blank" rel="noopener noreferrer">KAIST</a>, Daejeon, South Korea</p>
+            <ul>
+              <li>The only robotics club at KAIST, with a 40-year track record of student-built robotic systems.</li>
+              <li>Working on Sim2Real transfer for robot control: training and validating policies in MuJoCo and NVIDIA Omniverse Isaac Sim before deploying them on hardware.</li>
+            </ul>
           </div>
-          <div class="more__grid">
-            <a class="mini" href="https://github.com/Wellbek/PSP" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/psp-thumbnail.PNG" alt="System Programming Lab"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name">System Programming Lab</span>
-              <span class="mini__desc" data-i18n="mini.psp">A basic OS in C for a microcontroller - capped with Snake.</span>
-            </a>
-            <a class="mini" href="https://github.com/Wellbek/WeatherApp" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/weather-app-thumbnail.png" alt="Weather App"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name" data-i18n="mini.weather.name">Weather App</span>
-              <span class="mini__desc" data-i18n="mini.weather">Cross-platform Flutter weather app with live tracking.</span>
-            </a>
-            <a class="mini" href="https://github.com/Wellbek/wellbek.github.io" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/portfolio-website-thumbnail.PNG" alt="Portfolio Website"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name" data-i18n="mini.portfolio.name">Portfolio (this)</span>
-              <span class="mini__desc" data-i18n="mini.portfolio">This site - terminal aesthetic, procedural ASCII boid swarm.</span>
-            </a>
-            <a class="mini" href="https://github.com/Wellbek/customphysics" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/game-physics-thumbnail.PNG" alt="Game Physics Lab"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name">Game Physics Lab</span>
-              <span class="mini__desc" data-i18n="mini.physics">Custom Godot physics engine powering a 3D tower-defense game.</span>
-            </a>
-            <a class="mini" href="https://fekex.itch.io/watts-the-matter" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/watt-thumbnail.png" alt="Watt's The Matter!"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name">Watt's The Matter!</span>
-              <span class="mini__desc" data-i18n="mini.watt">48h RWTH Game Jam 2024 - placed #2 in a team of 4.</span>
-            </a>
-            <a class="mini" href="https://github.com/Wellbek/Teafight-Tactics" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/tft-thumbnail.jpg" alt="Teafight Tactics"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name">Teafight Tactics</span>
-              <span class="mini__desc" data-i18n="mini.tft">My TFT in Godot with Steamworks multiplayer.</span>
-            </a>
-            <a class="mini" href="https://github.com/Wellbek/WellSkinz" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/knifechanger-thumbnail.png" alt="Counter Strike Skinchanger"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name">CS Skinchanger</span>
-              <span class="mini__desc" data-i18n="mini.cs">Console-based external CSGO skin/knifechanger in C++.</span>
-            </a>
-            <a class="mini" href="https://github.com/Wellbek/SimplisticKart" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/simplistickart-thumbnail.png" alt="Simplistic Kart"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name">Simplistic Kart</span>
-              <span class="mini__desc" data-i18n="mini.kart">Mario-Kart-inspired Unity racer with 4-player split-screen.</span>
-            </a>
-            <a class="mini" href="https://fekex.itch.io/fleeting-fields" target="_blank" rel="noopener">
-              <div class="mini__thumb thumb"><img src="assets/images/fleetingfields-thumbnail.png" alt="Fleeting Fields"><span class="thumb__missing mono">// add image</span></div>
-              <span class="mini__name">Fleeting Fields</span>
-              <span class="mini__desc" data-i18n="mini.fleeting">48h RWTH Winter Game Jam 2025 - placed #7 in a team of 5.</span>
-            </a>
+        </article>
+
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/gcf.png" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>Technical Business Partner (Intern), IT</h3><span class="when">Jul 2025 - Jul 2026</span></div>
+            <p class="org">Green Climate Fund (UNFCCC), Songdo, South Korea</p>
+            <ul>
+              <li>Designed data pipelines and analytical models for climate-related forecasting and country vulnerability assessments (Microsoft Fabric, Kerchunk/NetCDF indexing, NLP).</li>
+              <li>Built an AI-assisted longlisting solution that improved process efficiency by over 3x while maintaining evaluation quality.</li>
+              <li>Led 18+ cross-departmental IT initiatives in parallel and planned the Fund's first Tech and AI Exhibition at Board 44, coordinating 8 departments and 16+ initiatives.</li>
+              <li>Developed enterprise Finance and HR platforms with Next.js, TypeScript, PostgreSQL, Azure, and SAML/SCIM.</li>
+            </ul>
           </div>
-        </div>
-      </div>
-    </section>
+        </article>
 
-    <!-- ════ CERTIFICATIONS COLUMN (last) ════ -->
-    <section class="col col--certs" id="certs">
-      <div class="col__head">
-        <h2 class="col__title" data-i18n="col.certs">certs</h2>
-      </div>
-      <div class="col__body">
-        <div class="certs">
-          <article class="cert">
-            <div class="cert__logo thumb thumb--sm">
-              <img src="assets/images/certs/stanford-statistics.png" alt="Stanford University">
-              <span class="thumb__missing mono">// add logo<br>certs/stanford-statistics.png</span>
-            </div>
-            <div class="cert__body">
-              <h3 class="cert__name">Introduction to Statistics</h3>
-              <p class="cert__meta mono">Stanford University · Credential ID 3789JRLMP8RI</p>
-            </div>
-          </article>
-          <a class="cert" href="https://learn.microsoft.com/en-us/users/louiswellmeyer-1608/credentials/e8606c1c4933f34" target="_blank" rel="noopener">
-            <div class="cert__logo thumb thumb--sm">
-              <img src="assets/images/certs/microsoft-mlops.png" alt="Microsoft">
-              <span class="thumb__missing mono">// add logo<br>certs/microsoft-mlops.png</span>
-            </div>
-            <div class="cert__body">
-              <h3 class="cert__name">Microsoft Certified: Machine Learning Operations Engineer Associate</h3>
-              <p class="cert__meta mono">Microsoft · Credential ID E8606C1C4933F34</p>
-            </div>
-          </a>
-          <article class="cert">
-            <div class="cert__logo thumb thumb--sm">
-              <img src="assets/images/certs/google-pm.png" alt="Google">
-              <span class="thumb__missing mono">// add logo<br>certs/google-pm.png</span>
-            </div>
-            <div class="cert__body">
-              <h3 class="cert__name">Google Project Management</h3>
-              <p class="cert__meta mono">Google · Credential ID ZEOYBZ3HVZFV</p>
-            </div>
-          </article>
-          <article class="cert">
-            <div class="cert__logo thumb thumb--sm">
-              <img src="assets/images/certs/ibm-data-science.png" alt="IBM">
-              <span class="thumb__missing mono">// add logo<br>certs/ibm-data-science.png</span>
-            </div>
-            <div class="cert__body">
-              <h3 class="cert__name">IBM Data Science</h3>
-              <p class="cert__meta mono">IBM · Credential ID UWW9J6FN4YVW</p>
-            </div>
-          </article>
-          <article class="cert">
-            <div class="cert__logo thumb thumb--sm">
-              <img src="assets/images/certs/intro-programming.png" alt="Programming">
-              <span class="thumb__missing mono">// add logo<br>certs/intro-programming.png</span>
-            </div>
-            <div class="cert__body">
-              <h3 class="cert__name">Introduction to Programming</h3>
-              <p class="cert__meta mono" data-i18n="cert.intro">Voluntary university course taken during high school</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/oelmuehle.png" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>Fullstack Developer (Intern)</h3><span class="when">Apr 2025 - May 2025</span></div>
+            <p class="org">Teutoburger &Ouml;lm&uuml;hle GmbH, Ibbenb&uuml;ren, Germany</p>
+            <ul>
+              <li>Rebuilt the company intranet from scratch with Angular and FastAPI, integrating directly with Microsoft NAV databases for real-time data.</li>
+              <li>Introduced GitHub for version control and a CI/CD pipeline with GitHub Actions.</li>
+            </ul>
+          </div>
+        </article>
 
-  </main>
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/rwth.png" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>Research Assistant, Data Engineering</h3><span class="when">Feb 2025 - May 2025</span></div>
+            <p class="org">RWTH Aachen University, Learning Technologies</p>
+            <ul>
+              <li>Designed and deployed containerized analytics engines and REST APIs (Python, Flask, Docker) for real-time analysis of student data across several German universities.</li>
+              <li>Refactored the analysis pipeline with multiprocessing-based load balancing, making processing up to 5x faster.</li>
+            </ul>
+          </div>
+        </article>
 
-  <script type="module" src="js/main.js"></script>
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/rwth.png" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>Teaching Assistant, Data Science</h3><span class="when">Oct 2024 - Apr 2025</span></div>
+            <p class="org">RWTH Aachen University, Learning Technologies</p>
+            <ul>
+              <li>Taught and mentored international groups of up to 40 students, with Python programming lessons focused on data analysis with Pandas.</li>
+              <li>Gave individual guidance, code reviews, and assignment feedback.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="logo"><img src="assets/images/logos/goethe-gymnasium-light.svg" alt="" loading="lazy"></div>
+          <div>
+            <div class="entry__head"><h3>Robotics Club President</h3><span class="when">Jul 2019 - Jul 2021</span></div>
+            <p class="org">Goethe-Gymnasium Ibbenb&uuml;ren, Germany</p>
+            <ul>
+              <li>Led weekly robotics sessions for up to 20 students, from programming basics to autonomous robotic systems.</li>
+              <li>Coordinated national-scale robotics competitions with schools across Germany.</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <div class="dots" aria-hidden="true"></div>
+
+      <!-- ===== honors ===== -->
+      <section id="honors" aria-labelledby="h-honors">
+        <h2 id="h-honors">Honors and competitions</h2>
+        <ul class="honors">
+          <li><span class="when">2025</span><span><b>Finalist</b>, Hack Seoul 2025 (AngelHack x Coupang). Built an agentic product-insight API in 36 hours.</span></li>
+          <li><span class="when">2025</span><span><b>7th place</b>, RWTH Winter Game Jam, 48 hours, team of 5: <a href="https://fekex.itch.io/fleeting-fields" target="_blank" rel="noopener noreferrer">Fleeting Fields</a>.</span></li>
+          <li><span class="when">2024</span><span><b>2nd place</b>, RWTH Game Jam, 48 hours, team of 4: <a href="https://fekex.itch.io/watts-the-matter" target="_blank" rel="noopener noreferrer">Watt's The Matter!</a></span></li>
+        </ul>
+      </section>
+
+      <div class="dots" aria-hidden="true"></div>
+
+      <!-- ===== skills + certifications ===== -->
+      <section id="skills" class="plain" aria-labelledby="h-skills">
+        <h2 id="h-skills">Skills</h2>
+        <dl>
+          <dt>languages</dt><dd>Python, Go, SQL</dd>
+          <dt>data and ML</dt><dd>Pandas, scikit-learn, PyTorch</dd>
+          <dt>backend</dt><dd>FastAPI, REST APIs, PostgreSQL, Redis, MongoDB</dd>
+          <dt>tooling</dt><dd>Docker, Kubernetes, Git, Azure, GitHub Actions</dd>
+          <dt>human languages</dt><dd>German (native), English (fluent), Korean (intermediate)</dd>
+        </dl>
+
+        <h3 style="margin-top:34px">Certifications</h3>
+        <ul class="certs">
+          <li><a href="https://learn.microsoft.com/en-us/users/louiswellmeyer-1608/credentials/e8606c1c4933f34" target="_blank" rel="noopener noreferrer">Microsoft Certified: Machine Learning Operations Engineer Associate</a></li>
+          <li>Introduction to Statistics <span>- Stanford University</span></li>
+          <li>IBM Data Science <span>- IBM</span></li>
+          <li>Google Project Management <span>- Google</span></li>
+          <li>Introduction to Programming <span>- voluntary university course taken during high school</span></li>
+        </ul>
+      </section>
+
+      <div class="dots" aria-hidden="true"></div>
+
+      <!-- ===== projects ===== -->
+      <section id="projects" aria-labelledby="h-projects">
+        <h2 id="h-projects">Selected projects</h2>
+
+        <article class="proj">
+          <img src="assets/images/projects/thinkslides.webp" width="480" height="320" loading="lazy" alt="ThinkSlides multi-agent presentation generator">
+          <div>
+            <h3>ThinkSlides: multi-agent presentation generation</h3>
+            <p class="tags">Next.js, Go, Python</p>
+            <p>A multi-tenant app that generates branded PowerPoint decks with a ReAct agent, streaming its thoughts and tool calls over SSE. Five-service stack. The repository is private; access on request.</p>
+          </div>
+        </article>
+
+        <article class="proj">
+          <img src="assets/images/projects/wellm-nvim.webp" width="480" height="320" loading="lazy" alt="wellm.nvim inside Neovim">
+          <div>
+            <h3>wellm.nvim</h3>
+            <p class="tags">Lua</p>
+            <p>Fully asynchronous, streaming LLM integration for Neovim with native function calling. Symbol-outline injection cuts the context by about 90%.</p>
+            <a class="lnk" href="https://github.com/wellbek/wellm.nvim" target="_blank" rel="noopener noreferrer">Code</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <img src="assets/images/projects/greenlense.webp" width="480" height="320" loading="lazy" alt="GreenLense agentic product-insight API at Hack Seoul 2025">
+          <div>
+            <h3>GreenLense: agentic product-insight API</h3>
+            <p class="tags">Python, OpenAI &middot; Hack Seoul 2025 finalist (AngelHack x Coupang)</p>
+            <p>An agentic AI API that produces product insights, built within 36 hours.</p>
+            <a class="lnk" href="https://github.com/Wellbek/GreenLenseAPI" target="_blank" rel="noopener noreferrer">Code</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <img src="assets/images/projects/construction-classifier.webp" width="480" height="320" loading="lazy" alt="Construction site images classified as workers or vehicles">
+          <div>
+            <h3>Construction Site Image Classifier</h3>
+            <p class="tags">Python, scikit-learn</p>
+            <p>Worker-versus-vehicle classification from HOG shape and color-histogram features, correlation-pruned, with no deep learning. A random forest reaches 90% against 80% for a linear SVM.</p>
+            <a class="lnk" href="https://github.com/Wellbek/Construction-Site-Classifier" target="_blank" rel="noopener noreferrer">Code</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <img src="assets/images/projects/nasa-turbofan.webp" width="480" height="320" loading="lazy" alt="Remaining-useful-life prediction plots for the NASA turbofan engines">
+          <div>
+            <h3>NASA Turbofan Twin</h3>
+            <p class="tags">Python</p>
+            <p>Full data science lifecycle project to predict maintenance needs and model the remaining useful life (RUL) of NASA turbofan engines.</p>
+            <a class="lnk" href="https://github.com/Wellbek/NASA-Turbofan-Twin" target="_blank" rel="noopener noreferrer">Code</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <img src="assets/images/projects/psp.webp" width="480" height="320" loading="lazy" alt="Snake running on a custom microcontroller operating system">
+          <div>
+            <h3>System Programming Lab</h3>
+            <p class="tags">C</p>
+            <p>A basic operating system in C for a microcontroller, capped with a game of Snake.</p>
+            <a class="lnk" href="https://github.com/Wellbek/PSP" target="_blank" rel="noopener noreferrer">Code</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <img src="assets/images/projects/game-physics.webp" width="480" height="320" loading="lazy" alt="3D tower-defense game running on a custom physics engine">
+          <div>
+            <h3>Game Physics Lab</h3>
+            <p class="tags">Godot</p>
+            <p>A custom physics engine in Godot powering a 3D tower-defense game.</p>
+            <a class="lnk" href="https://github.com/Wellbek/customphysics" target="_blank" rel="noopener noreferrer">Code</a>
+          </div>
+        </article>
+
+        <p class="meta" style="margin-top:14px">More on <a href="https://github.com/wellbek" target="_blank" rel="noopener noreferrer">github.com/wellbek</a>.</p>
+      </section>
+    </main>
+
+    <footer>
+      <div class="dots" aria-hidden="true" style="margin-top:20px"></div>
+      <p><a class="top" href="#top">back to top</a>&copy; 2026 Louis Wellmeyer</p>
+    </footer>
+  </div>
+
+  <script src="js/site.js" defer></script>
 </body>
 </html>
